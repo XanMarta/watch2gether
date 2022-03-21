@@ -24,7 +24,7 @@ function SearchPage() {
   function searchResult() {
     //setSearchResults([]);
     dispatch(getQuery(searchForm))
-    if (query === "") {
+    if (searchForm === "") {
       alert("Please fill in the search box!");
       return;
     }
@@ -50,9 +50,10 @@ function SearchPage() {
       <SearchBar
         searchResult={searchResult}
         onChange={(e) => setSearchForm(e.target.value)}
-        defaultValue={query}
+        //defaultValue={query}
       />
       or
+      {/* test modal later */}
       <Button
         bgColor={"blue-500"}
         textColor={"blue-500"}

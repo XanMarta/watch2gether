@@ -40,7 +40,7 @@ function LoginPage() {
     setLoginForm(_loginForm);
     //in case the Backend team is lazy
     if (_loginForm.username === "hoang" && _loginForm.password === "1") {
-      dispatch(getLoginInfo(_loginForm));
+      dispatch(getLoginInfo(_loginForm.username));
       navigate("/");
       //return;
     }
