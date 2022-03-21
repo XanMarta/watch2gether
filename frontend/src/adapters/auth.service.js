@@ -1,7 +1,8 @@
 import axios from 'axios';
 import { getLoginInfo } from "../redux/loginInfo";
 
-const API_URL = "http://localhost:3001/api/users/"
+//API url. Need to change later
+const API_URL = "http://localhost:3000/api/users/"
 export const login = (username, password) => (dispatch) => {
   return axios.post(API_URL + "login", {
     username, password,

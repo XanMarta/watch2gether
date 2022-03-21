@@ -4,6 +4,8 @@ const KEY = "AIzaSyCW2xFajZZPOV-5eMVYyXIuPZrN38pHaqA";
 
 const API_URL = "https://www.googleapis.com/youtube/v3/"
 
+
+//Youtube search API query
 export const youtubeAPI = (keyword) => {
   return axios.get(API_URL + "search", {
     params: {

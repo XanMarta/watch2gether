@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import './navbar.css'
 import { useSelector, useDispatch } from "react-redux";
 import { getLoginInfo } from "../redux/loginInfo";
 import { useNavigate } from 'react-router-dom';

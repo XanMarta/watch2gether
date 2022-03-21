@@ -1,5 +1,5 @@
 //import { Home, About, Login, Register } from '../pages/index';
-import Home2 from '../pages/HomePage2'
+import Home from '../pages/HomePage'
 import About from '../pages/AboutPage'
 import Login from '../pages/LoginPage'
 import Register from '../pages/RegisterPage'
@@ -11,7 +11,7 @@ import NotFound from '../pages/404NotFound'
 const routes = [
   {
     path: '/',
-    component: <Home2 />,
+    component: <Home />,
   },
   {
     path: '/about',
