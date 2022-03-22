@@ -12,7 +12,7 @@ function IsLoggedIn() {
   if (loginForm !== "") {
     return (
       <div>
-        <Link to={"/profile/".concat(loginForm.id)}>Hello user {loginForm.username} </Link>
+        <Link to={"/profile/".concat(loginForm.id)}>Hello user {loginForm} </Link>
         <div onClick={() => { console.log("Logout"); dispatch(getLoginInfo("")); navigate("/") }}>Logout </div>
         {/* dispatch(logOut()) */}
       </div>

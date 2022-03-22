@@ -18,30 +18,70 @@ function SearchPage() {
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
   //let { query } = useParams();
+  let mockdata = [
+    {
+      "name": "Nightstep - Run Away",
+      "id": "Bwx3JFWi9XE&list=PL51KeYBawxWYtZOK5N5TKjj4RP-grgN_F&index=7&t=95s"
+    },
+    {
+      "name": "Nightcore - Angel with a shotgun",
+      "id": "QGzRSQA1lD8&list=PL51KeYBawxWYtZOK5N5TKjj4RP-grgN_F&index=37"
+    },
+    {
+      "name": "Nightcore - This little girl",
+      "id": "c0mX-5q3mrY&list=PL51KeYBawxWYtZOK5N5TKjj4RP-grgN_F&index=13"
+    },
+    {
+      "name": "Nightcore - LockedAway",
+      "id": "EYbGq078nsk&list=PL51KeYBawxWYtZOK5N5TKjj4RP-grgN_F&index=19"
+    },
+    {
+      "name": "Nightcore - Dirty Angel",
+      "id": "eXvk0MeckLo&list=PL51KeYBawxWYtZOK5N5TKjj4RP-grgN_F&index=39"
+    },
+    {
+      "name": "Nightcore - Worth fighting for",
+      "id": "WKNM-tfbFys&list=PL51KeYBawxWYtZOK5N5TKjj4RP-grgN_F&index=4"
+    }
+  ];
   useEffect(() => {
     console.log("lmao")
+    // if (query !== "") {
+    //   youtubeAPI(searchForm)
+    //     .then(res => {
+    //       console.log(res.data)
+    //       dispatch(getQuery(searchForm))
+    //       navigate("/search?query=" + searchForm)
+    //       for (var i = 0; i < 5; i++) {
+    //         setSearchResults(result => [...result, res.data.items[i]]);
+    //       }
+    //       console.log(searchResults.length)
+    //     }
+    //     )
+    // }
   })
   function searchResult() {
-    //setSearchResults([]);
-    dispatch(getQuery(searchForm))
-    if (searchForm === "") {
-      alert("Please fill in the search box!");
-      return;
-    }
-    navigate("/search?query=" + query)
+    setSearchResults([]);
+    // if (searchForm === "") {
+    //   alert("Please fill in the search box!");
+    //   return;
+    // }
     //setSearchResults([])
-    console.log("Search resulttttttt is " + searchForm);
-    youtubeAPI(searchForm)
-      .then(res => {
-        console.log(res.data)
-        //dispatch(getQuery(searchForm));
-        //console.log(res.data.params)
-        for (var i = 0; i < 5; i++) {
-          setSearchResults(result => [...result, res.data.items[i]]);
-        }
-        console.log(searchResults.length)
-      }
-      )
+    console.log("Search resulttttttt is " + query);
+    // youtubeAPI(searchForm)
+    //   .then(res => {
+    //     console.log(res.data)
+    //     dispatch(getQuery(searchForm))
+    //     navigate("/search?query=" + searchForm)
+    //     for (var i = 0; i < 5; i++) {
+    //       setSearchResults(result => [...result, res.data.items[i]]);
+    //     }
+    //     console.log(searchResults.length)
+    //   }
+    //   )
+    console.log(mockdata)
+    setSearchResults(mockdata);
+    console.log(JSON.stringify(searchResults));
   }
   return (
     <div>
@@ -50,7 +90,7 @@ function SearchPage() {
       <SearchBar
         searchResult={searchResult}
         onChange={(e) => setSearchForm(e.target.value)}
-        //defaultValue={query}
+        defaultValue={query}
       />
       or
       {/* test modal later */}
@@ -70,11 +110,18 @@ function SearchPage() {
               <Fragment>
                 {/* <li key={index}>{result}</li>
                 <br></br> */}
+                {/* <Card
+                title={result.snippet.title}
+                channelName={result.snippet.channelTitle}
+                thumbnail={result.snippet.thumbnails.high.url}
+                videoId={result.id.videoId}
+              /> */}
                 <Card
-                  title={result.snippet.title}
-                  channelName={result.snippet.channelTitle}
-                  thumbnail={result.snippet.thumbnails.high.url}
-                  videoId={result.id.videoId}
+                  title={result.name}
+                  channelName={index}
+                  videoId={result.id}
+                // thumbnail={result.snippet.thumbnails.high.url}
+                // videoId={result.id.videoId}
                 />
               </Fragment>
             )
@@ -107,7 +154,7 @@ function SearchPage() {
                     {/*body*/}
                     <div className="relative p-6 flex-auto">
                       <p className="my-4 text-blueGray-500 text-lg leading-relaxed">
-                          {/* name={name} type={type} placeholder={placeholder} onChange={onChange} defaultValue={defaultValue} /> */}
+                        {/* name={name} type={type} placeholder={placeholder} onChange={onChange} defaultValue={defaultValue} /> */}
                         <InputField
                           type={"file"}
                           placeholder={"Upload a video here"}

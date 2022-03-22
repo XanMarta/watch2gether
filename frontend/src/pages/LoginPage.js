@@ -2,9 +2,6 @@ import LoginForm from '../components/LoginPage/LoginUI'
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from "react-redux";
-//import { login } from "../actions/login";
-//import { loginError } from "../redux/loginInfo";
-//import PageNavigation from "./index"
 import { login } from "../adapters/auth.service"
 import { getLoginInfo } from "../redux/loginInfo";
 

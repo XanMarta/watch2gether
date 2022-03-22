@@ -10,7 +10,7 @@ function SearchBar(props) {
       <InputField
         className={"shadow appearance-none border rounded w-1/4 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"}
         name={"SearchBar"} type={"text"} placeholder={"Search bar"} onChange={(e) => onChange(e)}
-        //defaultValue={defaultValue}
+        defaultValue={defaultValue}
         //value={"fasdffs"}
       ></InputField>
       <Button

@@ -8,9 +8,9 @@ function RoomPage() {
     // <h1>This is room page.</h1>
     <div className="mt-4 mb-52">
       <VideoPlayer
-        videoURL={"https://www.youtube.com/watch?v=" + id}
-      //videoPlaying={true}
-      //videoURL={"https://www.youtube.com/watch?v=Bwx3JFWi9XE#Nightstep_-_Run_Away"}
+        //videoURL={"https://www.youtube.com/watch?v=" + id}
+        //videoPlaying={true}
+        videoURL={"https://www.youtube.com/watch?v=Bwx3JFWi9XE#Nightstep_-_Run_Away"}
       />
       <div className="ml-40">
         <ChatForm />

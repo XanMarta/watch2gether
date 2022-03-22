@@ -11,6 +11,7 @@ import queryReducer from './query'
 const persistConfig = {
   key: 'main-root',
   storage,
+  //blacklist: ['loginInfo'],
 }
 
 const allReducers = combineReducers({

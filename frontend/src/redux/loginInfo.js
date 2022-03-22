@@ -1,11 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-const initialStateValue = {}
+const initialStateValue = "";
 
 export const loginInfoSlice = createSlice({
   name: 'loginInfo',
+  //need to modify later 
   initialState: {
-    value: initialStateValue,
+    //value: initialStateValue,
+    value: initialStateValue
   },
   //initialState,
   reducers: {
@@ -16,6 +18,6 @@ export const loginInfoSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { getLoginInfo, logOut, loginError } = loginInfoSlice.actions
+export const { getLoginInfo } = loginInfoSlice.actions
 
 export default loginInfoSlice.reducer
