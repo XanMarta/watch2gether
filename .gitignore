@@ -131,3 +131,6 @@ dist
 
 # Package lock
 package-lock.json
+
+# backed package 
+backend/node_modules
