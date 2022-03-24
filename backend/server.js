@@ -131,3 +131,11 @@ io.on("connection", function (socket) {
     console.log("Got connect offer: ", message)
   })
 });
+
+
+// In tutorialsport, they save an array of connection.
+// But in case of server, how can we replace that ?
+
+// v1. Keep using array of connection and look up
+// v2. Check if we can use a DB or somewhat, maybe like redis
+// v3. In case of many peers, what can we do ?
