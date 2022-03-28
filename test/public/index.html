@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>WebRTC Test</title>
+    </head>
+
+    <body>
+        <div>
+            <video id="localVideo" playsinline autoplay></video>
+            <video id="remoteVideo" playsinline autoplay></video>
+        </div>
+        <div>
+            <button id="connect">Connect</button>
+            <button id="start">Start</button>
+            <button id="message">Message</button>
+        </div>
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="js/main.js"></script>
+    </body>
+</html>
