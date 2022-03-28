@@ -14,7 +14,7 @@ function InputField(props) {
   return (
     //w-full h-12 px-4 mb-2 text-lg text-gray-700 placeholder-gray-600 border rounded-lg focus:shadow-outline
     <input
-      className={classnames(`w-${width} h-${height} px-4 py-2.5 mt-1 text-gray-700 placeholder-gray-600 border rounded-lg focus:shadow-outline`, {
+      className={classnames(`w-${width} h-${height} border rounded-lg focus:shadow-outline`, {
         "text-xs": size === 'sm',
         "text-xl": size === 'lg',
       })}

@@ -3,6 +3,7 @@ import { combineReducers } from "redux";
 import { persistReducer } from "redux-persist";
 import storage from 'redux-persist/lib/storage';
 import thunk from 'redux-thunk'
+import sessionStorage from 'redux-persist/lib/storage/session'
 import counterReducer from './counter'
 import loginInfoReducer from './loginInfo'
 import queryReducer from './query'
@@ -10,13 +11,19 @@ import queryReducer from './query'
 //create a local storage
 const persistConfig = {
   key: 'main-root',
-  storage,
+  storage: storage,
   //blacklist: ['loginInfo'],
+}
+
+const authPersistConfig = {
+  key: 'auth',
+  storage: sessionStorage,
+  //blacklist: ['somethingTemporary']
 }
 
 const allReducers = combineReducers({
   counter: counterReducer,
-  loginInfo: loginInfoReducer,
+  loginInfo: persistReducer(authPersistConfig, loginInfoReducer),
   query: queryReducer,
 })
 

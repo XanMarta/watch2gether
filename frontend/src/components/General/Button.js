@@ -9,7 +9,7 @@ function Button(props) {
   const onClick = props.onClick;
   const buttonName = props.buttonName
   return (
-    <button className={classnames(`bg-${bgColor} text-${textColor} py-2 px-4 rounded`, {
+    <button className={classnames(`bg-${bgColor} text-${textColor} rounded`, {
       "text-xs": size === 'sm',
       "text-xl": size === 'lg',
     })}
@@ -17,5 +17,6 @@ function Button(props) {
       onClick={onClick}> {buttonName}</button>
   );
 }
+//bg-yellow-500
 
 export default Button;

@@ -3,7 +3,11 @@ module.exports = {
     "./src/**/*.{js,jsx,ts,tsx}",
   ],
   theme: {
-    //extend: {},
+    extend: {
+      backgroundImage: {
+        'homepage': "url('https://media.istockphoto.com/photos/feline-picture-id108226626?k=20&m=108226626&s=612x612&w=0&h=bDaWwxhcygjerdR71qQu8YFSXaDUIi_HUZV2AADg5L8=')",
+      }
+    },
     // colors: {
     //   'blue': '#1fb6ff',
     //   'purple': '#7e5bef',
