@@ -97,26 +97,26 @@ socket.on('webrtc_offer', async (event) => {
     }
 })
   
-  socket.on('webrtc_answer', (event) => {
+socket.on('webrtc_answer', (event) => {
     console.log('Socket event callback: webrtc_answer')
-  
+
     rtcPeerConnection.setRemoteDescription(new RTCSessionDescription(event))
     /**
-     * It has setRemoteDescription for saving description for callee server
+     * EXPLAIN: It has setRemoteDescription for saving description for callee server
      * Step 3: Receive answer, set state, done.
      */
-  })
-  
-  socket.on('webrtc_ice_candidate', (event) => {
+})
+
+socket.on('webrtc_ice_candidate', (event) => {
     console.log('Socket event callback: webrtc_ice_candidate')
-  
+
     // ICE candidate configuration.
     var candidate = new RTCIceCandidate({
-      sdpMLineIndex: event.label,
-      candidate: event.candidate,
+    sdpMLineIndex: event.label,
+    candidate: event.candidate,
     })
     rtcPeerConnection.addIceCandidate(candidate)
-  })
+})
 
 // FUNCTIONS ==================================================================
 function joinRoom(room) {
@@ -133,72 +133,96 @@ function joinRoom(room) {
   }
 }
 
+/**
+ * Enable HTML elemnt for videochat
+ * Disable HTML elemnt for room selection
+ */
 function showVideoConference() {
   roomSelectionContainer.style = 'display: none'
   videoChatContainer.style = 'display: block'
 }
 
+/**
+ * Get user permission and render stream from local user stream.
+ * @param {*} mediaConstraints: Constraint for camera and audio.
+ */
 async function setLocalStream(mediaConstraints) {
-  let stream
-  try {
-    stream = await navigator.mediaDevices.getUserMedia(mediaConstraints)
-  } catch (error) {
-    console.error('Could not get user media', error)
-  }
+    let stream
+    try {
+        stream = await navigator.mediaDevices.getUserMedia(mediaConstraints)
+    } catch (error) {
+        console.error('Could not get user media', error)
+    }
 
-  localStream = stream
-  localVideoComponent.srcObject = stream
+    localStream = stream
+    /** Render video to local HTML video element */
+    localVideoComponent.srcObject = stream
 }
 
+/**
+ * add local track (stream) to PeerConnection
+ * @param {RTCPeerConnection} rtcPeerConnection
+ */
 function addLocalTracks(rtcPeerConnection) {
     localStream.getTracks().forEach((track) => {
-      rtcPeerConnection.addTrack(track, localStream)
+        rtcPeerConnection.addTrack(track, localStream)
+        /**
+         * AMBIGIOUS: What track do ?
+         */
     })
-  }
-  
-  async function createOffer(rtcPeerConnection) {
+}
+
+/**
+ * Create offer, set to Local Description and send to remote peer
+ * @param {*} rtcPeerConnection 
+ */
+async function createOffer(rtcPeerConnection) {
     let sessionDescription
     try {
-      sessionDescription = await rtcPeerConnection.createOffer()
-      rtcPeerConnection.setLocalDescription(sessionDescription)
+        sessionDescription = await rtcPeerConnection.createOffer()
+        rtcPeerConnection.setLocalDescription(sessionDescription)
     } catch (error) {
-      console.error(error)
+        console.error(error)
     }
-  
+
     socket.emit('webrtc_offer', {
-      type: 'webrtc_offer',
-      sdp: sessionDescription,
-      roomId,
+        type: 'webrtc_offer',
+        sdp: sessionDescription,
+        roomId,
     })
-  }
-  
-  async function createAnswer(rtcPeerConnection) {
+}
+
+/**
+ * Create answer, set to local description, and send to remote peer
+ * @param {*} rtcPeerConnection 
+ */
+async function createAnswer(rtcPeerConnection) {
     let sessionDescription
     try {
-      sessionDescription = await rtcPeerConnection.createAnswer()
-      rtcPeerConnection.setLocalDescription(sessionDescription)
+        sessionDescription = await rtcPeerConnection.createAnswer()
+        rtcPeerConnection.setLocalDescription(sessionDescription)
     } catch (error) {
-      console.error(error)
+        console.error(error)
     }
-  
+
     socket.emit('webrtc_answer', {
-      type: 'webrtc_answer',
-      sdp: sessionDescription,
-      roomId,
+        type: 'webrtc_answer',
+        sdp: sessionDescription,
+        roomId,
     })
-  }
+}
   
-  function setRemoteStream(event) {
+function setRemoteStream(event) {
     remoteVideoComponent.srcObject = event.streams[0]
     remoteStream = event.stream
-  }
+}
   
-  function sendIceCandidate(event) {
+function sendIceCandidate(event) {
     if (event.candidate) {
-      socket.emit('webrtc_ice_candidate', {
-        roomId,
-        label: event.candidate.sdpMLineIndex,
-        candidate: event.candidate.candidate,
-      })
+        socket.emit('webrtc_ice_candidate', {
+            roomId,
+            label: event.candidate.sdpMLineIndex,
+            candidate: event.candidate.candidate,
+        })
     }
-  }
+}
