@@ -58,6 +58,11 @@ socket.on('full_room', () => {
 
 /**
  * When trigger a start call callback.
+ * AMBIGIUOUS: ontrack=setRemoteStream call whenever got a stream to handle (!?)
+ * localStream add track to peerConnection. ontrack on the other side called when track is added to peerConnection.
+ * TODO: multiple stream via PeerConnection.
+ * https://stackoverflow.com/questions/66243915/how-to-get-multiple-streams-from-webrtc-peerconnection
+ * 
  */
 socket.on('start_call', async () => {
     console.log('Socket event callback: start_call')
@@ -212,11 +217,19 @@ async function createAnswer(rtcPeerConnection) {
     })
 }
   
+/**
+ * Set remote stream to HTML element
+ * @param {*} event 
+ */
 function setRemoteStream(event) {
     remoteVideoComponent.srcObject = event.streams[0]
     remoteStream = event.stream
 }
   
+/**
+ * Send ice candidate or smth. Still ambigiuous about the ice candidate.
+ * @param {*} event 
+ */
 function sendIceCandidate(event) {
     if (event.candidate) {
         socket.emit('webrtc_ice_candidate', {
