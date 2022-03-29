@@ -7,17 +7,22 @@ const socket = io("ws://127.0.0.1:3000");
 const localVideo = document.getElementById("localVideo");
 const remoteVideo = document.getElementById("remoteVideo");
 
-connectButton.onclick = connect;
-
-import {setConnectionHandler, testCallServer} from "./connection.js";
+import {sendOffer, setConnectionHandler, testCallServer} from "./connection.js";
 import {setStreamHandler, getStream} from "./streamRender.js";
 
 let pc = null;
 
 pc = new RTCPeerConnection();
 
+connectButton.onclick = async () => {
+    await getStream(pc, localVideo)
+    await sendOffer(pc, socket)
+};
+
 setConnectionHandler(pc, socket)
 setStreamHandler(pc, remoteVideo)
 
-getStream(pc, socket, localVideo)
+/**
+ * Test connection to server
+ */
 testCallServer(socket)

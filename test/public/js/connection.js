@@ -1,15 +1,30 @@
 
 /**
+ * Send offer via socket. To establish connection.
+ * @param {*} pc RTCPeerConnection object 
+ * @param {*} socket io socket object
+ */
+export async function sendOffer(pc, socket) {
+    const offer = await pc.createOffer({
+        offerToReceiveAudio: true,
+        offerToReceiveVideo: true
+    });
+    socket.emit("offer", offer)
+    await pc.setLocalDescription(offer);
+}
+
+
+/**
  * Establish connection between two peer.
  * @param {*} pc RTCPeerConnection object
  * @param {*} socket io socket object
  */
- export async function setConnectionHandler(pc, socket) {
+ export function setConnectionHandler(pc, socket) {
     /**
      * When get an ice candidate from server, emit it own ice cancdidate
      */
     pc.onicecandidate = e => {
-        console.log("Ice candidate")
+        console.log("Ice candidate requested")
         socket.emit("icecandidate", e.candidate)
     }
 
@@ -41,6 +56,7 @@
      */
     socket.on("r_icecandidate", async (candidate) => {
         await pc.addIceCandidate(candidate);
+        console.log("Ice candidate acquired")
     });
 }
 
@@ -48,7 +64,7 @@
  * Send a greet from client. To check connection
  * @param {*} socket : io socket object
  */
-export async function testCallServer(socket) {
+export function testCallServer(socket) {
     console.log("Send socket message");
     socket.emit("client", "Hello from client");
     socket.on("server", (message) => {

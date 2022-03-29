@@ -7,7 +7,9 @@
     <body>
         <div>
             <video id="localVideo" playsinline autoplay></video>
-            <video id="remoteVideo" playsinline autoplay></video>
+            <div id="remoteVideoContainer">
+                <video id="remoteVideo" playsinline autoplay></video>
+            </div>
         </div>
         <div>
             <button id="connect">Connect</button>
@@ -15,6 +17,6 @@
             <button id="message">Message</button>
         </div>
         <script src="/socket.io/socket.io.js"></script>
-        <script src="js/main.js"></script>
+        <script type="module" src="js/main.js"></script>
     </body>
 </html>
