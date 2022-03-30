@@ -88,7 +88,7 @@ io.on('connection', (socket) => {
         /**
          * EXPLAIN: send an event "start_call" to all socket connect to roomId
          */
-        io.broadcast.to(roomId).emit('start_call')
+        socket.to(roomId).emit('start_call')
     })
     /**
      * event: object.
@@ -102,7 +102,7 @@ io.on('connection', (socket) => {
              * EXPLAIN: send event.sdp to all socket in roomId.
              * So all socket in room can establish an connection to socket in room.
              */
-            io.broadcast.to(event.roomId).emit('webrtc_offer', event.sdp)
+            socket.to(event.roomId).emit('webrtc_offer', event.sdp)
             /**
              * AMBIGUOUS: "socket" or it shoule be "io"
              */
@@ -115,7 +115,7 @@ io.on('connection', (socket) => {
             console.log(`Broadcasting webrtc_answer event to peers in room ${event.roomId}`)
             console.log("Curious webrtc answer: ", typeof(event))
 
-            io.broadcast.to(event.roomId).emit('webrtc_answer', event.sdp)
+            socket.to(event.roomId).emit('webrtc_answer', event.sdp)
             /**
              * AMBIGUOUS: "socket" or it shoule be "io"
              */
@@ -129,7 +129,7 @@ io.on('connection', (socket) => {
             console.log(`Broadcasting webrtc_ice_candidate event to peers in room ${event.roomId}`)
             console.log("Curious webrtc ice candidate: ", typeof(event))
 
-            io.broadcast.to(event.roomId).emit('webrtc_ice_candidate', event)
+            socket.to(event.roomId).emit('webrtc_ice_candidate', event)
             /**
              * AMBIGUOUS: "socket" or it shoule be "io"
              */
