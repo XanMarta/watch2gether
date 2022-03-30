@@ -26,6 +26,13 @@ function HomePage2() {
             onClick={(e) => { EnterRoom(e) }}
             buttonName={"Enter this room"}></Button>
           <br></br>
+          <Button
+            bgColor={"yellow-500"}
+            size={"text-xl"}
+            type={"button"}
+            onClick={(e) => { navigate("/testcall") }}
+            buttonName={"Video call test"}></Button>
+          <br></br>
         </div>
       </div>
     );

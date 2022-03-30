@@ -7,6 +7,7 @@ import Profile from '../pages/ProfilePage'
 import SearchPage from '../pages/SearchPage'
 import RoomPage from '../pages/RoomPage'
 import NotFound from '../pages/404NotFound'
+import CallTestPage from '../pages/CallTestPage'
 
 const routes = [
   {
@@ -40,6 +41,10 @@ const routes = [
   {
     path: '/room/:id',
     component: <RoomPage />,
+  },
+  {
+    path: '/testcall',
+    component: <CallTestPage />,
   },
   {
     path: '*',
