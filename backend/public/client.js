@@ -239,3 +239,5 @@ function sendIceCandidate(event) {
         })
     }
 }
+
+// TODO: User want to disconnect to room.

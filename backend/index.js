@@ -134,6 +134,16 @@ io.on('connection', (socket) => {
              * AMBIGUOUS: "socket" or it shoule be "io"
              */
     })
+
+    /**
+     * Inform other user when an user is disconnected
+     */
+    socket.on("disconnect", (reason) => {
+        console.log("Disconnection detected: ", reason)
+
+        // TODO: Inform other user in the same room
+        // ISSUE: io.sockets.adapter.rooms auto delete socket before this callback is called.
+    })
 })
 
 // START THE SERVER =================================================================
