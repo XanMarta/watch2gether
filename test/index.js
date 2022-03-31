@@ -20,36 +20,35 @@ const io = socket(server, {
     }
 })
 
-const users = [];
+// WebRTC
+
+let host = null
+const users = []
 
 io.on("connection", (socket) => {
     console.log("Make socket connection")
     users.push(socket.id)
 
-    socket.on("client", (message) => {
-        console.log(`Message received: ${message}`)
-        io.to(socket.id).emit("server", "Hello from server")
+    socket.on("client_ready", () => {
+        if (host != null) {
+            io.to(socket.id).emit("stream_receive", host)
+        }
     })
 
-    socket.on("offer", (offer) => {
-        // socket.broadcast.emit("r_offer", socket.id, offer)
-        socket.broadcast.emit("r_offer", offer)
-        console.log("Receive offer")
+    socket.on("stream_start", () => {
+        socket.broadcast.emit("stream_receive", socket.id)
+        host = socket.id
     })
 
-    socket.on("answer", (offer) => {
-        // io.to(id).emit("r_answer", offer)
-        socket.broadcast.emit("r_answer", offer)
-        console.log("Receive answer")
+    socket.on("stream_accept", (id) => {
+        io.to(id).emit("stream_accepted", socket.id)
     })
 
-    socket.on("icecandidate", (candidate) => {
-        socket.broadcast.emit("r_icecandidate", candidate)
-        console.log("Ice candidate")
+    socket.on("data_send", (id, data) => {
+        io.to(id).emit("data_receive", socket.id, data)
     })
 
-    socket.on("ready", () => {
-        socket.broadcast.emit("r_ready")
-        console.log("Ready")
+    socket.onAny((event) => {
+        console.log(`Event: ${event}`)
     })
 })
