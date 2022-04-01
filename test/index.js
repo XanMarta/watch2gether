@@ -23,11 +23,9 @@ const io = socket(server, {
 // WebRTC
 
 let host = null
-const users = []
 
 io.on("connection", (socket) => {
-    console.log("Make socket connection")
-    users.push(socket.id)
+    console.log(`Connection established: ${socket.id}`)
 
     socket.on("client_ready", () => {
         if (host != null) {
@@ -36,8 +34,12 @@ io.on("connection", (socket) => {
     })
 
     socket.on("stream_start", () => {
-        socket.broadcast.emit("stream_receive", socket.id)
-        host = socket.id
+        if (host == null) {
+            socket.broadcast.emit("stream_receive", socket.id)
+            host = socket.id
+        } else {
+            io.to(socket.id).emit("host_declined")
+        }
     })
 
     socket.on("stream_accept", (id) => {
@@ -46,6 +48,23 @@ io.on("connection", (socket) => {
 
     socket.on("data_send", (id, data) => {
         io.to(id).emit("data_receive", socket.id, data)
+    })
+
+    socket.on("node_disconnect", () => {
+        socket.broadcast.emit("node_disconnected", socket.id)
+        if (socket.id == host) {
+            socket.broadcast.emit("host_disconnected")
+            host = null
+        }
+    })
+
+    socket.on("disconnect", () => {
+        console.log(`Connection destroyed: ${socket.id}`)
+        socket.broadcast.emit("node_disconnected", socket.id)
+        if (socket.id == host) {
+            socket.broadcast.emit("host_disconnected")
+            host = null
+        }
     })
 
     socket.onAny((event) => {
