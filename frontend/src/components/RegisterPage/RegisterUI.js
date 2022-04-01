@@ -5,70 +5,77 @@ function RegisterUI(props) {
   const registerChange = props.registerChange;
   const registerHandler = props.registerHandler;
   return (
-    <div className="my-28 flex justify-center items-center">
-      <form class="w-full max-w-lg">
-        <div class="flex flex-wrap -mx-3 mb-6">
-          <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-            <label class="mr-48 block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
-              Email
-            </label>
-            <InputField
-              width={"full"}
-              height={"50"}
-              name={"email"}
-              type={"text"}
-              placeholder={"email"}
-              onChange={registerChange}></InputField>
-            <p class="text-red-500 text-xs italic">Please fill out this field.</p>
+    <>
+      <div className="mt-5 my-28 flex justify-center items-center border-4 border-indigo-500/100">
+        <form class="w-full max-w-lg border-4 border-indigo-500/100">
+          <InputField
+            width={"full"}
+            // InputMarginTop={0}
+            // InputMarginBottom={2}
+            InputPaddingLeft={3}
+            InputPaddingRight={2}
+            InputMarginBottom={6}
+            name={"email"}
+            type={"text"}
+            placeholder={"email"}
+            formMarginLeft={0}
+            formMarginBottom={0.5}
+            label={"Email"}
+            onChange={registerChange}></InputField>
+          <InputField
+            width={"full"}
+            // InputMarginTop={0}
+            // InputMarginBottom={2}
+            InputPaddingLeft={2}
+            InputPaddingRight={2}
+            InputMarginBottom={6}
+            name={"phone"}
+            type={"text"}
+            placeholder={"phoneNumber"}
+            formMarginLeft={0}
+            formMarginBottom={0.5}
+            label={"Phone Number"}
+            onChange={registerChange}></InputField>
+          <InputField
+            width={"full"}
+            // InputMarginTop={0}
+            // InputMarginBottom={2}
+            InputPaddingLeft={2}
+            InputPaddingRight={2}
+            InputMarginBottom={6}
+            name={"username"}
+            type={"text"}
+            placeholder={"username"}
+            formMarginLeft={0}
+            formMarginBottom={0.5}
+            label={"Username"}
+            onChange={registerChange}></InputField>
+          <InputField
+            width={"full"}
+            // InputMarginTop={0}
+            // InputMarginBottom={10}
+            InputPaddingLeft={2}
+            InputPaddingRight={2}
+            InputMarginBottom={6}
+            name={"password"}
+            type={"password"}
+            placeholder={"Enter your password here"}
+            formMarginLeft={0}
+            formMarginBottom={0.5}
+            label={"Password"}
+            onChange={registerChange}></InputField>
+          <section className="mt-4">
+            <Button size="lg" textColor="white" bgColor="black"
+              onClick={(e) => { registerHandler(e) }}
+              buttonName={"Register"}></Button>
+          </section>
+          <div class="mt-5 flex justify-center items-center">
+            <p>Login now</p>
           </div>
-          <div class="w-full md:w-1/2 px-3">
-            <label class="mr-32 block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
-              Phone number:
-            </label>
-            <InputField
-              width={"full"}
-              height={"50"}
-              name={"phone"}
-              type={"text"}
-              placeholder={"phoneNumber"}
-              onChange={registerChange}></InputField>
-          </div>
-        </div>
-        <div class="flex flex-wrap -mx-3 mb-6">
-          <div class="mr-96 w-full px-3">
-            <label class="mr-96 block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-password">
-              Username:
-            </label>
-            <InputField
-              width={"full"}
-              height={"50"}
-              name={"username"}
-              type={"text"}
-              placeholder={"username"}
-              onChange={registerChange}></InputField>
-            <p class="text-gray-600 text-xs italic">Make it as long and as crazy as you'd like</p>
-          </div>
-        </div>
-        <div class="flex flex-wrap -mx-3 mb-6">
-          <div class="mr-96 w-full px-3">
-            <label class="mr-96 block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-password">
-              Password
-            </label>
-            <InputField
-              width={"full"}
-              height={"50"}
-              name={"password"}
-              type={"password"}
-              placeholder={"Enter your password here"}
-              onChange={registerChange}></InputField>
-            <p class="text-gray-600 text-xs italic">Make it as long and as crazy as you'd like</p>
-          </div>
-        </div>
-        <Button size="lg" textColor="black" bgColor="blue-500"
-          onClick={(e) => { registerHandler(e) }}
-          buttonName={"Register"}></Button>
-      </form>
-    </div>
+
+        </form>
+      </div>
+    </>
   )
 }
 

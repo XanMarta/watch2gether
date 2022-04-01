@@ -8,8 +8,9 @@ function Button(props) {
   const type = props.type;
   const onClick = props.onClick;
   const buttonName = props.buttonName
+  //bg-black hover:bg-gray-900 text-white text-center py-2 px-4 rounded
   return (
-    <button className={classnames(`bg-${bgColor} text-${textColor} rounded`, {
+    <button className={classnames(`bg-${bgColor} hover:bg-gray-900 text-${textColor} text-center py-2 px-4 rounded`, {
       "text-xs": size === 'sm',
       "text-xl": size === 'lg',
     })}

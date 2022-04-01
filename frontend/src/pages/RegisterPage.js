@@ -33,14 +33,14 @@ function RegisterPage() {
     console.log("Info register is: " + JSON.stringify(newTaskForm))
   }
   return (
-    <>
+    <div className="bg-emerald-300 mb-0">
       <h1>This is the register page</h1>
       <RegisterForm
         registerChange={registerChange}
         registerHandler={registerHandler}
       />
-    </>
+    </div>
   );
 }
 
-export default RegisterPage
+export default RegisterPage;

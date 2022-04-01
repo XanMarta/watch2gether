@@ -1,8 +1,7 @@
 import classnames from 'classnames';
 
 function InputField(props) {
-  //const className = props.className;
-  const size = props.size;
+  //for input
   const width = props.width;
   const height = props.height;
   const name = props.name;
@@ -10,15 +9,26 @@ function InputField(props) {
   const placeholder = props.placeholder;
   const onChange = props.onChange;
   const defaultValue = props.defaultValue;
-  //const paddingRight = props.paddingRight;
+  const InputPaddingLeft = props.InputPaddingLeft;
+  const InputPaddingRight = props.InputPaddingRight;
+  const InputMarginBottom = props.InputMarginBottom;
+  //for label
+  const label = props.label;
+  //form
+  const formMarginLeft = props.marginLeft;
+  const formMarginBottom = props.labelMarginBottom;
   return (
-    //w-full h-12 px-4 mb-2 text-lg text-gray-700 placeholder-gray-600 border rounded-lg focus:shadow-outline
-    <input
-      className={classnames(`w-${width} h-${height} border rounded-lg focus:shadow-outline`, {
-        "text-xs": size === 'sm',
-        "text-xl": size === 'lg',
-      })}
-      name={name} type={type} placeholder={placeholder} onChange={onChange} defaultValue={defaultValue} />
+    //w-full mt-2 mb-6 px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-green-500
+    <div className={classnames(`flex flex-wrap -mx-${formMarginLeft} mb-${formMarginBottom} border-4 border-indigo-500/100`)}>
+      <label class="font-bold mb-2">
+        {label}
+      </label>
+      {/* </div> */}
+      <input
+        className={classnames(`w-${width} 
+      h-${height} px-${InputPaddingLeft} py-${InputPaddingRight} mb-${InputMarginBottom} border rounded-lg focus:shadow-outline`)}
+        name={name} type={type} placeholder={placeholder} onChange={onChange} defaultValue={defaultValue} />
+    </div>
   );
 }
 

@@ -52,12 +52,14 @@ function LoginPage() {
   }
   return (
     <>
-      <h1>This is the login page</h1>
-      <LoginForm
-        loginChange={loginChange}
-        loginHandler={loginHandler}
-      //loginChange={e => setLoginForm(e.target.value)}
-      />
+      <h1>This is login page</h1>
+      <div className="mt-0 my-32 flex justify-center items-center border-4 border-indigo-500/100">
+        <LoginForm
+          loginChange={loginChange}
+          loginHandler={loginHandler}
+        //loginChange={e => setLoginForm(e.target.value)}
+        />
+      </div>
     </>
   );
 }
