@@ -1,28 +1,33 @@
-const connectButton = document.getElementById("connect");
-const startButton = document.getElementById("start");
-const messageButton = document.getElementById("message");
-
-const socket = io("ws://127.0.0.1:3000");
+const hostButton = document.getElementById("host");
+const clientButton = document.getElementById("client");
+const leaveButton = document.getElementById("leave");
 
 const localVideo = document.getElementById("localVideo");
 const remoteVideo = document.getElementById("remoteVideo");
 
-import {sendOffer, setConnectionHandler, testCallServer} from "./connection.js";
-import {setStreamHandler, getStream} from "./streamRender.js";
 
-let pc = null;
+import { createHost, createClient, disconnect } from "./stream.js";
 
-pc = new RTCPeerConnection();
 
-connectButton.onclick = async () => {
-    await getStream(pc, localVideo)
-    await sendOffer(pc, socket)
-};
+hostButton.onclick = async () => {
+    console.log("Create Host")
+    const stream = await navigator.mediaDevices.getUserMedia({ video: true })
+    localVideo.srcObject = stream
+    await createHost(stream, () => {
+        localVideo.srcObject = null
+    })
+}
 
-setConnectionHandler(pc, socket)
-setStreamHandler(pc, remoteVideo)
+clientButton.onclick = async () => {
+    console.log("Create Client")
+    await createClient((stream) => {
+        remoteVideo.srcObject = stream
+    })
+}
 
-/**
- * Test connection to server
- */
-testCallServer(socket)
+leaveButton.onclick = async() => {
+    console.log("Disconnect")
+    localVideo.srcObject = null
+    remoteVideo.srcObject = null
+    await disconnect()
+}
