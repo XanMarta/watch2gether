@@ -1,3 +1,5 @@
+// --- Define library --- Server run port ---
+
 const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
@@ -20,54 +22,77 @@ const io = socket(server, {
     }
 })
 
-// WebRTC
+// --- Implement for handling connection ---
 
-let host = null
+// let host = null
+
+// io.on("connection", (socket) => {
+//     console.log(`Connection established: ${socket.id}`)
+
+//     socket.on("client_ready", () => {
+
+//     })
+
+//     socket.on("stream_start", () => {
+
+//     })
+
+//     socket.on("stream_accept", (id) => {
+//         io.to(id).emit("stream_accepted", socket.id)
+//     })
+
+//     socket.on("data_send", (id, data) => {
+//         io.to(id).emit("data_receive", socket.id, data)
+//     })
+
+//     socket.on("node_disconnect", () => {
+
+//     })
+
+//     socket.on("disconnect", () => {
+
+//     })
+
+//     socket.onAny((event) => {
+//         console.log(`Event: ${event}`)
+//     })
+// })
+
+
+room = {}
 
 io.on("connection", (socket) => {
-    console.log(`Connection established: ${socket.id}`)
+    console.log("New connection from socket id: ", socket.id);
 
-    socket.on("client_ready", () => {
-        if (host != null) {
-            io.to(socket.id).emit("stream_receive", host)
-        }
+    socket.on("client", (message) => {
+        console.log(`Get message from client ${socket.id} with message: ${message}`)
+        io.to(socket.id).emit("server", "Hello from server")
     })
 
-    socket.on("stream_start", () => {
-        if (host == null) {
-            socket.broadcast.emit("stream_receive", socket.id)
-            host = socket.id
-        } else {
-            io.to(socket.id).emit("host_declined")
-        }
+    socket.on("join_room", (roomId) => {
+        console.log(`Client ${socket.id} want to join ${roomId}`);
+
+        socket.join(roomId)
+        socket.to(roomId).emit('join_room', socket.id);
+
+        socket.emit("room_joined", roomId)
+
+        room[socket.id] = roomId
+        console.log(io.sockets.adapter.rooms)
     })
 
-    socket.on("stream_accept", (id) => {
-        io.to(id).emit("stream_accepted", socket.id)
-    })
+    socket.on("broadcast_message_room", (message) => {
+        console.log(`Client ${socket.id} send message to ${room[socket.id]}`)
 
-    socket.on("data_send", (id, data) => {
-        io.to(id).emit("data_receive", socket.id, data)
-    })
-
-    socket.on("node_disconnect", () => {
-        socket.broadcast.emit("node_disconnected", socket.id)
-        if (socket.id == host) {
-            socket.broadcast.emit("host_disconnected")
-            host = null
-        }
+        socket.to(room[socket.id]).emit("room_message", message)
     })
 
     socket.on("disconnect", () => {
-        console.log(`Connection destroyed: ${socket.id}`)
-        socket.broadcast.emit("node_disconnected", socket.id)
-        if (socket.id == host) {
-            socket.broadcast.emit("host_disconnected")
-            host = null
+        console.log(`Client ${socket.id} disconnect`)
+        if (room[socket.id] != null)
+        {
+            io.to(room[socket.id]).emit("room_message", `User ${socket.id} disconnected.`)
+            delete room[socket.id]
         }
-    })
-
-    socket.onAny((event) => {
-        console.log(`Event: ${event}`)
     })
 })

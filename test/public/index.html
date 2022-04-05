@@ -6,18 +6,21 @@
 
     <body>
         <div>
-            <video id="localVideo" playsinline autoplay></video>
-            <div id="remoteVideoContainer">
-                <video id="remoteVideo" playsinline autoplay></video>
-            </div>
+            <input id="room-id" placeholder="Enter room id">
+            <button id="join-room">Join Room</button>
+            <button id="out-room">Out Room</button>
         </div>
+
         <div>
-            <button id="host">Host</button>
-            <button id="client">Client</button>
-            <button id="leave">Leave</button>
+            <h1>Chatbox</h1>
+            <div id="chatbox">
+
+            </div>
+            <input id="message-input" placeholder="Enter message">
+            <button id="send-message">Send</button>
         </div>
         <script src="/socket.io/socket.io.js"></script>
         <script src="script/simplepeer.min.js"></script>
-        <script type="module" src="js/main.js"></script>
+        <script src="js/main.js"></script>
     </body>
 </html>
