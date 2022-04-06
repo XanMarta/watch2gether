@@ -19,33 +19,73 @@ const joinButton = document.getElementById("join-room");
 const outButton = document.getElementById("out-room")
 const sendMessageButton = document.getElementById("send-message")
 const getRoomInfoButton = document.getElementById("get-room-info")
+const usernameButton = document.getElementById("register-username")
 
 const roomIdInput = document.getElementById("room-id");
 const messageInput = document.getElementById("message-input")
+const usernameInput = document.getElementById("username")
 
 var CurrentRoomId = null 
+
+// --- Register username
+
+socket.on("register-username-done", () => {
+    console.log("register username complete!")
+})
+
+socket.on("register-username-reject", (message) => {
+    console.log("register username rejected!")
+})
+
+socket.on("username-require", () => {
+    console.log("Need to register username first.")
+})
+
+// ---  Join room, send message, get disconnect notifications
+
+socket.on("room_joined", (roomId) => {
+    console.log(`Room ${roomId} Joined!`)
+})
+
+socket.on("room_message", (message) => {
+    console.log(`Get broadcast message: ${message}`)
+})
+
+socket.on("client_disconnect", (socketid) => {
+    console.log(`Client with socket id ${socketid} disconnected.`)
+})
+
+// --- Leave room 
+
+socket.on("leave-room", (message) => {
+    console.log(`Socket leave room!: ${message}`)
+})
+
+// --- Get room information
+
+socket.on("room-info", (room) => {
+    console.log('All client id from same room: ')
+    console.log(typeof(room))
+    console.log(room)
+})
+
+socket.on("not-in-room", () => {
+    console.log("Client havent joined a room yet.")
+})
+
+// -- END Define OnEvent here
+
+usernameButton.addEventListener("click", () => {
+    let username = usernameInput.value; 
+
+    socket.emit("register-username", username)
+})
 
 joinButton.addEventListener("click", () => {
     let roomId = roomIdInput.value;
 
     console.log("Join room: ", roomId)
-
-    if (window.CurrentRoomId != null) return
-    window.CurrentRoomId = roomId
-
     socket.emit("join_room", roomId)
-
-    socket.on("room_joined", (roomId) => {
-        console.log(`Room ${roomId} Joined!`)
-    })
-
-    socket.on("room_message", (message) => {
-        console.log(`Get broadcast message: ${message}`)
-    })
-
-    socket.on("client_disconnect", (socketid) => {
-        console.log(`Client with socket id ${socketid} disconnected.`)
-    })
 })
 
 
@@ -56,21 +96,11 @@ sendMessageButton.addEventListener("click", () => {
 })
 
 outButton.addEventListener("click", () => {
-    
+    socket.emit("leave-room")
 })
 
 getRoomInfoButton.addEventListener("click", () => {
     socket.emit("get-room-info")
-
-    socket.on("room-info", (room) => {
-        console.log('All client id from same room: ')
-        console.log(typeof(room))
-        console.log(room)
-    })
-
-    socket.on("not-in-room", () => {
-        console.log("Client havent joined a room yet.")
-    })
 })
 
 

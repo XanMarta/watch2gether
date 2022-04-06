@@ -60,6 +60,8 @@ const io = socket(server, {
 
 
 room = {}
+usernameToSocketId = {}
+socketIdToUsername = {}
 
 io.on("connection", (socket) => {
     console.log("New connection from socket id: ", socket.id);
@@ -69,8 +71,27 @@ io.on("connection", (socket) => {
         io.to(socket.id).emit("server", "Hello from server")
     })
 
+
+    socket.on("register-username", (username) => {
+        if (username in usernameToSocketId) {
+            socket.emit("register-username-reject", "Name already exist!")
+        } else {
+            usernameToSocketId[username] = socket.id
+            socketIdToUsername[socket.id] = username
+            console.log(`New user name has registed: ${socket.id} map to ${username}`)
+            socket.emit("register-username-done")
+        }
+    })
+
+
     socket.on("join_room", (roomId) => {
-        console.log(`Client ${socket.id} want to join ${roomId}`);
+        console.log(`Get join room request from ${socket.id} to join ${roomId}`)
+
+        if (socketIdToUsername[socket.id] == null) {
+            socket.emit("username-require")
+            return
+        }
+        console.log(`Client ${socketIdToUsername[socket.id]} want to join ${roomId}`);
 
         socket.join(roomId)
         socket.to(roomId).emit('join_room', socket.id);
@@ -81,28 +102,64 @@ io.on("connection", (socket) => {
         console.log(io.sockets.adapter.rooms)
     })
 
+    socket.on("leave-room", () => {
+        if (room[socket.id] == null || room[socket.id] == undefined) {
+            socket.emit("leave-room", "Client not in a room.")
+            return 
+        }
+        roomid = room[socket.id]
+        username = socketIdToUsername[socket.id]
+
+        socket.leave(room[socket.id])
+        delete room[socket.id]
+
+        socket.emit("leave-room", `Client leave room ${roomid}`)
+        io.to(roomid).emit("room_message", `User ${username} has leave`)
+    })
+
     socket.on("broadcast_message_room", (message) => {
-        console.log(`Client ${socket.id} send message to ${room[socket.id]}`)
+        if (socketIdToUsername[socket.id] == null) {
+            socket.emit("username-require")
+            return
+        }
+        if (room[socket.id] == null || room[socket.id] == undefined) {
+            socket.emit("leave-room", "Client not in a room.")
+            return 
+        }
+
+        console.log(`Client ${socketIdToUsername[socket.id]} send message to ${room[socket.id]}`)
 
         socket.to(room[socket.id]).emit("room_message", message)
     })
 
     socket.on("disconnect", () => {
         console.log(`Client ${socket.id} disconnect`)
-        if (room[socket.id] != null)
+
+        if (room[socket.id] != null && room[socket.id] != undefined)
         {
-            io.to(room[socket.id]).emit("room_message", `User ${socket.id} disconnected.`)
+            if (socketIdToUsername[socket.id] == null) {
+                socket.emit("username-require")
+                return
+            }
+
+            io.to(room[socket.id]).emit("room_message", `User ${socketIdToUsername[socket.id]} disconnected.`)
             delete room[socket.id]
         }
     })
 
     socket.on("get-room-info", () => {
-        if (room[socket.id] != null) {
+        if (room[socket.id] != null && room[socket.id] != undefined) {
             console.log("Get request for room infomation: ", room[socket.id])
+            let clientArrayInRoom = Array.from(io.sockets.adapter.rooms.get(room[socket.id]))
+
+            for (let i=0;i<len(clientArrayInRoom);i++) 
+            {
+                clientArrayInRoom[i] = socketIdToUsername[clientArrayInRoom[i]]
+            }
 
             let roomClientArr = {
                 roomId: room[socket.id],
-                client: Array.from(io.sockets.adapter.rooms.get(room[socket.id]))
+                client: clientArrayInRoom
             }
             
             socket.emit("room-info", roomClientArr)
@@ -112,4 +169,8 @@ io.on("connection", (socket) => {
         }
 
     })
+
+    socket.on("disconnecting", () => {
+        console.log(socket.rooms); // the Set contains at least the socket ID
+    });
 })
