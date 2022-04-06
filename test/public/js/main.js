@@ -18,6 +18,7 @@ var onConnection = false
 const joinButton = document.getElementById("join-room");
 const outButton = document.getElementById("out-room")
 const sendMessageButton = document.getElementById("send-message")
+const getRoomInfoButton = document.getElementById("get-room-info")
 
 const roomIdInput = document.getElementById("room-id");
 const messageInput = document.getElementById("message-input")
@@ -37,7 +38,6 @@ joinButton.addEventListener("click", () => {
     socket.on("room_joined", (roomId) => {
         console.log(`Room ${roomId} Joined!`)
     })
-    
 
     socket.on("room_message", (message) => {
         console.log(`Get broadcast message: ${message}`)
@@ -57,6 +57,20 @@ sendMessageButton.addEventListener("click", () => {
 
 outButton.addEventListener("click", () => {
     
+})
+
+getRoomInfoButton.addEventListener("click", () => {
+    socket.emit("get-room-info")
+
+    socket.on("room-info", (room) => {
+        console.log('All client id from same room: ')
+        console.log(typeof(room))
+        console.log(room)
+    })
+
+    socket.on("not-in-room", () => {
+        console.log("Client havent joined a room yet.")
+    })
 })
 
 

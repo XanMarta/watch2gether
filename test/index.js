@@ -95,4 +95,21 @@ io.on("connection", (socket) => {
             delete room[socket.id]
         }
     })
+
+    socket.on("get-room-info", () => {
+        if (room[socket.id] != null) {
+            console.log("Get request for room infomation: ", room[socket.id])
+
+            let roomClientArr = {
+                roomId: room[socket.id],
+                client: Array.from(io.sockets.adapter.rooms.get(room[socket.id]))
+            }
+            
+            socket.emit("room-info", roomClientArr)
+            console.log("Return room information to client: ", )
+        } else {
+            socket.emit("not-in-room")
+        }
+
+    })
 })
