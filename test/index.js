@@ -1,6 +1,6 @@
 // --- Define library --- Server run port ---
 
-const express = require('express')
+const express = require('express') 
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const socket = require('socket.io')
@@ -91,10 +91,44 @@ io.on("connection", (socket) => {
             socket.emit("username-require")
             return
         }
+
+        if (room[socket.id] != null && room[socket.id] != undefined) 
+        {
+            socket.emit("already-in-room")
+            return
+        }
+        // TODO: test this function.
+        // TODO: Enable code above. Add no join when room is full.
         console.log(`Client ${socketIdToUsername[socket.id]} want to join ${roomId}`);
+        
+        if (io.sockets.adapter.rooms.get(roomId) != undefined)
+        {
+            if (Array.from(io.sockets.adapter.rooms.get(roomId)).length > 0)
+            {
+                console.log(`1. Room ${roomId} info: `, io.sockets.adapter.rooms.get(roomId))
+                console.log(`2. Room ${roomId} info: `, Array.from(io.sockets.adapter.rooms.get(roomId)))
+
+                // Client socket init a peer for every other client.
+                Array.from(io.sockets.adapter.rooms.get(roomId)).forEach((socketid) => {
+                    socket.emit("peer-init", {
+                        peerId: socketid,
+                        initiator: true
+                    })
+                })
+            }
+        }
 
         socket.join(roomId)
         socket.to(roomId).emit('join_room', socket.id);
+
+        if (Array.from(io.sockets.adapter.rooms.get(roomId)).length > 1)
+        {
+            // Send peer init request to every client in the same room (except sender).
+            socket.to(roomId).emit('peer-init', {
+                peerId: socket.id,
+                initiator: false
+            })
+        }
 
         socket.emit("room_joined", roomId)
 
@@ -102,9 +136,16 @@ io.on("connection", (socket) => {
         console.log(io.sockets.adapter.rooms)
     })
 
+    socket.on("signal", data => {
+        io.to(data.peerId).emit('signal', {
+            signal: data.signal,
+            peerId: socket.id
+          });
+    })
+
     socket.on("leave-room", () => {
         if (room[socket.id] == null || room[socket.id] == undefined) {
-            socket.emit("leave-room", "Client not in a room.")
+            socket.emit("leave-room-reject", "Client not in a room.")
             return 
         }
         roomid = room[socket.id]
@@ -114,7 +155,10 @@ io.on("connection", (socket) => {
         delete room[socket.id]
 
         socket.emit("leave-room", `Client leave room ${roomid}`)
-        io.to(roomid).emit("room_message", `User ${username} has leave`)
+        socket.to(roomid).emit("leave-room-notify", {
+            peerId: socket.id,
+            username: username
+        })
     })
 
     socket.on("broadcast_message_room", (message) => {
@@ -138,11 +182,10 @@ io.on("connection", (socket) => {
         if (room[socket.id] != null && room[socket.id] != undefined)
         {
             if (socketIdToUsername[socket.id] == null) {
-                socket.emit("username-require")
                 return
             }
 
-            io.to(room[socket.id]).emit("room_message", `User ${socketIdToUsername[socket.id]} disconnected.`)
+            io.to(room[socket.id]).emit("user-disconnected", socket.id)
             delete room[socket.id]
         }
     })
@@ -168,6 +211,12 @@ io.on("connection", (socket) => {
             socket.emit("not-in-room")
         }
 
+    })
+
+    socket.on("stream-disconnected", (data) => {
+        io.to(data.peerId).emit("stream-disconnected", {
+            peerId: socket.id
+        })
     })
 
     socket.on("disconnecting", () => {
