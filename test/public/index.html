@@ -6,10 +6,12 @@
 
     <body>
         <div>
+            <h1>Step 1: Enter an <b>UNIQUE</b> username </h1>
             <input id="username" placeholder="Username">
             <button id="register-username">Register Username</button>
         </div>
         <div>
+            <h1>Step 2: Enter a room ID</h1>
             <input id="room-id" placeholder="Enter room id">
             <button id="join-room">Join Room</button>
             <button id="out-room">Out Room</button>
@@ -17,7 +19,7 @@
         </div>
 
         <div>
-            <h1>Chatbox</h1>
+            <h1>Extra: Chatbox</h1>
             <div id="chatbox"> 
 
             </div>
@@ -26,17 +28,17 @@
         </div>
 
         <div>
-            <h1>Streaming</h1>
+            <h1>Step 3: Streaming - Start stream to start, stop stream to stop</h1>
             
             <button id="stream-start-button">Start Streaming</button>
             <button id="stream-connect">Connect Stream</button>
             <button id="stream-stop-button">Stop Streaming</button>
-
-            <video id="local-stream" autoplay></video>
-            <div id="remote-video-container">
-                <video id="remote-stream" autoplay></video>
+            <div>
+                <video id="local-stream" autoplay></video>
+                <div id="remote-video-container">
+                    <video id="remote-stream" autoplay></video>
+                </div>
             </div>
-            
         </div>
 
         <script src="/socket.io/socket.io.js"></script>
