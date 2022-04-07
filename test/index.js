@@ -84,7 +84,7 @@ io.on("connection", (socket) => {
     })
 
 
-    socket.on("join_room", (roomId) => {
+    socket.on("join-room", (roomId) => {
         console.log(`Get join room request from ${socket.id} to join ${roomId}`)
 
         if (socketIdToUsername[socket.id] == null) {
@@ -112,25 +112,25 @@ io.on("connection", (socket) => {
                 Array.from(io.sockets.adapter.rooms.get(roomId)).forEach((socketid) => {
                     socket.emit("peer-init", {
                         peerId: socketid,
-                        initiator: true
+                        initiator: false
                     })
                 })
             }
         }
 
         socket.join(roomId)
-        socket.to(roomId).emit('join_room', socket.id);
+        socket.to(roomId).emit('join-room', socket.id);
 
         if (Array.from(io.sockets.adapter.rooms.get(roomId)).length > 1)
         {
             // Send peer init request to every client in the same room (except sender).
             socket.to(roomId).emit('peer-init', {
                 peerId: socket.id,
-                initiator: false
+                initiator: true
             })
         }
 
-        socket.emit("room_joined", roomId)
+        socket.emit("room-joined", roomId)
 
         room[socket.id] = roomId
         console.log(io.sockets.adapter.rooms)
@@ -173,7 +173,7 @@ io.on("connection", (socket) => {
 
         console.log(`Client ${socketIdToUsername[socket.id]} send message to ${room[socket.id]}`)
 
-        socket.to(room[socket.id]).emit("room_message", message)
+        socket.to(room[socket.id]).emit("room-message", message)
     })
 
     socket.on("disconnect", () => {
