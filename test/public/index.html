@@ -6,16 +6,41 @@
 
     <body>
         <div>
-            <video id="localVideo" playsinline autoplay></video>
-            <div id="remoteVideoContainer">
-                <video id="remoteVideo" playsinline autoplay></video>
-            </div>
+            <h1>Step 1: Enter an <b>UNIQUE</b> username </h1>
+            <input id="username" placeholder="Username">
+            <button id="register-username">Register Username</button>
         </div>
         <div>
-            <button id="host">Host</button>
-            <button id="client">Client</button>
-            <button id="leave">Leave</button>
+            <h1>Step 2: Enter a room ID</h1>
+            <input id="room-id" placeholder="Enter room id">
+            <button id="join-room">Join Room</button>
+            <button id="out-room">Out Room</button>
+            <button id="get-room-info">Get Room Info</button>
         </div>
+
+        <div>
+            <h1>Extra: Chatbox</h1>
+            <div id="chatbox"> 
+
+            </div>
+            <input id="message-input" placeholder="Enter message">
+            <button id="send-message">Send</button>
+        </div>
+
+        <div>
+            <h1>Step 3: Streaming - Start stream to start, stop stream to stop</h1>
+            
+            <button id="stream-start-button">Start Streaming</button>
+            <button id="stream-connect">Connect Stream</button>
+            <button id="stream-stop-button">Stop Streaming</button>
+            <div>
+                <video id="local-stream" autoplay></video>
+                <div id="remote-video-container">
+                    <video id="remote-stream" autoplay></video>
+                </div>
+            </div>
+        </div>
+
         <script src="/socket.io/socket.io.js"></script>
         <script src="script/simplepeer.min.js"></script>
         <script type="module" src="js/main.js"></script>
