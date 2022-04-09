@@ -1,10 +1,11 @@
 //import logo from './logo.svg';
-import './App.css';
+//import './App.css';
 ////////////////////////////////import Navbar from './components/navbar'
 import AppLayout from './components/AppLayout'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import routes from './router/route'
 import { Fragment } from 'react';
+import './App.scss';
 
 const Middle = () => {
   return (

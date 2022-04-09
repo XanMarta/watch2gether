@@ -20,47 +20,50 @@ function IsLoggedIn() {
   }
   return (
     <>
-      <Link to="/login"
-        class="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:text-teal-500 hover:bg-white mt-4 lg:mt-0">
-        Login</Link>
+      <button className="btn btn-secondary" onClick={() => { navigate("/login") }}>
+        Login
+      </button>
+      <button className="btn btn-secondary" onClick={() => { navigate("/register") }}>
+        Register
+      </button>
       {/* <p>{loginForm.username}</p> */}
-      <Link to="/register"
-        class="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:text-teal-500 hover:bg-white mt-4 lg:mt-0">
-        Register</Link>
+      {/* <Link to="/register"
+        class="">
+        Register</Link> */}
     </>
   )
 }
 
-function Navbar() {
+function Nav() {
+  const navigate = useNavigate();
   return (
-    <nav class="sticky bg-dark flex items-center justify-between flex-wrap p-6">
-      <div class="flex items-center flex-shrink-0 text-white mr-6">
-        <svg class="fill-current h-8 w-8 mr-2" width="54" height="54" viewBox="0 0 54 54" xmlns="http://www.w3.org/2000/svg"><path d="M13.5 22.1c1.8-7.2 6.3-10.8 13.5-10.8 10.8 0 12.15 8.1 17.55 9.45 3.6.9 6.75-.45 9.45-4.05-1.8 7.2-6.3 10.8-13.5 10.8-10.8 0-12.15-8.1-17.55-9.45-3.6-.9-6.75.45-9.45 4.05zM0 38.3c1.8-7.2 6.3-10.8 13.5-10.8 10.8 0 12.15 8.1 17.55 9.45 3.6.9 6.75-.45 9.45-4.05-1.8 7.2-6.3 10.8-13.5 10.8-10.8 0-12.15-8.1-17.55-9.45-3.6-.9-6.75.45-9.45 4.05z" /></svg>
-        <span class="font-semibold text-xl tracking-tight">HomePage</span>
-      </div>
-      <div class="block lg:hidden">
-        <button class="flex items-center px-3 py-2 border rounded text-teal-200 border-teal-400 hover:text-white hover:border-white">
-          <svg class="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Menu</title><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" /></svg>
-        </button>
-      </div>
-      <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
-        <div class="text-sm lg:flex-grow">
-          <a href="#responsive-header" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
-            <Link to="/">Home</Link>
-          </a>
-          <a href="#responsive-header" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
-            <Link to="/about">About us</Link>
-          </a>
-          <a href="#responsive-header" class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white">
-            Blog
-          </a>
+    <>
+      <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+          <a class="navbar-brand">Watch2gether</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse justify-content-center">
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <Link class="nav-link active" to="/">Home</Link>
+              </li>
+              <li class="nav-item">
+                {/* <a class="nav-link" to="/about">About us</a> */}
+                <Link class="nav-link active" to="/about">About us</Link>
+              </li>
+              <li class="nav-item">
+                {/* <a class="nav-link" to="/">Contact</a> */}
+                <Link class="nav-link active" to="/">Contact</Link>
+              </li>
+            </ul>
+          </div>
         </div>
-        <div>
-          <IsLoggedIn />
-        </div>
-      </div>
-    </nav>
+        <IsLoggedIn />
+      </nav>
+    </>
   );
 }
 
-export default Navbar;
+export default Nav;

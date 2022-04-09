@@ -1,13 +1,11 @@
-import Navbar from "./navbar";
+import Navbar from "./navbar2";
 import Footer from "./footer";
 
 function AppLayout({ children }) {
   return (
     <>
       <Navbar />
-      {/* <div className="mb-2.5"> */}
-      {children}
-      {/* </div> */}
+        {children}
       <Footer />
     </>
   )

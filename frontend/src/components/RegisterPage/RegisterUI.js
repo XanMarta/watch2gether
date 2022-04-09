@@ -1,79 +1,45 @@
-import InputField from '../General/InputField'
-import Button from '../General/Button'
+import Form from 'react-bootstrap/Form'
+import Button from 'react-bootstrap/Button'
 
 function RegisterUI(props) {
   const registerChange = props.registerChange;
   const registerHandler = props.registerHandler;
   return (
     <>
-      <div className="mt-5 my-28 flex justify-center items-center border-4 border-indigo-500/100">
-        <form class="w-full max-w-lg border-4 border-indigo-500/100">
-          <InputField
-            width={"full"}
-            // InputMarginTop={0}
-            // InputMarginBottom={2}
-            InputPaddingLeft={3}
-            InputPaddingRight={2}
-            InputMarginBottom={6}
-            name={"email"}
-            type={"text"}
-            placeholder={"email"}
-            formMarginLeft={0}
-            formMarginBottom={0.5}
-            label={"Email"}
-            onChange={registerChange}></InputField>
-          <InputField
-            width={"full"}
-            // InputMarginTop={0}
-            // InputMarginBottom={2}
-            InputPaddingLeft={2}
-            InputPaddingRight={2}
-            InputMarginBottom={6}
-            name={"phone"}
-            type={"text"}
-            placeholder={"phoneNumber"}
-            formMarginLeft={0}
-            formMarginBottom={0.5}
-            label={"Phone Number"}
-            onChange={registerChange}></InputField>
-          <InputField
-            width={"full"}
-            // InputMarginTop={0}
-            // InputMarginBottom={2}
-            InputPaddingLeft={2}
-            InputPaddingRight={2}
-            InputMarginBottom={6}
-            name={"username"}
-            type={"text"}
-            placeholder={"username"}
-            formMarginLeft={0}
-            formMarginBottom={0.5}
-            label={"Username"}
-            onChange={registerChange}></InputField>
-          <InputField
-            width={"full"}
-            // InputMarginTop={0}
-            // InputMarginBottom={10}
-            InputPaddingLeft={2}
-            InputPaddingRight={2}
-            InputMarginBottom={6}
-            name={"password"}
-            type={"password"}
-            placeholder={"Enter your password here"}
-            formMarginLeft={0}
-            formMarginBottom={0.5}
-            label={"Password"}
-            onChange={registerChange}></InputField>
-          <section className="mt-4">
-            <Button size="lg" textColor="white" bgColor="black"
-              onClick={(e) => { registerHandler(e) }}
-              buttonName={"Register"}></Button>
-          </section>
-          <div class="mt-5 flex justify-center items-center">
-            <p>Login now</p>
-          </div>
-
-        </form>
+      <div class="row">
+        <div class="col-md-4 offset-md-4">
+          <Form class="col-md-4 offset-md-4">
+            <div style={{ "padding-top": "5rem" }}>
+              <h1>Register</h1>
+            </div>
+            <Form.Group className="col-12 pt-3">
+              <Form.Label>Email</Form.Label>
+              {/* <Form.Control type="text" placeholder="Enter Email" onChange={registerChange} /> */}
+              <input type="text" name="Email" class="form-control" placeholder="Email" onChange={registerChange}></input>
+            </Form.Group>
+            <Form.Group className="col-12 pt-3">
+              <Form.Label>Phone Number</Form.Label>
+              {/* <Form.Control type="text" placeholder="Phone Numer" onChange={registerChange} /> */}
+              <input type="text" name="PhoneNumber" class="form-control" placeholder="PhoneNumber" onChange={registerChange}></input>
+            </Form.Group>
+            <Form.Group className="col-12 pt-3">
+              <Form.Label>Username</Form.Label>
+              {/* <Form.Control type="text" placeholder="Enter Username" onChange={registerChange} /> */}
+              <input type="text" name="username" class="form-control" placeholder="Username" onChange={registerChange}></input>
+            </Form.Group>
+            <Form.Group className="col-12 pt-3">
+              <Form.Label>Password</Form.Label>
+              {/* <Form.Control type="password" placeholder="Password" onChange={registerChange} /> */}
+              <input type="password" name="password" class="form-control" placeholder="password" onChange={registerChange}></input>
+            </Form.Group>
+            {/* <Button variant="primary" type="submit">
+              Submit
+            </Button> */}
+            <div class="col-12 pt-3">
+              <Button variant="secondary" onClick={registerHandler}>Register</Button>
+            </div>
+          </Form>
+        </div>
       </div>
     </>
   )

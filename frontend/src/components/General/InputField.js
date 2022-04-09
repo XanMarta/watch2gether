@@ -19,16 +19,18 @@ function InputField(props) {
   const formMarginBottom = props.labelMarginBottom;
   return (
     //w-full mt-2 mb-6 px-4 py-2 border rounded-lg text-gray-700 focus:outline-none focus:border-green-500
-    <div className={classnames(`flex flex-wrap -mx-${formMarginLeft} mb-${formMarginBottom} border-4 border-indigo-500/100`)}>
-      <label class="font-bold mb-2">
+    // <div className={classnames(`flex flex-wrap border-4 border-indigo-500/100`)}>
+    <>
+      <label class="flex justify-start font-bold pb-2">
         {label}
       </label>
       {/* </div> */}
       <input
         className={classnames(`w-${width} 
-      h-${height} px-${InputPaddingLeft} py-${InputPaddingRight} mb-${InputMarginBottom} border rounded-lg focus:shadow-outline`)}
+      h-${height} px-${InputPaddingLeft} py-${InputPaddingRight} border rounded-lg focus:shadow-outline`)}
         name={name} type={type} placeholder={placeholder} onChange={onChange} defaultValue={defaultValue} />
-    </div>
+    </>
+    // </div>
   );
 }
 

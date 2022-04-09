@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from "react-redux";
 import { login } from "../adapters/auth.service"
 import { getLoginInfo } from "../redux/loginInfo";
+import Form from 'react-bootstrap/Form'
+import Button from 'react-bootstrap/Button'
 
 function LoginPage() {
   const [loginForm, setLoginForm] = useState({
@@ -19,6 +21,7 @@ function LoginPage() {
   //const errorMsg = useSelector((state) => state.loginError);
 
   function loginChange(e) {
+    e.preventDefault(e);
     console.log("loginChange");
     const getFieldName = e.target.getAttribute('name');
     const getFieldValue = e.target.value;
@@ -41,6 +44,7 @@ function LoginPage() {
       navigate("/");
       //return;
     }
+    console.log(_loginForm.username + " and the password is: " + _loginForm.password);
     //in case they are a good guy
     dispatch(login(_loginForm.username, _loginForm.password)).then(() => {
       navigate("/");
@@ -57,11 +61,10 @@ function LoginPage() {
         <LoginForm
           loginChange={loginChange}
           loginHandler={loginHandler}
-        //loginChange={e => setLoginForm(e.target.value)}
         />
       </div>
     </>
   );
 }
 
-export default LoginPage
+export default LoginPage;
