@@ -1,5 +1,6 @@
 const remoteStreamContainer = document.getElementById("remote-video-container")
 
+//other people can watch stream, put this in reactjs?
 export function remoteStreamRender(peerId, stream) {
     console.log(`Render video element for ${peerId}`)
     let id = "remote-peer-" + peerId

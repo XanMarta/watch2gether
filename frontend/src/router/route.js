@@ -7,7 +7,8 @@ import Profile from '../pages/ProfilePage'
 import SearchPage from '../pages/SearchPage'
 import RoomPage from '../pages/RoomPage'
 import NotFound from '../pages/404NotFound'
-import CallTestPage from '../pages/CallTestPage'
+import CreateRoomPage from '../pages/CreateRoomPage'
+import JoinRoomPage from '../pages/JoinRoomPage'
 
 const routes = [
   {
@@ -43,8 +44,12 @@ const routes = [
     component: <RoomPage />,
   },
   {
-    path: '/testcall',
-    component: <CallTestPage />,
+    path: '/createroom/:roomid',
+    component: <CreateRoomPage />,
+  },
+  {
+    path: '/joinroom/:roomid',
+    component: <JoinRoomPage />,
   },
   {
     path: '*',

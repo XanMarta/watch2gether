@@ -18,6 +18,7 @@ import { streamConstraints } from "./singleton/constraint.js"
 import * as localStreamManager from "./singleton/init_localstream.js";
 import { remoteStreamClose } from "./stream.js"
 
+//put this in reactjs?
 export function init_listener_button() {
     const socket = getSocket();
     

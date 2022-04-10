@@ -1,0 +1,162 @@
+import { useEffect, useRef } from 'react'
+import { useParams, useNavigate } from 'react-router-dom';
+import { useSelector } from "react-redux";
+//import for react useEffect
+import { Card } from 'react-bootstrap'
+import { getSocket } from "../adapters/Streaming/StreamSingleton/init_socket"
+import * as peerManager from "../adapters/Streaming/StreamSingleton/init_peer.js";
+import * as localStreamManager from "../adapters/Streaming/StreamSingleton/init_localstream.js";
+import { remoteStreamClose } from "./../adapters/Streaming/stream.js"
+import init from "../adapters/Streaming/main.js"
+import { init_listener_peer } from "../adapters/Streaming/peer.js"
+
+//for peer users
+function JoinRoomPage() {
+  const username = useSelector((state) => state.loginInfo.value);
+  const localStreamVideo = useRef(); // ref => { current: null }
+  const socket = getSocket();
+  const navigate = useNavigate();
+  let { roomid } = useParams();
+
+  //setSocket(socket)
+  useEffect(() => {
+    socket.emit("register-username", username)
+    socket.emit("join-room", roomid);
+    init();
+    //init_listener_peer();
+  }, []);
+
+
+  function leaveRoom() {
+    console.log("Disconnect")
+    //HOST DISCONNECTS THE STREAMING
+    socket.emit("leave-room")
+
+    // TODO: What should it be when out room?
+    // Delete all stream.
+    peerManager.deletePeerAll(remoteStreamClose)
+
+    // Set local stream to null.
+    localStreamVideo.current.srcObject = null
+    localStreamManager.setLocalStream(null)
+    navigate("/");
+  }
+  return (
+    <div>
+      <video ref={localStreamVideo} autoPlay playsInline></video> <br></br>
+      <div id="remote-video-container">
+        <video id="remote-stream"></video>
+        {/* <video ref={remoteVideo} autoPlay playsInline></video> */}
+      </div>
+      <button onClick={(e) => leaveRoom(e)}>Leave room</button>
+      <Card border="primary" style={{ 'width': '50rem', 'height': '700px', overflow: 'auto', float: 'right' }}>
+        <Card.Header>Chat Form</Card.Header>
+        <Card.Body>
+          <Card.Title>Welcome to room ....</Card.Title>
+          <div className="border" style={{ 'width': '450px', 'background-color': 'white', float: 'left' }}>
+            <Card.Title style={{ 'font-size': "20" }}>Other User - current time</Card.Title>
+            <Card.Text>
+              Some quick example text to build on the card title and make up the bulk
+              of the card's content.
+            </Card.Text>
+          </div>
+          <div className="border" style={{ 'width': '450px', 'background-color': 'purple', float: 'right' }}>
+            <Card.Title style={{ 'font-size': "20" }}>The User - current time</Card.Title>
+            <Card.Text>
+              Some quick example text to build on the card title and make up the bulk
+              of the card's content.
+            </Card.Text>
+          </div>
+          <div className="border" style={{ 'width': '450px', 'background-color': 'purple', float: 'right' }}>
+            <Card.Title style={{ 'font-size': "20" }}>The User - current time</Card.Title>
+            <Card.Text>
+              Some quick example text to build on the card title and make up the bulk
+              of the card's content.
+            </Card.Text>
+          </div>
+          <div className="border" style={{ 'width': '450px', 'background-color': 'purple', float: 'right' }}>
+            <Card.Title style={{ 'font-size': "20" }}>The User - current time</Card.Title>
+            <Card.Text>
+              Some quick example text to build on the card title and make up the bulk
+              of the card's content.
+            </Card.Text>
+          </div>
+          <div className="border" style={{ 'width': '450px', 'background-color': 'purple', float: 'right' }}>
+            <Card.Title style={{ 'font-size': "20" }}>The User - current time</Card.Title>
+            <Card.Text>
+              Some quick example text to build on the card title and make up the bulk
+              of the card's content.
+            </Card.Text>
+          </div>
+          <div className="border" style={{ 'width': '450px', 'background-color': 'purple', float: 'right' }}>
+            <Card.Title style={{ 'font-size': "20" }}>The User - current time</Card.Title>
+            <Card.Text>
+              Some quick example text to build on the card title and make up the bulk
+              of the card's content.
+            </Card.Text>
+          </div>
+          <div className="border" style={{ 'width': '450px', 'background-color': 'purple', float: 'right' }}>
+            <Card.Title style={{ 'font-size': "20" }}>The User - current time</Card.Title>
+            <Card.Text>
+              Some quick example text to build on the card title and make up the bulk
+              of the card's content.
+            </Card.Text>
+          </div>
+          <div className="border" style={{ 'width': '450px', 'background-color': 'purple', float: 'right' }}>
+            <Card.Title style={{ 'font-size': "20" }}>The User - current time</Card.Title>
+            <Card.Text>
+              Some quick example text to build on the card title and make up the bulk
+              of the card's content.
+            </Card.Text>
+          </div>
+          <div className="border" style={{ 'width': '450px', 'background-color': 'purple', float: 'right' }}>
+            <Card.Title style={{ 'font-size': "20" }}>The User - current time</Card.Title>
+            <Card.Text>
+              Some quick example text to build on the card title and make up the bulk
+              of the card's content.
+            </Card.Text>
+          </div>
+          <div className="border" style={{ 'width': '450px', 'background-color': 'purple', float: 'right' }}>
+            <Card.Title style={{ 'font-size': "20" }}>The User - current time</Card.Title>
+            <Card.Text>
+              Some quick example text to build on the card title and make up the bulk
+              of the card's content.
+            </Card.Text>
+          </div>
+          <div className="border" style={{ 'width': '450px', 'background-color': 'purple', float: 'right' }}>
+            <Card.Title style={{ 'font-size': "20" }}>The User - current time</Card.Title>
+            <Card.Text>
+              Some quick example text to build on the card title and make up the bulk
+              of the card's content.
+            </Card.Text>
+          </div>
+          <div className="border" style={{ 'width': '450px', 'background-color': 'white', float: 'left' }}>
+            <Card.Title style={{ 'font-size': "20" }}>Other User - current time</Card.Title>
+            <Card.Text>
+              Some quick example text to build on the card title and make up the bulk
+              of the card's content.
+            </Card.Text>
+          </div>
+          <div className="border" style={{ 'width': '450px', 'background-color': 'white', float: 'left' }}>
+            <Card.Title style={{ 'font-size': "20" }}>Other User - current time</Card.Title>
+            <Card.Text>
+              Some quick example text to build on the card title and make up the bulk
+              of the card's content.
+            </Card.Text>
+          </div>
+          <div className="border" style={{ 'width': '450px', 'background-color': 'white', float: 'left' }}>
+            <Card.Title style={{ 'font-size': "20" }}>Other User - current time</Card.Title>
+            <Card.Text>
+              Some quick example text to build on the card title and make up the bulk
+              of the card's content.
+            </Card.Text>
+          </div>
+        </Card.Body>
+        <input type="text" size="50" placeholder="Enter your message here"></input>
+        <button>send</button>
+      </Card>
+    </div >
+  )
+}
+
+export default JoinRoomPage;

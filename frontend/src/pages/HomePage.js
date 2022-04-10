@@ -1,27 +1,35 @@
 import { useState, Fragment, useEffect } from 'react';
 import { useSelector } from "react-redux";
-import Button from '../components/General/Button'
 import { useNavigate } from 'react-router-dom';
-import Card from "../components/General/Card"
-
+import { Button } from 'react-bootstrap';
+import { getSocket, setSocket } from "../adapters/Streaming/StreamSingleton/init_socket"
+import init from '../adapters/Streaming/main'
 
 function HomePage() {
-  const loginForm = useSelector((state) => state.loginInfo.value);
+  const username = useSelector((state) => state.loginInfo.value);
   const navigate = useNavigate();
   const style = {
     "margin-top": "20px",
     "margin-left": "30rem",
   }
-
-  // const background = {
-  //   background-image: "url('https://c0.wallpaperflare.com/preview/639/814/358/japan-tokyo-japanese-lights.jpg')",
-  //   //"background-color": "#cccccc",
-  // }
-  function EnterRoom(e) {
-    navigate("/search")
-    //[url('https://www.kcpinternational.com/wp-content/uploads/2011/10/tokyo-night-life.jpg')]
+  const [RoomId, setRoomId] = useState('');
+  const socket = getSocket();
+  useEffect(() => {
+    init()
+  }, []);
+  function enterRoom(e) {
+    e.preventDefault();
+    console.log("Room enter?");
+    //console.log("Join room: ", RoomId)
+    socket.emit("register-username", username)
+    socket.emit("join-room", RoomId)
+    navigate('/joinroom/'.concat(RoomId));
   }
-  if (loginForm !== "") {
+
+  // function createRoom() {
+
+  // }
+  if (username !== "") {
     return (
       <div className="aligns-items-center justify-content-center" style={style}>
         <section>
@@ -30,22 +38,26 @@ function HomePage() {
         <section>
           <h1>Welcome user to our site!</h1>
         </section>
-        {/* <Button
-            bgColor={"yellow-500"}
-            size={"text-xl"}
-            type={"button"}
-            onClick={(e) => { EnterRoom(e) }}
-            buttonName={"Enter this room"}></Button> */}
-        {/* <Button
-            bgColor={"yellow-500"}
-            size={"text-xl"}
-            type={"button"}
-            onClick={(e) => { navigate("/testcall") }}
-            buttonName={"Video call test"}></Button> */}
-        <button type="button" class="btn btn-danger" onClick={(e) => { EnterRoom(e) }}>Enter this room</button>
-        <button type="button" class="btn btn-danger" onClick={(e) => navigate("/testcall")}>Video call</button>
+        <Button variant="primary" size="lg" onClick={(e) => { navigate("/search") }}>Find a video</Button>
         <br></br>
-      </div>
+        <input type="text" placeholder="Enter room id" onChange={(e) => setRoomId(e.target.value)}></input>
+        <input type="text" placeholder="Enter name to join/create room" value={username}></input>
+        <br></br>
+        <Button variant="primary" size="lg" onClick={(e) => {
+          e.preventDefault();
+          navigate("/createroom/".concat(RoomId)); console.log("Join room id is: ", RoomId)
+          socket.emit("register-username", username)
+          socket.emit("join-room", RoomId);
+          console.log(socket);
+        }}>Create a room</Button>
+        <br></br>
+        <Button variant="primary" size="lg" onClick={enterRoom}>
+          Enter a room
+        </Button>
+        {/* {
+          ShowForm ? <Form /> : null
+        } */}
+      </div >
     );
   } else {
     return (

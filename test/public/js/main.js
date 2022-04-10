@@ -177,7 +177,7 @@
 
 // outButton.addEventListener("click", () => {
 //     socket.emit("leave-room")
-    
+
 //     // TODO: What should it be when out room?
 //     // Delete all stream.
 //     let pseudoPeer = Object.entries(peers)
@@ -290,7 +290,7 @@
 //     await disconnect()
 // }
 
-
+//put this in reactjs useeffect?
 import { init_listener_room } from "./room.js"
 import { init_listener_button } from "./ui_interaction.js"
 import { init_listener_username } from "./username.js"
@@ -304,5 +304,5 @@ setSocket(socket)
 
 init_listener_peer()
 init_listener_room()
-init_listener_button() 
+init_listener_button()
 init_listener_username()
