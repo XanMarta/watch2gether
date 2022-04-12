@@ -15,7 +15,7 @@ function HomePage() {
   const [RoomId, setRoomId] = useState('');
   const socket = getSocket();
   useEffect(() => {
-    init()
+    //init()
   }, []);
   function enterRoom(e) {
     e.preventDefault();
@@ -49,7 +49,7 @@ function HomePage() {
           navigate("/createroom/".concat(RoomId)); console.log("Join room id is: ", RoomId)
           socket.emit("register-username", username)
           socket.emit("join-room", RoomId);
-          init();
+          //init();
           console.log(socket);
         }}>Create a room</Button>
         <br></br>

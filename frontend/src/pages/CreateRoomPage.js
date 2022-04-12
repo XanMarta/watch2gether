@@ -30,7 +30,7 @@ function CreateRoomPage() {
   useEffect(() => {
     socket.emit("register-username", username)
     socket.emit("join-room", roomid);
-    init()
+    //init()
   }, []);
 
   async function startStreaming() {

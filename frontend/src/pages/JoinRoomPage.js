@@ -22,7 +22,7 @@ function JoinRoomPage() {
   useEffect(() => {
     socket.emit("register-username", username)
     socket.emit("join-room", roomid);
-    init();
+    //init();
     //init_listener_peer();
   }, []);
 
@@ -77,7 +77,7 @@ function JoinRoomPage() {
       <button onClick={(e) => stopStreaming(e)}>Stop Streaming</button>
       <button onClick={(e) => leaveRoom(e)}>Leave room</button> */}
       <div id="remote-video-container">
-        <video id="remote-stream"></video>
+        {/* <video id="remote-stream"></video> */}
       </div>
       <button onClick={(e) => leaveRoom(e)}>Leave room</button>
       <Card border="primary" style={{ 'width': '50rem', 'height': '700px', overflow: 'auto', float: 'right' }}>
