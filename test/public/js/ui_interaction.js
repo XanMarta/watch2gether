@@ -17,8 +17,8 @@ import * as peerManager from "./singleton/init_peer.js";
 import { streamConstraints } from "./singleton/constraint.js"
 import * as localStreamManager from "./singleton/init_localstream.js";
 import { remoteStreamClose } from "./stream.js"
-
-export function init_listener_button() {
+ 
+export function init_listener_button() { 
     const socket = getSocket();
     
     usernameButton.addEventListener("click", () => {

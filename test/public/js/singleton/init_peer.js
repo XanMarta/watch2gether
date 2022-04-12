@@ -7,13 +7,14 @@ export function setPeer(peerId, peer) {
     peers[peerId] = peer 
 }
 
-export function getPeer(peerId) {
+export function getPeer(peerId) { 
     return peers[peerId]
 }
 
 export function deletePeer(peerId) {
     if (peers[peerId] == undefined && peers[peerId] == null) 
         return
+    peers[peerId].destroy()
     delete peers[peerId]
 }
 
@@ -22,6 +23,7 @@ export function deletePeerAll(callback = (peerId) => {}) {
 
     Object.entries(peers).forEach(([peerId, peer]) => {
 
+        peers[peerId].destroy()
         delete peers[peerId]
         callback(peerId)
     })
