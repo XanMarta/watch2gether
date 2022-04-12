@@ -34,7 +34,7 @@ function outRoom(socketid) {
     delete room[socketid]
 }
 
-function init_listener_room (io, socket) {
+function init_listener_room (io, socket) { 
     socket.on("join-room", (roomId) => {
         console.log(`Get join room request from ${socket.id} to join ${roomId}`)
 
