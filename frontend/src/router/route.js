@@ -9,6 +9,7 @@ import RoomPage from '../pages/RoomPage'
 import NotFound from '../pages/404NotFound'
 import CreateRoomPage from '../pages/CreateRoomPage'
 import JoinRoomPage from '../pages/JoinRoomPage'
+import StreamingV2 from '../pages/StreamingV2'
 
 const routes = [
   {
@@ -50,6 +51,10 @@ const routes = [
   {
     path: '/joinroom/:roomid',
     component: <JoinRoomPage />,
+  },
+  {
+    path: '/streamingv2',
+    component: <StreamingV2 />,
   },
   {
     path: '*',

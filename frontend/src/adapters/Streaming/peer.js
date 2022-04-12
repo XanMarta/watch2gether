@@ -34,15 +34,17 @@ export function init_listener_peer() {
             console.log("Get stream: ", data)
             remoteStreamRender(remotePeerId, data)
         })
-        //console.log(`peer is getting connection when joining a room`)
+        console.log(`peer is getting connection when joining a room`)
         peer.on("connect", () => {
+            console.log("I've got the data");
             peer.send("Hey Peer")
         })
-        //console.log(`peer is getting data when first joining the room`)
+        console.log(`peer is getting data when first joining the room`)
         peer.on("data", (data) => {
+            console.log("Can you get the data?");
             console.log("Peer get data: " + data)
         })
-        //console.log(`Peer leaves?`);
+        console.log(`Peer leaves?`);
         peer.on("close", () => {
             socket.off('signal', listener[remotePeerId])
             delete listener[remotePeerId]

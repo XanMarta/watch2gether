@@ -1,15 +1,15 @@
 //import React from 'react'
 
-//const remoteStreamContainer = document.getElementById("remote-video-container")
+const remoteStreamContainer = document.getElementById("remote-video-container")
 
 export function remoteStreamRender(peerId, stream) {
     console.log(`Render video element for ${peerId}`)
-    // let id = "remote-peer-" + peerId
-    // let videoElement = document.getElementById(id)
-    // if (videoElement != null && videoElement != undefined) {
-    //     console.log("Duplicated stream detected!");
-    //     return;
-    // }
+    let id = "remote-peer-" + peerId
+    let videoElement = document.getElementById(id)
+    if (videoElement != null && videoElement != undefined) {
+        console.log("Duplicated stream detected!");
+        return;
+    }
     //let remoteStreamVideo = document.createElement("video")
     //let remoteStreamVideo = React.createElement("video");
 

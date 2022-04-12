@@ -10,9 +10,17 @@ const WS_ENDPOINT = "http://127.0.0.1:3000"
 let socket = io(WS_ENDPOINT);
 setSocket(socket)
 
-export default function init() {
+function init_listener_button(enterUsername, joinRoom, startStreaming, stopStreaming, leaveRoom) {
+  document.getElementById("enter-username").addEventListener("click", enterUsername)
+  document.getElementById("join-room").addEventListener("click", joinRoom)
+  document.getElementById("host-room").addEventListener("click", startStreaming)
+  document.getElementById("stop-streaming").addEventListener("click", stopStreaming)
+  document.getElementById("leave-room").addEventListener("click", leaveRoom)
+}
+
+export default function init(enterUsername, joinRoom, startStreaming, stopStreaming, leaveRoom) {
   init_listener_peer()
   init_listener_room()
-  //init_listener_button()
+  init_listener_button(enterUsername, joinRoom, startStreaming, stopStreaming, leaveRoom)
   init_listener_username()
 }

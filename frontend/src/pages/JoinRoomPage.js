@@ -26,6 +26,35 @@ function JoinRoomPage() {
     //init_listener_peer();
   }, []);
 
+  // async function startStreaming() {
+  //   console.log("Create Streaming")
+  //   //TO START STREAMING HERE
+  //   try {
+  //     let localStream = await navigator.mediaDevices.getUserMedia(streamConstraints);
+  //     localStreamVideo.current.srcObject = localStream;
+  //     console.log("Local stream rendered!")
+
+  //     peerManager.addStreamAll(localStream)
+
+  //     localStreamManager.setLocalStream(localStream)
+  //   }
+  //   catch (err) {
+  //     console.log("Local stream cannot be rendered: ", err)
+  //   }
+  // }
+
+  // function stopStreaming() {
+  //   if (localStreamManager.getLocalStream() != null && localStreamManager.getLocalStream() != undefined) {
+  //     peerManager.removeStreamAll(localStreamManager.getLocalStream(), (peerId) => {
+  //       socket.emit("stream-disconnected", {
+  //         peerId: peerId
+  //       })
+  //     })
+
+  //     localStreamManager.setLocalStream(null)
+  //     localStreamVideo.current.srcObject = null
+  //   }
+  // }
 
   function leaveRoom() {
     console.log("Disconnect")
@@ -43,10 +72,12 @@ function JoinRoomPage() {
   }
   return (
     <div>
-      <video ref={localStreamVideo} autoPlay playsInline></video> <br></br>
+      {/* <video ref={localStreamVideo} autoPlay playsInline></video> <br></br> */}
+      {/* <button onClick={(e) => startStreaming(e)}>Host a room</button>
+      <button onClick={(e) => stopStreaming(e)}>Stop Streaming</button>
+      <button onClick={(e) => leaveRoom(e)}>Leave room</button> */}
       <div id="remote-video-container">
         <video id="remote-stream"></video>
-        {/* <video ref={remoteVideo} autoPlay playsInline></video> */}
       </div>
       <button onClick={(e) => leaveRoom(e)}>Leave room</button>
       <Card border="primary" style={{ 'width': '50rem', 'height': '700px', overflow: 'auto', float: 'right' }}>

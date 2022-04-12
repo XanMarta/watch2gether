@@ -23,12 +23,13 @@ function HomePage() {
     //console.log("Join room: ", RoomId)
     socket.emit("register-username", username)
     socket.emit("join-room", RoomId)
+    init();
     navigate('/joinroom/'.concat(RoomId));
   }
 
-  // function createRoom() {
-
-  // }
+  function StreamingV2() {
+    navigate('/streamingv2/');
+  }
   if (username !== "") {
     return (
       <div className="aligns-items-center justify-content-center" style={style}>
@@ -48,11 +49,15 @@ function HomePage() {
           navigate("/createroom/".concat(RoomId)); console.log("Join room id is: ", RoomId)
           socket.emit("register-username", username)
           socket.emit("join-room", RoomId);
+          init();
           console.log(socket);
         }}>Create a room</Button>
         <br></br>
         <Button variant="primary" size="lg" onClick={enterRoom}>
           Enter a room
+        </Button>
+        <Button variant="primary" size="lg" onClick={StreamingV2}>
+          Stream V2
         </Button>
         {/* {
           ShowForm ? <Form /> : null
