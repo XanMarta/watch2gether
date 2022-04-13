@@ -1,10 +1,8 @@
-import SimplePeer from "simple-peer";
 import io from 'socket.io-client';
-
+import SimplePeer from 'simple-peer';
 
 const WS_ENDPOINT = "ws://127.0.0.1:3000"
 const socket = io(WS_ENDPOINT)
-
 const pcs = {}
 var onConnection = false
 
@@ -74,7 +72,6 @@ export async function disconnect() {
   socket.off("node_disconnected")
   // Disconnect
   socket.emit("node_disconnect")
-  //peer destroy?
   Object.keys(pcs).forEach(id => {
     pcs[id].destroy()
     delete pcs[id]

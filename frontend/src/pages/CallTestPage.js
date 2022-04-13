@@ -1,10 +1,8 @@
 import { useEffect, useRef } from 'react'
 //import { sendOffer, setConnectionHandler, testCallServer } from "../adapters/Streaming/connection";
 //import { setStreamHandler, getStream } from "../adapters/Streaming/streamRender";
-import { createHost, createClient, disconnect } from "../adapters/Streaming/streamRender.js";
+import { createHost, createClient, disconnect } from "../adapters/Streaming/stream.js";
 //import io from 'socket.io-client';
-
-
 
 
 function CallTestPage() {
