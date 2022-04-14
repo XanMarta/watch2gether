@@ -136,3 +136,5 @@ node_modules/
 node_modules_123/
 
 .vscode/
+
+.test/

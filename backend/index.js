@@ -3,20 +3,18 @@ const bodyParser = require('body-parser')
 const cors = require('cors')
 const socket = require('socket.io')
 
+const FE_ENDPOINT = process.env.FE_ENDPOINT || "localhost:3001"
+
 const app = express()
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
-app.use(cors({
-    origin: "http://127.0.0.1:3001"
-}))
-
 app.use(express.static("public"))
 
 const server = app.listen(3000, () => console.log('Listening on port 3000 ...'))
 
 const io = socket(server, {
     cors: {
-        origin: 'http://localhost:3001'
+        origin: `http://${FE_ENDPOINT}`
     }
 })
 
