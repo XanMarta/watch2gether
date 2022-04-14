@@ -133,5 +133,6 @@ dist
 package-lock.json
 
 node_modules/
+node_modules_123/
 
 .vscode/
