@@ -133,3 +133,4 @@ dist
 package-lock.json
 
 */node_modules
+test/public/video
