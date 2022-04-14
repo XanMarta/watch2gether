@@ -1,11 +1,15 @@
 version: '3.8'
 services:
   frontend:
-    build: ./frontend
+    build:
+      context: ./frontend
+      dockerfile: ./Dockerfile.prod
     ports:
       - 80:80
   backend:
-    build: ./backend
+    build:
+      context: ./backend
+      dockerfile: ./Dockerfile.prod
     ports:
       - 3000:3000
     environment:
