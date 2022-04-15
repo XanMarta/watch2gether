@@ -1,0 +1,22 @@
+name: Discord Push Notification
+on: [push]
+jobs:
+  Create-Notification:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Discord
+        uses: Sniddl/discord-commits@v1.3
+        with:
+          last-commit-only: false
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          message: |
+            **A commit has been pushed**
+            Author: {{ commit.author.username }}
+            Test case: passed
+          embed: |
+            {
+              "title": "{{ commit.title }}", 
+              "description": "{{ commit.description }}", 
+              "url": "{{ commit.url }}",
+              "author": "{{ commit.author.username }}" 
+            }
