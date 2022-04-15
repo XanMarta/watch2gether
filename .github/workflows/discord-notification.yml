@@ -7,16 +7,11 @@ jobs:
       - name: Discord
         uses: Sniddl/discord-commits@v1.3
         with:
-          last-commit-only: false
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
-          message: |
-            **A commit has been pushed**
-            Author: {{ commit.author.username }}
-            Test case: passed
           embed: |
             {
-              "title": "{{ commit.title }}", 
-              "description": "{{ commit.description }}", 
-              "url": "{{ commit.url }}",
-              "author": "{{ commit.author.username }}" 
+              "title": "A commit has been pushed to $GITHUB_REF", 
+              "description": "Author: {{ github.event.head_commit.author.name }}",
+              "url": "{{ github.event.head_commit.url }}",
+              "author": "{{ github.event.head_commit.author.username }}" 
             }
