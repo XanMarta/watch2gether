@@ -1,0 +1,14 @@
+version: '3.8'
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: ./Dockerfile.prod
+    ports:
+      - 80:80
+  backend:
+    build:
+      context: ./backend
+      dockerfile: ./Dockerfile.prod
+    environment:
+      - FE_ENDPOINT=frontend
