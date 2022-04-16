@@ -138,3 +138,6 @@ node_modules_123/
 .vscode/
 
 .test/
+
+.script/
+
