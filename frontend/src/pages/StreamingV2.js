@@ -1,14 +1,16 @@
 import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import init from '../adapters/Streaming/main'
-import { getSocket, setSocket } from "../adapters/Streaming/StreamSingleton/init_socket"
+import { getSocket } from "../adapters/Streaming/StreamSingleton/init_socket"
 import * as peerManager from "../adapters/Streaming/StreamSingleton/init_peer.js";
 import * as localStreamManager from "../adapters/Streaming/StreamSingleton/init_localstream.js";
 import { remoteStreamClose } from "./../adapters/Streaming/stream.js"
 //import init from "../adapters/Streaming/main.js"
+//import LocalStreamVideo from "../components/StreamV2Page/localStreamVideo";
 
 function StreamingV2() {
   const username = useSelector((state) => state.loginInfo.value);
+  const [callerID, setCallerID] = useState("");
   const streamConstraints = {
     audio: false,
     video: { width: 300, height: 300 },
@@ -16,6 +18,10 @@ function StreamingV2() {
   const localStreamVideo = useRef(); // ref => { current: null }
   const [roomId, setRoomId] = useState("")
   const socket = getSocket();
+
+  useEffect(() => {
+    //init();
+  })
 
   async function startStreaming() {
     //init();
@@ -61,8 +67,7 @@ function StreamingV2() {
     // Set local stream to null.
     localStreamVideo.current.srcObject = null
     localStreamManager.setLocalStream(null)
-    //init();
-    //navigate("/");
+    //window.location.reload();
   }
 
   function enterUsername() {
@@ -84,15 +89,7 @@ function StreamingV2() {
     //init();
     //navigate('/joinroom/'.concat(RoomId));
   }
-  useEffect(() => {
-    //init();
-    // document.getElementById("enter-username").addEventListener("click", enterUsername)
-    // document.getElementById("join-room").addEventListener("click", joinRoom)
-    // document.getElementById("start-streaming").addEventListener("click", startStreaming)
-    // document.getElementById("stop-streaming").addEventListener("click", stopStreaming)
-    // document.getElementById("leave-room").addEventListener("click", leaveRoom)
 
-  })
   return (
     <>
       <h1>Create a username</h1>
@@ -106,6 +103,7 @@ function StreamingV2() {
       <h1>Streaming</h1>
 
       <video ref={localStreamVideo} autoPlay playsInline></video> <br></br>
+      {/* <LocalStreamVideo ref={localStreamVideo}></LocalStreamVideo> */}
       <button id="start-streaming" onClick={(e) => startStreaming(e)}>Start streaming</button>
       <button id="stop-streaming" onClick={(e) => stopStreaming(e)}>Stop streaming</button>
       <button id="leave-room" onClick={(e) => leaveRoom(e)}>Leave room</button>

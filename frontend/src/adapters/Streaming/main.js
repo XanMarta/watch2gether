@@ -26,9 +26,9 @@ init_listener_room()
 init_listener_button()
 init_listener_username()
 
-export default function init() {
-  init_listener_peer()
-  init_listener_room()
-  //init_listener_button(enterUsername, joinRoom, startStreaming, stopStreaming, leaveRoom)
-  init_listener_username()
-}
+// export default function init() {
+//   init_listener_peer()
+//   init_listener_room()
+//   //init_listener_button(enterUsername, joinRoom, startStreaming, stopStreaming, leaveRoom)
+//   init_listener_username()
+// }

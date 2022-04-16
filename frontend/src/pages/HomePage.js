@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { useNavigate } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 import { getSocket, setSocket } from "../adapters/Streaming/StreamSingleton/init_socket"
-import init from '../adapters/Streaming/main'
+//import init from '../adapters/Streaming/main'
 
 function HomePage() {
   const username = useSelector((state) => state.loginInfo.value);
@@ -23,7 +23,7 @@ function HomePage() {
     //console.log("Join room: ", RoomId)
     socket.emit("register-username", username)
     socket.emit("join-room", RoomId)
-    init();
+    //init();
     navigate('/joinroom/'.concat(RoomId));
   }
 

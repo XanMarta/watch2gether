@@ -13,13 +13,14 @@ export function remoteStreamRender(peerId, stream) {
     let remoteStreamVideo = document.createElement("video")
     //let remoteStreamVideo = React.createElement("video", { id: id });
     //let remoteStreamVideo = React.createElement("h1", { id: id }, "Video appeared");
+    //let remoteStreamVideo = document.createElement("iframe")
 
     remoteStreamVideo.setAttribute("id", id)
     //remoteStreamVideo.ref()
     //let remoteStreamVideo = document.getElementById("remote-stream");
     remoteStreamVideo.autoplay = true
     remoteStreamVideo.srcObject = stream
-    console.log("Remote stream vidoe" + remoteStreamVideo);
+    console.log("Remote stream video" + remoteStreamVideo);
     //ReactDOM.render(remoteStreamVideo, remoteStreamContainer);
     remoteStreamContainer.appendChild(remoteStreamVideo)
 }

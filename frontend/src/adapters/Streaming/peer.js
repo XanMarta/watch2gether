@@ -21,13 +21,18 @@ export function init_listener_peer() {
         console.log('** got peer-init')
 
         console.log(`Init a peer connection to ${data.peerId}`)
-        let peer = new SimplePeer({ initiator: data.initiator, stream: getLocalStream() })
+        let peer = new SimplePeer({ initiator: data.initiator, stream: getLocalStream(), trickle: false })
         let remotePeerId = data.peerId;
 
         const signalListener = data => {
             console.log('** got signal')
-            if (data.peerId == remotePeerId) {
-                peer.signal(data.signal)
+            console.log("Data signal: " + data.signal)
+            try {
+                if (data.peerId == remotePeerId) {
+                    peer.signal(data.signal)
+                }
+            } catch (err) {
+                console.log(err.message);
             }
         }
         listener[remotePeerId] = signalListener
@@ -62,7 +67,7 @@ export function init_listener_peer() {
 
         peer.on("connect", () => {
             console.log("** PEER - got 'connect'")
-            peer.send("Hey Peer");
+            //peer.send("Hey Peer");
         })
 
         // peer.on("data", (data) => {
