@@ -13,7 +13,10 @@ jobs:
         run: echo "::set-output name=fetch_id::$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }})"
       - name: Get random color
         id: color_id
-        run: echo "::set-output name=color_id::$(printf '%d%d%d' $((RANDOM%256)) $((RANDOM%256)) $((RANDOM%256)))"
+        run: echo "::set-output name=color::$(printf '%d%d%d' $((RANDOM%256)) $((RANDOM%256)) $((RANDOM%256)))"
+      - name: Manipulate commit message
+        id: message_id
+        run: echo "::set-output name=message::${{ github.event.head_commit.message }}"
       - name: Discord
         uses: Ilshidur/action-discord@master
         env:
@@ -24,8 +27,8 @@ jobs:
             [{
               "title": "A commit has been pushed to ${{ github.ref }}",
               "url": "${{ github.event.head_commit.url }}",
-              "description": "**Author:** ${{ github.event.head_commit.author.username }} \n**ID:** ${{ github.event.head_commit.id }} \n**Message:** \n```\n${{ github.event.head_commit.message }} ``` \n**Changed files:** \n```\n${{ join(steps.fetch_id.outputs.*, '\n') }} ```",
-              "color": "${{ join(steps.color_id.outputs.*, '') }}",
+              "description": "**Author:** ${{ github.event.head_commit.author.username }} \n**ID:** ${{ github.event.head_commit.id }} \n**Message:** \n```\n${{ steps.message_id.outputs.message }} ``` \n**Changed files:** \n```\n${{ join(steps.fetch_id.outputs.*, '\n') }} ```",
+              "color": "${{ steps.color_id.outputs.color }}",
               "footer": {
                 "text": "${{ github.event.head_commit.timestamp }}",
                 "icon_url": "https://github.com/${{ github.event.head_commit.author.username }}.png"
