@@ -25,5 +25,6 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          context: "{{ defaultContext }}:backend"
+          context: ./backend
+          file: ./backend/Dockerfile
           tags: xanmarta/watch2gether:latest
