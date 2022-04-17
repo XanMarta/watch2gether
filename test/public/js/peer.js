@@ -60,6 +60,13 @@ export function init_listener_peer() {
             console.log("Peer get data: " + data)
         })
 
+        peer.on("track", (track, stream) => {
+            console.log("** PEER - got 'track'")
+            console.log("Get track: ", track, stream)
+
+            remoteStreamRender(remotePeerId, stream)
+        })
+
         peer.on("close", () => {
             console.log("** PEER - got 'close'")
 

@@ -2,6 +2,8 @@
 <html>
     <head>
         <title>WebRTC Test</title>
+
+        <link rel="stylesheet" href="css/video-js.min.css">
     </head>
 
     <body>
@@ -33,6 +35,8 @@
             <button id="stream-start-button">Start Streaming</button>
             <button id="stream-connect">Connect Stream</button>
             <button id="stream-stop-button">Stop Streaming</button>
+            <button id="video-start-button">Start Video</button>
+            <button id="video-stop-button">Stop Video</button>
             <div>
                 <video id="local-stream" autoplay></video>
                 <div id="remote-video-container">
@@ -41,8 +45,31 @@
             </div>
         </div>
 
+        <div>
+            <h1>Step 4: Video Rendering</h1>
+
+            <div>
+                <h2>Video from local</h2>
+
+                <button id="video-stream-send-stream-button">Send Stream</button>
+                <button id="video-stream-stop-stream-button">Stop Stream</button>
+                <button id="video-stream-send-face-button">Send Face Stream</button>
+                <button id="video-stream-stop-face-button">Stop Face Stream</button>
+                <video id="video-player-local" class="video-js" data-setup='{}' controls></video>
+            </div>
+
+            <div>
+                <h2>Video from remote</h2>
+
+                <video id="video-player-remote-player" autoplay></video>
+                <video id="video-player-remote-player-2" autoplay></video>
+            </div>
+
+        </div>
+
         <script src="/socket.io/socket.io.js"></script>
         <script src="script/simplepeer.min.js"></script>
+        <script src="script/video.min.js"></script>
         <script type="module" src="js/main.js"></script>
     </body>
 </html>

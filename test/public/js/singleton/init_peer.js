@@ -36,7 +36,10 @@ export function addStreamAll(stream, callback = (peerId) => {}) {
 
     Object.entries(peers).forEach(([peerId, peer]) => {
 
-        peers[peerId].addStream(stream)
+        stream.getTracks().forEach(track => {
+            console.log(`Track added to ${peerId}`)
+            peers[peerId].addTrack(track, stream)
+        })
         callback(peerId)
     })
 }
@@ -46,7 +49,9 @@ export function removeStreamAll(stream, callback = (peerId) => {}) {
 
     Object.entries(peers).forEach(([peerId, peer]) => {
 
-        peer.removeStream(stream)
+        stream.getTracks().forEach(track => {
+            peers[peerId].removeTrack(track, stream)
+        })
         callback(peerId)
     })
 }

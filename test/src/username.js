@@ -32,7 +32,7 @@ function init_listener_username (io, socket) {
         }
     })
 }
-
+ 
 module.exports = {
     getUsername,
     getSocketId,

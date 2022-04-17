@@ -18,8 +18,10 @@ module.exports = (io) => {
         })
     
         socket.on("disconnect", () => {
+            // TODO: khi username out khỏi room/disconnect thì nên có xóa tên người dùng hiện tại đi.
             console.log(`Client ${socket.id} disconnect`)
-    
+            deleteUsername(socket.id)
+
             if (isInRoom(socket.id))
             {
                 if (getUsername(socket.id) == null) {
@@ -28,7 +30,6 @@ module.exports = (io) => {
     
                 io.to(room[socket.id]).emit("user-disconnected", socket.id)
                 outRoom(socket.id)
-                deleteUsername(socket.id)
             }
         })
     
