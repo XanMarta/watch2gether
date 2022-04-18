@@ -18,6 +18,7 @@ var videoStreamYoutubeDiv = document.querySelector("#youtube-video-frame")
 var videoStreamYoutubeLinkInput = document.querySelector("#video-stream-youtube-link")
 var videoStreamYoutubeLinkButton = document.querySelector("#video-stream-enter-youtube-link-button")
 var videoStreamYoutubeDisposeButton = document.querySelector("#video-stream-delete-youtube-button")
+var videoStreamYoutubeSendStreamButton = document.querySelector("#video-stream-send-youtube-stream-button")
 
 var id = 0
 var peer1
@@ -34,35 +35,11 @@ function remoteStreamDisable() {
 
 
 function getYoutubePlayButton() {
-    return document.querySelector(".ytp-large-play-button")
+    return document.querySelector(".ytp-large-play-button.ytp-button")
 }
 
 function getYoutubeVideoStream() {
-    return document.querySelector(".html5-main-video")
-}
-
-function checkIfElementIsLoaded(classString, afterLoading) {
-    var iframe = document.querySelector(classString);
-
-    if (iframe != null) {
-        var iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-
-        console.log("iframe is loaded")
-
-        if (  iframeDoc.readyState  == 'complete' ) {
-            //iframe.contentWindow.alert("Hello");
-            iframe.contentWindow.onload = function(){
-                alert("I am loaded");
-            };
-            // The loading is complete, call the function we want executed once the iframe is loaded
-            afterLoading();
-            return;
-        } 
-    }
-
-    console.log(`Check again if element is loaded with id ${classString}`)
-    // If we are here, it is not loaded. Set things up so we check   the status again in 100 milliseconds
-    window.setTimeout(() => checkIfElementIsLoaded(classString, afterLoading), 100);
+    return document.querySelector(".video-stream.html5-main-video")
 }
 
 
@@ -193,28 +170,25 @@ videoStreamYoutubeLinkButton.addEventListener('click', async () => {
 
         videoStreamYoutubeDiv.appendChild(newYoutubeFrame)
         currentYoutubeVideo = newYoutubeFrame
-        
-        await new Promise(r => setTimeout(r, 2000));
 
-        function videoLoaded () {
-            console.log("Hello, from provive stream")
-        
-            function sendStream () {
-                currentStream = getYoutubeVideoStream().captureStream();
+        newYoutubeFrame.onload = () => {
+            console.log(`get current youtube video element ${getYoutubeVideoStream()}`)
 
-                console.log("add stream to peer 1")
-                peer1.addStream(currentStream)
-            }
+            console.log(`get current youtube video element ${getYoutubePlayButton()}`)
 
-            try {
-                sendStream()
-            } catch (err) {
-                console.log(err.message)
-                setTimeout(sendStream, 100)
-            }
+            var youtubeVideoElement = newYoutubeFrame.querySelector(".video-stream.html5-main-video")
+            console.log(`Get element inside iframe got ${youtubeVideoElement}`)
+            console.log(`Get element inside iframe got ${newYoutubeFrame.captureStream()}`)
         }
 
-        checkIfElementIsLoaded("#iframe-youtube-embed", videoLoaded);
+        videoStreamYoutubeSendStreamButton.addEventListener("click", () => {
+            console.log(`get current youtube video element ${getYoutubeVideoStream()}`)
+
+            console.log(`get current youtube video element ${getYoutubePlayButton()}`)
+
+            var youtubeVideoElement = newYoutubeFrame.querySelector(".video-stream.html5-main-video")
+            console.log(`Get element inside iframe got ${youtubeVideoElement}`)
+        })
 
     // } catch (err) {
     //     alert(err.message)
