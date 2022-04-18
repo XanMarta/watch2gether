@@ -23,7 +23,7 @@ jobs:
             if [ -z "$1" ]; then js=[]
             else
               js=[
-              for f in $1; do js="${js}'${f}',"; done
+              for f in $1; do js="${js}\"${f}\","; done
               js=${js%?}]
             fi
           }
