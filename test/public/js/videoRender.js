@@ -4,10 +4,10 @@ var videoFaceSendButton = document.querySelector("#video-stream-send-face-button
 var videoStreamStopButton = document.querySelector("#video-stream-stop-stream-button")
 var videoFaceStopButton = document.querySelector("#video-stream-stop-face-button")
 
+var videoStreamLocalInput = document.querySelector("#video-stream-get-file-from-local")
+
 videoStreamStopButton.disabled  = true 
 videoFaceStopButton.disabled  = true 
-
-videoFaceStopButton.disa
 
 
 var videoStreamRemoteVideo = document.querySelector("#video-player-remote-player")
@@ -65,11 +65,25 @@ videoStreamSendButton.addEventListener("click", function() {
         }
     })
 
-    videoStreamStopButton.addEventListener('click', () => {
+    function remoteStreamDisable() {
         peer1.removeStream(stream)
 
         videoStreamStopButton.disabled = true
         videoStreamSendButton.disabled = false 
+    }
+
+    videoStreamStopButton.addEventListener('click', () => {
+        remoteStreamDisable()
+    })
+
+    videoStreamLocalInput.addEventListener("change", (event) => {
+        var file = document.getElementById('video-stream-get-file-from-local').files[0] 
+        var url = URL.createObjectURL(file)
+        console.log(url)
+    
+        document.querySelector('#video-player-local').getElementsByTagName('video')[0].src = url
+    
+        remoteStreamDisable()
     })
 
     videoStreamStopButton.disabled = false 
@@ -123,7 +137,7 @@ export function videoRender() {
 
     player.src({
         type: 'video/mp4',
-        src: 'https://www.youtube.com/watch?v=pbNeSP8mqpM'
+        src: '/video/short.mp4'
     })
 
     // Set source or smth: player.src({type: 'video/mp4', src=''})
