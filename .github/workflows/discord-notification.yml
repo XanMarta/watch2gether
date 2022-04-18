@@ -11,14 +11,35 @@ jobs:
           fetch-depth: 0
 
       - name: Fetch changed files
-        uses: sergeysova/jq-action@v2
-        id: fetch
+        uses: tj-actions/changed-files@v18.7
+        id: changed
         with:
-          cmd: git diff-tree --no-commit-id --name-only -r ${{ github.sha }} | jq -R -s -c 'split("\n")'
-
-      - name: Manipulate changed files list
+          separator: ' '
+      
+      - name: Manipulate file list 1
         id: list
-        run: echo "::set-output name=list::${{ toJSON(steps.fetch.outputs.value) }}"
+        run: |
+          sformat () {
+            if [ -z "$1" ]; then js=[]
+            else
+              js=[
+              for f in $1; do js="${js}\"${f}\","; done
+              js=${js%?}]
+            fi
+          }
+          sformat "${{ steps.changed.outputs.added_files }}"
+          echo "::set-output name=added::$js"
+          sformat "${{ steps.changed.outputs.modified_files }}"
+          echo "::set-output name=modified::$js"
+          sformat "${{ steps.changed.outputs.deleted_files }}"
+          echo "::set-output name=deleted::$js"
+      
+      - name: Manipulate file list 2
+        id: json
+        run: |
+          echo "::set-output name=added::${{ toJSON(steps.list.outputs.added) }}"
+          echo "::set-output name=modified::${{ toJSON(steps.list.outputs.modified) }}"
+          echo "::set-output name=deleted::${{ toJSON(steps.list.outputs.deleted) }}"
 
       - name: Get random color
         id: color_id
@@ -38,7 +59,7 @@ jobs:
             [{
               "title": "A commit has been pushed to ${{ github.ref }}",
               "url": "${{ github.event.head_commit.url }}",
-              "description": "**Author:** ${{ github.event.head_commit.author.username }} \n**ID:** ${{ github.event.head_commit.id }} \n**Message:** \n```\n${{ steps.message_id.outputs.message }} ``` \n**Changed files:** \n```\n${{ join(fromJSON(steps.list.outputs.list), '\n') }} ```",
+              "description": "**Author:** ${{ github.event.head_commit.author.username }} \n**ID:** ${{ github.event.head_commit.id }} \n**Message:** \n```\n${{ steps.message_id.outputs.message }} ``` \n**Added:** \n```\n${{ join(fromJSON(steps.json.outputs.added), '\n') }} ``` \n**Modified:** \n```\n${{ join(fromJSON(steps.json.outputs.modified), '\n') }} ``` \n**Deleted:** \n```\n${{ join(fromJSON(steps.json.outputs.deleted), '\n') }} ```",
               "color": "${{ steps.color_id.outputs.color }}",
               "footer": {
                 "text": "${{ github.event.head_commit.timestamp }}",
