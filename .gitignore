@@ -136,3 +136,12 @@ package-lock.json
 test/public/video
 
 /test_app 
+node_modules/
+node_modules_123/
+
+.vscode/
+
+.test/
+
+.script/
+
