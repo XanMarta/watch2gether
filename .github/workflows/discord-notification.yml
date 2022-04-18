@@ -9,8 +9,11 @@ jobs:
         with:
           fetch-depth: 0
       - name: Fetch changed files
-        id: fetch_id
-        run: echo "::set-output name=fetch_id::$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }})"
+        run: |
+          CHANGED_FILES=$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }})
+          echo "CHANGED_FILES<<EOF" >> $GITHUB_ENV
+          echo "$CHANGED_FILES" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
       - name: Get random color
         id: color_id
         run: echo "::set-output name=color::$(printf '%d%d%d' $((RANDOM%256)) $((RANDOM%256)) $((RANDOM%256)))"
@@ -27,7 +30,7 @@ jobs:
             [{
               "title": "A commit has been pushed to ${{ github.ref }}",
               "url": "${{ github.event.head_commit.url }}",
-              "description": "**Author:** ${{ github.event.head_commit.author.username }} \n**ID:** ${{ github.event.head_commit.id }} \n**Message:** \n```\n${{ steps.message_id.outputs.message }} ``` \n**Changed files:** \n```\n${{ join(steps.fetch_id.outputs.*, '\n') }} ```",
+              "description": "**Author:** ${{ github.event.head_commit.author.username }} \n**ID:** ${{ github.event.head_commit.id }} \n**Message:** \n```\n${{ steps.message_id.outputs.message }} ``` \n**Changed files:** \n```\n${{ env.CHANGED_FILES }} ```",
               "color": "${{ steps.color_id.outputs.color }}",
               "footer": {
                 "text": "${{ github.event.head_commit.timestamp }}",
