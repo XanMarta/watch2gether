@@ -76,7 +76,8 @@ videoStreamSendButton.addEventListener("click", function() {
         remoteStreamDisable()
     })
 
-    videoStreamLocalInput.addEventListener("change", (event) => {
+    videoStreamLocalInput.addEventListener('change', (event) => {
+        console.log("File change")
         var file = document.getElementById('video-stream-get-file-from-local').files[0] 
         var url = URL.createObjectURL(file)
         console.log(url)
