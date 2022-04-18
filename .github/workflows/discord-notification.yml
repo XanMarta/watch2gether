@@ -4,19 +4,30 @@ jobs:
   Create-Notification:
     runs-on: ubuntu-latest
     steps:
+
       - name: Check out repository
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
+
       - name: Fetch changed files
-        id: fetch_id
-        run: echo "::set-output name=fetch_id::$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }})"
+        uses: sergeysova/jq-action@v2
+        id: fetch
+        with:
+          cmd: git diff-tree --no-commit-id --name-only -r ${{ github.sha }} | jq -R -s -c 'split("\n")'
+
+      - name: Manipulate changed files list
+        id: list
+        run: echo "::set-output name=list::${{ toJSON(steps.fetch.outputs.value) }}"
+
       - name: Get random color
         id: color_id
         run: echo "::set-output name=color::$(printf '%d%d%d' $((RANDOM%256)) $((RANDOM%256)) $((RANDOM%256)))"
+
       - name: Manipulate commit message
         id: message_id
         run: echo "::set-output name=message::${{ github.event.head_commit.message }}"
+
       - name: Discord
         uses: Ilshidur/action-discord@master
         env:
@@ -27,7 +38,7 @@ jobs:
             [{
               "title": "A commit has been pushed to ${{ github.ref }}",
               "url": "${{ github.event.head_commit.url }}",
-              "description": "**Author:** ${{ github.event.head_commit.author.username }} \n**ID:** ${{ github.event.head_commit.id }} \n**Message:** \n```\n${{ steps.message_id.outputs.message }} ``` \n**Changed files:** \n```\n${{ join(steps.fetch_id.outputs.*, '\n') }} ```",
+              "description": "**Author:** ${{ github.event.head_commit.author.username }} \n**ID:** ${{ github.event.head_commit.id }} \n**Message:** \n```\n${{ steps.message_id.outputs.message }} ``` \n**Changed files:** \n```\n${{ join(fromJSON(steps.list.outputs.list), '\n') }} ```",
               "color": "${{ steps.color_id.outputs.color }}",
               "footer": {
                 "text": "${{ github.event.head_commit.timestamp }}",
