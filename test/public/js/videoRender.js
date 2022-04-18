@@ -131,10 +131,6 @@ export function videoRender() {
         player.volume(0.5);
     })
 
-    player.on('ended', function() {
-        this.dispose();
-    })
-
     player.src({
         type: 'video/mp4',
         src: '/video/short.mp4'
