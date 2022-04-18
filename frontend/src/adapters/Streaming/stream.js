@@ -1,7 +1,12 @@
 import io from 'socket.io-client';
 import SimplePeer from 'simple-peer';
 
-const WS_ENDPOINT = "ws://127.0.0.1:3000"
+var BE_PATHNAME = ""
+if (process.env.NODE_ENV === "development") {
+  BE_PATHNAME = ":3000"
+}
+const BE_ENDPOINT = window.location.hostname + BE_PATHNAME
+const WS_ENDPOINT = `ws://${BE_ENDPOINT}`
 const socket = io(WS_ENDPOINT)
 const pcs = {}
 var onConnection = false
