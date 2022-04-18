@@ -33,6 +33,39 @@ function remoteStreamDisable() {
 }
 
 
+function getYoutubePlayButton() {
+    return document.querySelector(".ytp-large-play-button")
+}
+
+function getYoutubeVideoStream() {
+    return document.querySelector(".html5-main-video")
+}
+
+function checkIfElementIsLoaded(classString, afterLoading) {
+    var iframe = document.querySelector(classString);
+
+    if (iframe != null) {
+        var iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+
+        console.log("iframe is loaded")
+
+        if (  iframeDoc.readyState  == 'complete' ) {
+            //iframe.contentWindow.alert("Hello");
+            iframe.contentWindow.onload = function(){
+                alert("I am loaded");
+            };
+            // The loading is complete, call the function we want executed once the iframe is loaded
+            afterLoading();
+            return;
+        } 
+    }
+
+    console.log(`Check again if element is loaded with id ${classString}`)
+    // If we are here, it is not loaded. Set things up so we check   the status again in 100 milliseconds
+    window.setTimeout(() => checkIfElementIsLoaded(classString, afterLoading), 100);
+}
+
+
 videoStreamSendButton.addEventListener("click", function() {
     var stream = document.querySelector('#video-player-local').getElementsByTagName('video')[0].captureStream();
 
@@ -121,7 +154,7 @@ videoFaceSendButton.addEventListener('click', async () => {
 
 var currentYoutubeVideo = null;
 
-videoStreamYoutubeLinkButton.addEventListener('click', () => {
+videoStreamYoutubeLinkButton.addEventListener('click', async () => {
     var link = videoStreamYoutubeLinkInput.value; 
 
     // check if string is an valid youtube link
@@ -130,7 +163,7 @@ videoStreamYoutubeLinkButton.addEventListener('click', () => {
         return 
     }
 
-    try {
+    // try {
         console.log(`Link: ${link}`)
         link = link.split('?')
         link = '?' + link[link.length - 1]
@@ -143,26 +176,56 @@ videoStreamYoutubeLinkButton.addEventListener('click', () => {
 
         var newYoutubeFrame = document.createElement('iframe') 
 
-        newYoutubeFrame.setAttribute('allow', "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture")
+        newYoutubeFrame.setAttribute('allow', "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; autoplay")
+        newYoutubeFrame.setAttribute('autoplay', "1")
         newYoutubeFrame.setAttribute('width', "560")
         newYoutubeFrame.setAttribute('height', "315")
         newYoutubeFrame.setAttribute('title', "Youtube video player")
         newYoutubeFrame.setAttribute('frameborder', "0")
         newYoutubeFrame.setAttribute('src', `https://www.youtube.com/embed/${youtubeVideoId}`)
-
-        videoStreamYoutubeDiv.appendChild(newYoutubeFrame)
-        currentYoutubeVideo = newYoutubeFrame
-    } catch (err) {
-        alert(err.message)
+        newYoutubeFrame.id = "iframe-youtube-embed"
 
         if (currentYoutubeVideo != null) 
         {
-            currentYoutubeVideo.remove()
+            currentYoutubeVideo.remove();
+            currentYoutubeVideo = null;
         }
-        currentYoutubeVideo = null 
-    }
-})
 
+        videoStreamYoutubeDiv.appendChild(newYoutubeFrame)
+        currentYoutubeVideo = newYoutubeFrame
+        
+        await new Promise(r => setTimeout(r, 2000));
+
+        function videoLoaded () {
+            console.log("Hello, from provive stream")
+        
+            function sendStream () {
+                currentStream = getYoutubeVideoStream().captureStream();
+
+                console.log("add stream to peer 1")
+                peer1.addStream(currentStream)
+            }
+
+            try {
+                sendStream()
+            } catch (err) {
+                console.log(err.message)
+                setTimeout(sendStream, 100)
+            }
+        }
+
+        checkIfElementIsLoaded("#iframe-youtube-embed", videoLoaded);
+
+    // } catch (err) {
+    //     alert(err.message)
+
+    //     if (currentYoutubeVideo != null) 
+    //     {
+    //         currentYoutubeVideo.remove()
+    //     }
+    //     currentYoutubeVideo = null 
+    // }
+})
 
 videoStreamYoutubeDisposeButton.addEventListener('click', () => {
     if (currentYoutubeVideo != null) 
