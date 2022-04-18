@@ -14,7 +14,20 @@ jobs:
         uses: tj-actions/changed-files@v18.7
         id: changed
         with:
-          separator: '\n'
+          separator: ','
+      
+      - name: Manipulate file list 1
+        run: |
+          echo "ADDED=[${{ steps.changed.outputs.added_files }}]" >> $GITHUB_ENV"
+          echo "MODIFIED=[${{ steps.changed.outputs.modified_files }}]" >> $GITHUB_ENV"
+          echo "DELETED=[${{ steps.changed.outputs.deleted_files }}]" >> $GITHUB_ENV"
+      
+      - name: Manipulate file list 2
+        id: list
+        run: |
+          echo "::set-output name=added::${{ toJSON(env.ADDED) }}"
+          echo "::set-output name=modified::${{ toJSON(env.MODIFIED) }}"
+          echo "::set-output name=deleted::${{ toJSON(env.DELETED) }}"
 
       - name: Get random color
         id: color_id
@@ -34,7 +47,7 @@ jobs:
             [{
               "title": "A commit has been pushed to ${{ github.ref }}",
               "url": "${{ github.event.head_commit.url }}",
-              "description": "**Author:** ${{ github.event.head_commit.author.username }} \n**ID:** ${{ github.event.head_commit.id }} \n**Message:** \n```\n${{ steps.message_id.outputs.message }} ``` \n**Added:** \n```\n${{ steps.changed.outputs.added_files }} ``` \n**Modified:** \n```\n${{ steps.changed.outputs.modified_files }} ``` \n**Deleted:** \n```\n${{ steps.changed.outputs.deleted_files }} ```",
+              "description": "**Author:** ${{ github.event.head_commit.author.username }} \n**ID:** ${{ github.event.head_commit.id }} \n**Message:** \n```\n${{ steps.message_id.outputs.message }} ``` \n**Added:** \n```\n${{ join(fromJSON(steps.list.outputs.added), '\n') }} ``` \n**Modified:** \n```\n${{ join(fromJSON(steps.list.outputs.modified), '\n') }} ``` \n**Deleted:** \n```\n${{ join(fromJSON(steps.list.outputs.deleted), '\n') }} ```",
               "color": "${{ steps.color_id.outputs.color }}",
               "footer": {
                 "text": "${{ github.event.head_commit.timestamp }}",
