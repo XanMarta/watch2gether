@@ -13,6 +13,8 @@ jobs:
       - name: Fetch changed files
         uses: tj-actions/changed-files@v18.7
         id: changed
+        with:
+          separator: '\n'
 
       - name: Get random color
         id: color_id
