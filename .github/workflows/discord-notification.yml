@@ -29,7 +29,9 @@ jobs:
           }
           sformat "${{ steps.changed.outputs.added_files }}"
           echo "::set-output name=added::$js"
+          sformat "${{ steps.changed.outputs.modified_files }}"
           echo "::set-output name=modified::$js"
+          sformat "${{ steps.changed.outputs.deleted_files }}"
           echo "::set-output name=deleted::$js"
       
       - name: Manipulate file list 2
