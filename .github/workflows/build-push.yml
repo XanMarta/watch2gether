@@ -3,9 +3,8 @@ name: Build and Push Image
 on:
   push:
     branches:
-      # - main
-      # - v[0-9]+
-      - v2-ci
+      - main
+      - v[0-9]+
 
 jobs:
   Build-and-Push:
@@ -25,7 +24,6 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          context: "{{defaultContext}}:backend"
           file: Dockerfile.prod
           tags: xanmarta/watch2gether:latest
           secrets: GIT_AUTH_TOKEN=${{ secrets.GITHUB_TOKEN }}

@@ -11,14 +11,8 @@ jobs:
           fetch-depth: 0
 
       - name: Fetch changed files
-        uses: sergeysova/jq-action@v2
-        id: fetch
-        with:
-          cmd: git diff-tree --no-commit-id --name-only -r ${{ github.sha }} | jq -R -s -c 'split("\n")'
-
-      - name: Manipulate changed files list
-        id: list
-        run: echo "::set-output name=list::${{ toJSON(steps.fetch.outputs.value) }}"
+        uses: tj-actions/changed-files@v18.7
+        id: changed
 
       - name: Get random color
         id: color_id
@@ -38,7 +32,7 @@ jobs:
             [{
               "title": "A commit has been pushed to ${{ github.ref }}",
               "url": "${{ github.event.head_commit.url }}",
-              "description": "**Author:** ${{ github.event.head_commit.author.username }} \n**ID:** ${{ github.event.head_commit.id }} \n**Message:** \n```\n${{ steps.message_id.outputs.message }} ``` \n**Changed files:** \n```\n${{ join(fromJSON(steps.list.outputs.list), '\n') }} ```",
+              "description": "**Author:** ${{ github.event.head_commit.author.username }} \n**ID:** ${{ github.event.head_commit.id }} \n**Message:** \n```\n${{ steps.message_id.outputs.message }} ``` \n**Added:** \n```\n${{ steps.changed.outputs.added_files }} ``` \n**Modified:** \n```\n${{ steps.changed.outputs.modified_files }} ``` \n**Deleted:** \n```\n${{ steps.changed.outputs.deleted_files }} ```",
               "color": "${{ steps.color_id.outputs.color }}",
               "footer": {
                 "text": "${{ github.event.head_commit.timestamp }}",
