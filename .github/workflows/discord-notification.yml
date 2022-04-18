@@ -14,14 +14,23 @@ jobs:
         uses: tj-actions/changed-files@v18.7
         id: changed
         with:
-          separator: ','
+          separator: ' '
       
       - name: Manipulate file list 1
         id: list
         run: |
-          echo "::set-output name=added::[${{ steps.changed.outputs.added_files }}]"
-          echo "::set-output name=modified::[${{ steps.changed.outputs.modified_files }}]"
-          echo "::set-output name=deleted::[${{ steps.changed.outputs.deleted_files }}]"
+          sformat () {
+            if [ -z "$1" ]; then js=[]
+            else
+              js=[
+              for f in $1; do js="${js}'${f}',"; done
+              js=${js%?}]
+            fi
+          }
+          sformat "${{ steps.changed.outputs.added_files }}"
+          echo "::set-output name=added::$js"
+          echo "::set-output name=modified::$js"
+          echo "::set-output name=deleted::$js"
       
       - name: Manipulate file list 2
         id: json
