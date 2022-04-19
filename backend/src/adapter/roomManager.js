@@ -60,6 +60,7 @@ function broadcastAllRoom(io, roomId, func) {
 }
 
 function outRoom(socketid) {
+    console.log(`Delete room name ${socketid}`)
     delete room[socketid]
 }
 
