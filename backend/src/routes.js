@@ -1,4 +1,4 @@
-let {outRoom, isInRoom, init_listener_room} = require('./room')
+let {outRoom, isInRoom, init_listener_room} = require('./functionality/room')
 let {deleteUsername, getUsername, init_listener_username} = require('./functionality/username')
 
 module.exports = (io) => {

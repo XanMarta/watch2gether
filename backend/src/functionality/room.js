@@ -1,4 +1,4 @@
-let { getUsername } = require('./functionality/username')
+let { getUsername } = require('./username')
 let {
     getRoomId,
     setRoomId,
@@ -12,7 +12,7 @@ let {
     setRoomOwner,
     broadcastAllRoom,
     outRoom
-} = require('./adapter/roomManager')
+} = require('../adapter/roomManager')
 
 function init_listener_room (io, socket) { 
     socket.on("join-room", (roomId) => {
