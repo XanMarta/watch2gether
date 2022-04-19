@@ -1,5 +1,5 @@
 let {outRoom, isInRoom, init_listener_room} = require('./room')
-let {deleteUsername, getUsername, init_listener_username} = require('./username')
+let {deleteUsername, getUsername, init_listener_username} = require('./functionality/username')
 
 module.exports = (io) => {
     io.on("connection", (socket) => {

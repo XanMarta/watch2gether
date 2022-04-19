@@ -13,13 +13,6 @@ videoFaceStopButton.disabled  = true
 var videoStreamRemoteVideo = document.querySelector("#video-player-remote-player")
 var videoStreamRemoteVideo2 = document.querySelector("#video-player-remote-player-2")
 
-// Youtube stream 
-var videoStreamYoutubeDiv = document.querySelector("#youtube-video-frame")
-var videoStreamYoutubeLinkInput = document.querySelector("#video-stream-youtube-link")
-var videoStreamYoutubeLinkButton = document.querySelector("#video-stream-enter-youtube-link-button")
-var videoStreamYoutubeDisposeButton = document.querySelector("#video-stream-delete-youtube-button")
-var videoStreamYoutubeSendStreamButton = document.querySelector("#video-stream-send-youtube-stream-button")
-
 var id = 0
 var peer1
 var peer2
@@ -27,19 +20,14 @@ var peer2
 var currentStream = null
 
 function remoteStreamDisable() {
-    peer1.removeStream(currentStream)
+    if (currentStream != null) 
+    {
+        peer1.removeStream(currentStream)
+        currentStream = null;
+    }
 
     videoStreamStopButton.disabled = true
     videoStreamSendButton.disabled = false 
-}
-
-
-function getYoutubePlayButton() {
-    return document.querySelector(".ytp-large-play-button.ytp-button")
-}
-
-function getYoutubeVideoStream() {
-    return document.querySelector(".video-stream.html5-main-video")
 }
 
 
@@ -123,92 +111,6 @@ videoFaceSendButton.addEventListener('click', async () => {
     videoFaceStopButton.disabled = false  
     videoFaceSendButton.disabled = true
 })
-
-
-// var videoStreamYoutubeDiv = document.querySelector("#youtube-video-frame")
-// var videoStreamYoutubeLinkInput = document.querySelector("#video-stream-youtube-link")
-// var videoStreamYoutubeLinkButton = document.querySelector("#ideo-stream-enter-youtube-link-button")
-
-var currentYoutubeVideo = null;
-
-videoStreamYoutubeLinkButton.addEventListener('click', async () => {
-    var link = videoStreamYoutubeLinkInput.value; 
-
-    // check if string is an valid youtube link
-    if (false) {
-        alert(`${link} is not an youtube link!`)
-        return 
-    }
-
-    // try {
-        console.log(`Link: ${link}`)
-        link = link.split('?')
-        link = '?' + link[link.length - 1]
-        var urlComponents = new URLSearchParams(link)
-        var youtubeVideoId = urlComponents.get('v')
-
-        console.log(`Parameter extracted: ${link}`)
-
-        console.log(`Video id extracted: ${youtubeVideoId}`)
-
-        var newYoutubeFrame = document.createElement('iframe') 
-
-        newYoutubeFrame.setAttribute('allow', "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; autoplay")
-        newYoutubeFrame.setAttribute('autoplay', "1")
-        newYoutubeFrame.setAttribute('width', "560")
-        newYoutubeFrame.setAttribute('height', "315")
-        newYoutubeFrame.setAttribute('title', "Youtube video player")
-        newYoutubeFrame.setAttribute('frameborder', "0")
-        newYoutubeFrame.setAttribute('src', `https://www.youtube.com/embed/${youtubeVideoId}`)
-        newYoutubeFrame.id = "iframe-youtube-embed"
-
-        if (currentYoutubeVideo != null) 
-        {
-            currentYoutubeVideo.remove();
-            currentYoutubeVideo = null;
-        }
-
-        videoStreamYoutubeDiv.appendChild(newYoutubeFrame)
-        currentYoutubeVideo = newYoutubeFrame
-
-        newYoutubeFrame.onload = () => {
-            console.log(`get current youtube video element ${getYoutubeVideoStream()}`)
-
-            console.log(`get current youtube video element ${getYoutubePlayButton()}`)
-
-            var youtubeVideoElement = newYoutubeFrame.querySelector(".video-stream.html5-main-video")
-            console.log(`Get element inside iframe got ${youtubeVideoElement}`)
-            console.log(`Get element inside iframe got ${newYoutubeFrame.captureStream()}`)
-        }
-
-        videoStreamYoutubeSendStreamButton.addEventListener("click", () => {
-            console.log(`get current youtube video element ${getYoutubeVideoStream()}`)
-
-            console.log(`get current youtube video element ${getYoutubePlayButton()}`)
-
-            var youtubeVideoElement = newYoutubeFrame.querySelector(".video-stream.html5-main-video")
-            console.log(`Get element inside iframe got ${youtubeVideoElement}`)
-        })
-
-    // } catch (err) {
-    //     alert(err.message)
-
-    //     if (currentYoutubeVideo != null) 
-    //     {
-    //         currentYoutubeVideo.remove()
-    //     }
-    //     currentYoutubeVideo = null 
-    // }
-})
-
-videoStreamYoutubeDisposeButton.addEventListener('click', () => {
-    if (currentYoutubeVideo != null) 
-    {
-        currentYoutubeVideo.remove();
-    }
-    currentYoutubeVideo = null
-})
-
 
 export function videoRender() {
     var player = videojs(document.querySelector('#video-player-local'), {
