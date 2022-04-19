@@ -42,11 +42,11 @@ function init_listener_room (io, socket) {
                     initiator: false
                 })
             }
-            else 
-            {
-                // Set current room owner to this socket id, since there no one before this client.
-                setRoomOwner(socket.id, roomId)
-            }
+        }
+        else 
+        {
+            // Set current room owner to this socket id, since there no one before this client.
+            setRoomOwner(socket.id, roomId)
         }
 
         socket.join(roomId)
