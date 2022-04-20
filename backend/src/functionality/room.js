@@ -85,21 +85,6 @@ function init_listener_room (io, socket) {
         })
     })
 
-    socket.on("broadcast_message_room", (message) => {
-        if (getUsername(socket.id) == null || getUsername(socket.id) == undefined) {
-            socket.emit("username-require")
-            return
-        }
-        if (!isInRoom(socket.id)) {
-            socket.emit("leave-room", "Client not in a room.")
-            return 
-        }
-
-        console.log(`Client ${getUsername(socket.id)} send message to ${getRoomId(socket.id)}`)
-
-        socket.to(getRoomId(socket.id)).emit("room-message", message)
-    })
-
     socket.on("get-room-info", () => {
         if (isInRoom(socket.id)) {
             console.log("Get request for room infomation: ", getRoomId(socket.id))

@@ -1,5 +1,6 @@
 let {outRoom, isInRoom, init_listener_room} = require('./functionality/room')
 let {deleteUsername, getUsername, init_listener_username} = require('./functionality/username')
+let { init_chat_listener } = require('./functionality/chat')
 
 module.exports = (io) => {
     io.on("connection", (socket) => {
@@ -44,6 +45,7 @@ module.exports = (io) => {
         });
 
         init_listener_room(io, socket)
+        init_listener_chat(socket)
         init_listener_username(io, socket)
     })
 }
