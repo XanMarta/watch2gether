@@ -1,8 +1,8 @@
 let { getUsername } = require('./username')
-let { isInRoom, getRoomId } = require('./room')
+let { getRoomId, isInRoom } = require('../adapter/roomManager')
 let { saveChatLog } = require('../adapter/chatManager')
 
-export function init_listener_chat(socket) {
+function init_listener_chat(socket) {
     socket.on("broadcast_message_room", (message) => {
         if (getUsername(socket.id) == null || getUsername(socket.id) == undefined) {
             socket.emit("username-require")
@@ -25,6 +25,20 @@ export function init_listener_chat(socket) {
 
         saveChatLog(messageLog)
 
-        socket.to(getRoomId(socket.id)).emit("room-message", message)
+        socket.to(getRoomId(socket.id)).emit("room-message", messageLog)
+
+        messageLog = {
+            type: 'broadcast',
+            senderId: socket.id,
+            senderUsername: 'Me',
+            roomId: getRoomId(socket.id),
+            content: message
+        }
+
+        socket.emit("room-message", messageLog)
     })
+}
+
+module.exports = {
+    init_listener_chat
 }

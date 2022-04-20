@@ -8,9 +8,7 @@ let {
     numClientInRoom,
     getAllClientInRoom,
     isRoomExist,
-    isRoomOwner,
     setRoomOwner,
-    broadcastAllRoom,
     outRoom
 } = require('../adapter/roomManager')
 
@@ -50,7 +48,10 @@ function init_listener_room (io, socket) {
         }
 
         socket.join(roomId)
-        socket.to(roomId).emit('join-room', socket.id);
+        socket.to(roomId).emit('join-room', {
+            socketid: socket.id,
+            username: getUsername(socket.id)
+        });
 
         if (numClientInRoom(io, roomId) > 1)
         {
@@ -110,7 +111,5 @@ function init_listener_room (io, socket) {
 }
 
 module.exports = {
-    isInRoom,
-    outRoom,
     init_listener_room
 }

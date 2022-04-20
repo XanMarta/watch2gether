@@ -1,5 +1,5 @@
 import { init_listener_room } from "./room.js"
-import { init_listener_button } from "./ui_interaction.js"
+import { init_listener_button } from "./button_event/ui_interaction.js"
 import { init_listener_username } from "./username.js"
 import { init_listener_peer } from "./peer.js"
 import { setSocket } from "./singleton/init_socket.js"
