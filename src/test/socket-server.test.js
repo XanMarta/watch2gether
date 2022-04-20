@@ -6,7 +6,7 @@ const routes = require('../routes')
 
 
 describe('user-join-room test', () => {
-    let client1, client2, client3, server, io
+    let client1, client2, server, io
     const roomid = 13
 
     beforeAll(() => {
@@ -23,13 +23,11 @@ describe('user-join-room test', () => {
     beforeEach(() => {
         client1 = new Client('http://localhost:3000')
         client2 = new Client('http://localhost:3000')
-        client3 = new Client('http://localhost:3000')
     })
 
     afterEach(() => {
         client1.close()
         client2.close()
-        client3.close()
     })
 
     // - Test case -
@@ -101,6 +99,61 @@ describe('user-join-room test', () => {
                 res()
             })
             client2.emit("join-room", roomid)
+        })
+    })
+})
+
+
+describe("user-in-room test", () => {
+    let client1, client2, server, io
+    const roomid = 13
+
+    beforeAll(() => {
+        server = createServer()
+        io = new Server(server)
+        server.listen(3000)
+        routes(io)  // Test agent
+    })
+
+    afterAll(() => {
+        io.close()
+    })
+
+    beforeEach(async () => {
+        client1 = new Client('http://localhost:3000')
+        client2 = new Client('http://localhost:3000')
+        client1.emit("register-username", "client1")
+        client2.emit("register-username", "client2")
+        client1.emit("join-room", roomid)
+        client2.emit("join-room", roomid)
+        await Promise.all([
+            new Promise(res => client1.on("room-joined", () => res())),
+            new Promise(res => client2.on("room-joined", () => res()))
+        ])
+    })
+
+    afterEach(() => {
+        client1.close()
+        client2.close()
+    })
+
+    test("send broadcast message", async () => {
+        await new Promise((res) => {
+            client1.emit("broadcast_message_room", "secret")
+            client2.on("room-message", (msg) => {
+                if (msg == "secret") {
+                    res()
+                }
+            })
+        })
+    })
+
+    test("user leave room notification", async () => {
+        await new Promise((res) => {
+            client1.emit("leave-room")
+            client2.on("leave-room-notify", (data) => {
+                res()
+            })
         })
     })
 })
