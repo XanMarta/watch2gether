@@ -3,13 +3,41 @@ name: Build and Push Image
 on:
   push:
     branches:
-      - main
+      - master
       - v[0-9]+
+      - v3-ci
 
 jobs:
+
   Build-and-Push:
     runs-on: ubuntu-latest
     steps:
+
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      
+      - name: Set bump type
+        id: bump-type
+        runs: |
+          if [ "${{ github.ref }}" == "refs/head/master" ]; then
+            BUMP=major
+          else
+            BUMP=minor
+          fi
+          echo "Bump type: $BUMP"
+          echo "::set-output name=bump::$BUMP"
+      
+      - name: Version bump
+        id: version-bump
+        uses: anothrNick/github-tag-action@1.36.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          WITH_V: true
+          RELEASE_BRANCHES: .*
+          DEFAULT_BUMP: ${{ steps.bump-type.outputs.bump }}
+      
+      - name: Get new version
+        runs: echo "New version - ${{ steps.version-bump.outputs.tag }}"
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
@@ -25,5 +53,5 @@ jobs:
         with:
           push: true
           file: Dockerfile.prod
-          tags: xanmarta/watch2gether:latest
+          tags: "xanmarta/watch2gether:${{ steps.version-bump.outputs.tag }}"
           secrets: GIT_AUTH_TOKEN=${{ secrets.GITHUB_TOKEN }}
