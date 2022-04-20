@@ -18,7 +18,7 @@ jobs:
       
       - name: Set bump type
         id: bump-type
-        runs: |
+        run: |
           if [ "${{ github.ref }}" == "refs/head/master" ]; then
             BUMP=major
           else
@@ -37,7 +37,7 @@ jobs:
           DEFAULT_BUMP: ${{ steps.bump-type.outputs.bump }}
       
       - name: Get new version
-        runs: echo "New version - ${{ steps.version-bump.outputs.tag }}"
+        run: echo "New version - ${{ steps.version-bump.outputs.tag }}"
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
