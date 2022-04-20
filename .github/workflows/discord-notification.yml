@@ -51,6 +51,7 @@ jobs:
 
       - name: Discord
         uses: Ilshidur/action-discord@master
+        continue-on-error: true
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
           DISCORD_USERNAME: ${{ github.event.head_commit.author.username }}
