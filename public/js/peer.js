@@ -1,7 +1,10 @@
 import { getSocket } from './singleton/init_socket.js'
 import * as peerManager from './singleton/init_peer.js'
 import { getLocalStream } from './singleton/init_localstream.js';
-import { remoteStreamRender, remoteStreamClose } from './stream.js'
+import { 
+    setRemoteStream, 
+    removeRemoteStream
+} from './render/mainStream.js' 
 import { addJoinNotification } from './render/chat.js'
 
 var listener = {} 
@@ -36,7 +39,8 @@ export function init_listener_peer() {
             peerManager.deletePeer(data.peerId)
 
             console.log("Erase peer ID: ", data.peerId)
-            remoteStreamClose(data.peerId)
+
+            removeRemoteStream(data.peerId)
         })
 
         peer.on("signal", data => {
@@ -47,10 +51,10 @@ export function init_listener_peer() {
             })
         })
 
-        peer.on("stream", data => {
+        peer.on("stream", stream => {
             console.log("** PEER - got 'stream'")
-            console.log("Get stream: ", data)
-            remoteStreamRender(remotePeerId, data)
+            console.log("Get stream: ", stream)
+            setRemoteStream(remotePeerId, stream)
         })
 
         peer.on("connect", () => {
@@ -63,13 +67,6 @@ export function init_listener_peer() {
             console.log("Peer get data: " + data)
         })
 
-        peer.on("track", (track, stream) => {
-            console.log("** PEER - got 'track'")
-            console.log("Get track: ", track, stream)
-
-            remoteStreamRender(remotePeerId, stream)
-        })
-
         peer.on("close", () => {
             console.log("** PEER - got 'close'")
 
@@ -79,7 +76,7 @@ export function init_listener_peer() {
             
             console.log("Erase peer ID: ", remotePeerId)
 
-            remoteStreamClose(remotePeerId)
+            removeRemoteStream(remotePeerId)
         })
 
         peer.on("error", (err) => {
@@ -92,7 +89,8 @@ export function init_listener_peer() {
             console.log("Erase peer ID: ", remotePeerId)
             
             console.log("Get error: ", err)
-            remoteStreamClose(remotePeerId)
+            
+            removeRemoteStream(remotePeerId)
         })
 
         // TODO: peer disconnect

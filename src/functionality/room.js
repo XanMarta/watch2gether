@@ -9,10 +9,29 @@ let {
     getAllClientInRoom,
     isRoomExist,
     setRoomOwner,
-    outRoom
+    outRoom,
+    isRoomOwner
 } = require('../adapter/roomManager')
 
 function init_listener_room (io, socket) { 
+    function getMemberInformation(roomId) {
+        console.log("Get request for room infomation: ", roomId)
+        let clientArrayInRoom = getAllClientInRoom(io, roomId)
+    
+        for (let i=0;i<clientArrayInRoom.length;i++) 
+        {
+            let clientId = getUsername(clientArrayInRoom[i])
+            clientArrayInRoom[i] = {
+                clientId: clientId,
+                username: getUsername(clientId),
+                isRoomOwner: isRoomOwner(clientId)
+                // other information about member in room goes here
+            }
+        }
+    
+        return clientArrayInRoom
+    }
+
     socket.on("join-room", (roomId) => {
         console.log(`Get join room request from ${socket.id} to join ${roomId}`)
 
@@ -30,6 +49,8 @@ function init_listener_room (io, socket) {
         // TODO: Enable code above. Add no join when room is full.
         console.log(`Client ${getUsername(socket.id)} want to join ${roomId}`);
         
+        let isRoomOwner = false
+
         if (isRoomExist(io, roomId))
         {
             if (numClientInRoom(io, roomId) > 0)
@@ -45,6 +66,7 @@ function init_listener_room (io, socket) {
         {
             // Set current room owner to this socket id, since there no one before this client.
             setRoomOwner(socket.id, roomId)
+            isRoomOwner = true
         }
 
         socket.join(roomId)
@@ -62,7 +84,12 @@ function init_listener_room (io, socket) {
             })
         }
 
-        socket.emit("room-joined", roomId)
+        socket.emit("room-joined", {
+            roomId: roomId,
+            roomOwnerId: getRoomOwner(roomId),
+            member: getMemberInformation(roomId)
+            // TODO: send more in the future, like colour, and avt
+        })
 
         setRoomId(socket.id, roomId)
         console.log(io.sockets.adapter.rooms)
@@ -76,6 +103,12 @@ function init_listener_room (io, socket) {
         roomid = getRoomId(socket.id)
         username = getUsername(socket.id)
 
+        if (numClientInRoom(io, roomid) > 1) {
+            // there are more than one person in that room.
+            // TODO: change host, broadcast for all client.
+            console.log(`List of candidate client for host: ${getAllClientInRoom(io, roomid)}`)
+        }
+
         socket.leave(getRoomId(socket.id))
         outRoom(socket.id)
 
@@ -84,29 +117,6 @@ function init_listener_room (io, socket) {
             peerId: socket.id,
             username: username
         })
-    })
-
-    socket.on("get-room-info", () => {
-        if (isInRoom(socket.id)) {
-            console.log("Get request for room infomation: ", getRoomId(socket.id))
-            let clientArrayInRoom = getAllClientInRoom(io, getRoomId(socket.id))
-
-            for (let i=0;i<len(clientArrayInRoom);i++) 
-            {
-                clientArrayInRoom[i] = getUsername(clientArrayInRoom[i])
-            }
-
-            let roomClientArr = {
-                roomId: getRoomId(socket.id),
-                client: clientArrayInRoom
-            }
-            
-            socket.emit("room-info", roomClientArr)
-            console.log("Return room information to client: ", socket.id)
-        } else {
-            socket.emit("not-in-room")
-        }
-
     })
 }
 

@@ -1,0 +1,1 @@
+// render information of member from the room 

@@ -44,5 +44,7 @@ export function addJoinNotification(username, type) {
         addNotification(`${username} disconnected !!!`)
     } else if (type == 'leave') {
         addNotification(`${username} leave the room !!!`)
+    } else if (type == 'owner') {
+        addNotification(`${username} is the room owner`)
     }
 }

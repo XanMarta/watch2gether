@@ -1,8 +1,10 @@
-import { remoteStreamClose } from './stream.js'
 import { getSocket } from './singleton/init_socket.js'
 import * as peerManager from './singleton/init_peer.js' 
 import { addMessage, addJoinNotification } from './render/chat.js'
-
+import { renderRoomMember } from './render/member.js'
+import { renderOwnerView, renderClientView } from './render/perspective.js'
+import { removeRemoteStream } from './render/mainStream.js'
+import { setHost, isHost } from './singleton/ownership.js' 
 
 export function init_listener_room() {
     const socket = getSocket()
@@ -13,11 +15,23 @@ export function init_listener_room() {
         addJoinNotification(information['username'], 'join')
     })
 
-    socket.on("room-joined", (roomId) => {
+    socket.on("room-joined", (message) => {
         console.log("** got room-joined")
-        console.log(`Room ${roomId} Joined!`)
+        console.log(`Room ${message.roomId} Joined!`)
 
         addJoinNotification('You have', 'join')
+        
+        setHost(message.roomOwnerId)
+
+        if (isHost()) {
+
+            renderOwnerView()
+        }
+        else {
+            renderClientView()
+        }
+
+        renderRoomMember(message.member)
     }) 
 
     socket.on("room-message", (message) => {
@@ -37,13 +51,13 @@ export function init_listener_room() {
 
         //delete peers[peerId]
         peerManager.deletePeer(message.socketid)
-        remoteStreamClose(message.socketid)
+        removeRemoteStream()
     })
 
     socket.on("stream-disconnected", (message) => {
         console.log("** get stream-disconnected")
         console.log(`User ${message.peerId} stream disconnected`)
-        remoteStreamClose(message.peerId)
+        removeRemoteStream()
     })
     
     socket.on("leave-room-reject", message => {

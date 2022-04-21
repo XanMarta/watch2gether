@@ -16,8 +16,7 @@ import { getSocket } from "../singleton/init_socket.js"
 import * as peerManager from "../singleton/init_peer.js";
 import { streamConstraints } from "../singleton/constraint.js"
 import * as localStreamManager from "../singleton/init_localstream.js";
-import { remoteStreamClose } from "../stream.js"
-import { setLocalStream, removeLocalStream } from "../render/video_rendering.js"
+import { setLocalStream, removeLocalStream, removeRemoteStream } from "../render/mainStream.js"
 
 export function init_listener_button() { 
     const socket = getSocket();
@@ -48,9 +47,10 @@ export function init_listener_button() {
         
         // TODO: What should it be when out room?
         // Delete all stream.
-        peerManager.deletePeerAll(remoteStreamClose)
+        peerManager.deletePeerAll((id) => {})
 
-        // Set local stream to null.
+        // delete both remote and localStream
+        removeRemoteStream()
         removeLocalStream()
         localStreamManager.setLocalStream(null)
     })
@@ -75,6 +75,7 @@ export function init_listener_button() {
     })
 
     streamStopButton.addEventListener("click", () => {
+        // is Streaming, is host -> stop streaming
         if (localStreamManager.getLocalStream() != null && localStreamManager.getLocalStream() != undefined) 
         {
             peerManager.removeStreamAll(localStreamManager.getLocalStream(), (peerId) => {
