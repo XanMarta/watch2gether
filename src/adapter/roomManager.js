@@ -59,8 +59,12 @@ function broadcastAllRoom(io, roomId, func) {
     )
 }
 
-function outRoom(socketid) {
+function outRoom(io, socketid) {
     console.log(`Delete room name ${socketid}`)
+
+    if (getRoomOwner(room[socketid]) == socketid) {
+        console.log(`Check type to set room owner in the future: ${getAllClientInRoom(io, room[socketid])}`)
+    }
     delete room[socketid]
 }
 

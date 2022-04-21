@@ -110,11 +110,12 @@ function init_listener_room (io, socket) {
         }
 
         socket.leave(getRoomId(socket.id))
-        outRoom(socket.id)
+        outRoom(io, socket.id)
 
         socket.emit("leave-room", `Client leave room ${roomid}`)
         socket.to(roomid).emit("leave-room-notify", {
             peerId: socket.id,
+            host: getRoomOwner(roomid),
             username: username
         })
     })

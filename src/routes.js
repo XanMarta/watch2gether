@@ -29,7 +29,7 @@ module.exports = (io) => {
                     socketid: socket.id,
                     username: getUsername(socket.id)
                 })
-                outRoom(socket.id)
+                outRoom(io, socket.id)
             }
 
             if (getUsername(socket.id) != null || getUsername(socket.id) != undefined) {
