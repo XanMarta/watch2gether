@@ -2,6 +2,7 @@ import { getSocket } from './singleton/init_socket.js'
 import * as peerManager from './singleton/init_peer.js'
 import { getLocalStream } from './singleton/init_localstream.js';
 import { remoteStreamRender, remoteStreamClose } from './stream.js'
+import { addJoinNotification } from './render/chat.js'
 
 var listener = {} 
 
@@ -27,6 +28,8 @@ export function init_listener_peer() {
         socket.on("leave-room-notify", (data) => {
             console.log("** got leave-room-notify")
             console.log(`User ${data.username} has left the room.`)
+
+            addJoinNotification(data.username, 'leave')
     
             socket.off('signal', listener[data.peerId])
             delete listener[data.peerId]
