@@ -177,7 +177,7 @@
 
 // outButton.addEventListener("click", () => {
 //     socket.emit("leave-room")
-    
+
 //     // TODO: What should it be when out room?
 //     // Delete all stream.
 //     let pseudoPeer = Object.entries(peers)
@@ -292,20 +292,42 @@
 
 
 import { init_listener_room } from "./room.js"
-import { init_listener_button } from "./ui_interaction.js"
 import { init_listener_username } from "./username.js"
 import { init_listener_peer } from "./peer.js"
 import { setSocket } from "./singleton/init_socket.js"
-import { videoRender } from "./videoRender.js"
+//import { videoRender } from "./videoRender.js"
+import { homepage_init_listener_button } from "./jsFEtest/index.js";
+import { hostRoomPage_init_listener_button } from "./jsFEtest/hostRoom.js";
+import { joinRoomPage_init_listener_button } from "./jsFEtest/joinRoom.js";
 
 const WS_ENDPOINT = "ws://127.0.0.1:3000"
 const socket = io(WS_ENDPOINT)
 
 setSocket(socket)
 
-videoRender()
+//videoRender()
 
-init_listener_peer()
-init_listener_room()
-init_listener_button() 
-init_listener_username()
+//joinroom page
+//create room page
+// init_listener_peer()
+// init_listener_room()
+//init_listener_button()
+//homepage first
+
+if (localStorage.getItem("username") === null && localStorage.getItem("create-room-id") === null && localStorage.getItem("join-room-id") === null) {
+  homepage_init_listener_button();
+} else {
+  init_listener_username();
+  if (localStorage.getItem("join-room-id") === null) {
+    // if (localStorage.getItem("create-room-id") === null) {
+    //you're in join room perspective
+    hostRoomPage_init_listener_button();
+  }
+  // if (localStorage.getItem("join-room-id") === null) {
+  if (localStorage.getItem("create-room-id") === null) {
+    //you're in create room perspective
+    joinRoomPage_init_listener_button();
+  }
+  init_listener_peer();
+  init_listener_room();
+}
