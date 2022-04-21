@@ -36,14 +36,14 @@ export function init_listener_room() {
         // TODO: check if this change make app run unexpectedly.
 
         //delete peers[peerId]
-        peerManager.deletePeer(peerId)
-        remoteStreamClose(peerId)
+        peerManager.deletePeer(message.socketid)
+        remoteStreamClose(message.socketid)
     })
 
-    socket.on("stream-disconnected", (data) => {
+    socket.on("stream-disconnected", (message) => {
         console.log("** get stream-disconnected")
-        console.log(`User ${data.peerId} stream disconnected`)
-        remoteStreamClose(data.peerId)
+        console.log(`User ${message.peerId} stream disconnected`)
+        remoteStreamClose(message.peerId)
     })
     
     socket.on("leave-room-reject", message => {

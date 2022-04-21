@@ -1,7 +1,7 @@
 let {init_listener_room} = require('./functionality/room')
 let {deleteUsername, getUsername, init_listener_username} = require('./functionality/username')
 let { init_listener_chat } = require('./functionality/chat')
-const { getRoomId, isInRoom } = require('./adapter/roomManager')
+const { getRoomId, isInRoom, outRoom } = require('./adapter/roomManager')
 
 module.exports = (io) => {
     io.on("connection", (socket) => {
