@@ -8,7 +8,8 @@ let {
     numClientInRoom,
     getAllClientInRoom,
     isRoomExist,
-    setRoomOwner,
+    addRoomOwner,
+    removeRoomOwner,
     outRoom,
     isRoomOwner
 } = require('../adapter/roomManager')
@@ -17,17 +18,21 @@ function init_listener_room (io, socket) {
     function getMemberInformation(roomId) {
         console.log("Get request for room infomation: ", roomId)
         let clientArrayInRoom = getAllClientInRoom(io, roomId)
+
+        console.log(clientArrayInRoom)
     
         for (let i=0;i<clientArrayInRoom.length;i++) 
         {
-            let clientId = getUsername(clientArrayInRoom[i])
+            let username = getUsername(clientArrayInRoom[i])
             clientArrayInRoom[i] = {
-                clientId: clientId,
-                username: getUsername(clientId),
-                isRoomOwner: isRoomOwner(clientId)
+                clientId: clientArrayInRoom[i],
+                username: username,
+                isRoomOwner: isRoomOwner(clientArrayInRoom[i], roomId)
                 // other information about member in room goes here
             }
         }
+
+        console.log(clientArrayInRoom)
     
         return clientArrayInRoom
     }
@@ -48,8 +53,6 @@ function init_listener_room (io, socket) {
         
         // TODO: Enable code above. Add no join when room is full.
         console.log(`Client ${getUsername(socket.id)} want to join ${roomId}`);
-        
-        let isRoomOwner = false
 
         if (isRoomExist(io, roomId))
         {
@@ -62,18 +65,15 @@ function init_listener_room (io, socket) {
                 })
             }
         }
-        else 
-        {
-            // Set current room owner to this socket id, since there no one before this client.
-            setRoomOwner(socket.id, roomId)
-            isRoomOwner = true
-        }
 
         socket.join(roomId)
         socket.to(roomId).emit('join-room', {
             socketid: socket.id,
             username: getUsername(socket.id)
         });
+
+        // Add this id to candidate roomOwner list
+        addRoomOwner(socket.id, roomId)
 
         if (numClientInRoom(io, roomId) > 1)
         {
@@ -84,10 +84,12 @@ function init_listener_room (io, socket) {
             })
         }
 
+        let memberInformation = getMemberInformation(roomId)
+
         socket.emit("room-joined", {
             roomId: roomId,
             roomOwnerId: getRoomOwner(roomId),
-            member: getMemberInformation(roomId)
+            member: memberInformation
             // TODO: send more in the future, like colour, and avt
         })
 
@@ -100,8 +102,8 @@ function init_listener_room (io, socket) {
             socket.emit("leave-room-reject", "Client not in a room.")
             return 
         }
-        roomid = getRoomId(socket.id)
-        username = getUsername(socket.id)
+        let roomid = getRoomId(socket.id)
+        let username = getUsername(socket.id)
 
         if (numClientInRoom(io, roomid) > 1) {
             // there are more than one person in that room.
@@ -111,11 +113,12 @@ function init_listener_room (io, socket) {
 
         socket.leave(getRoomId(socket.id))
         outRoom(io, socket.id)
+        removeRoomOwner(socket.id, roomid)
 
         socket.emit("leave-room", `Client leave room ${roomid}`)
         socket.to(roomid).emit("leave-room-notify", {
             peerId: socket.id,
-            host: getRoomOwner(roomid),
+            roomOwnerId: getRoomOwner(roomid),
             username: username
         })
     })

@@ -43,21 +43,18 @@ export function init_listener_room() {
 
     socket.on("user-disconnected", message => {
         console.log("** got user-disconnected")
-        console.log(`User ${message} disconnected`)
+        console.log(`User ${message.socketid} disconnected`)
 
         addJoinNotification(message['username'], 'disconnect')
 
-        // TODO: check if this change make app run unexpectedly.
-
-        //delete peers[peerId]
-        peerManager.deletePeer(message.socketid)
-        removeRemoteStream()
+        removeRemoteStream(message.socketid)
+        setHost(message.roomOwnerId)
     })
 
     socket.on("stream-disconnected", (message) => {
         console.log("** get stream-disconnected")
         console.log(`User ${message.peerId} stream disconnected`)
-        removeRemoteStream()
+        removeRemoteStream(message.peerId)
     })
     
     socket.on("leave-room-reject", message => {
@@ -65,9 +62,11 @@ export function init_listener_room() {
         alert(message)
     })
     
-    socket.on("leave-room", message => {
+    socket.on("leave-room", message => { 
         console.log("** got leave-room")
         console.log(message)
+
+        setHost(null)
     })
 
     socket.on("room-info", (room) => {

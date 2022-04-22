@@ -1,7 +1,7 @@
 let {init_listener_room} = require('./functionality/room')
 let {deleteUsername, getUsername, init_listener_username} = require('./functionality/username')
 let { init_listener_chat } = require('./functionality/chat')
-const { getRoomId, isInRoom, outRoom } = require('./adapter/roomManager')
+const { getRoomId, isInRoom, outRoom, getRoomOwner, removeRoomOwner } = require('./adapter/roomManager')
 
 module.exports = (io) => {
     io.on("connection", (socket) => {
@@ -25,10 +25,14 @@ module.exports = (io) => {
 
             if (isInRoom(socket.id))
             {
+                removeRoomOwner(socket.id, getRoomId(socket.id))
                 io.to(getRoomId(socket.id)).emit("user-disconnected", {
                     socketid: socket.id,
+                    roomOwnerId: getRoomOwner(getRoomId(socket.id)),
                     username: getUsername(socket.id)
                 })
+
+                console.log(`New owner id of room ${getRoomId(socket.id)} is ${getRoomOwner(getRoomId(socket.id))}`)
                 outRoom(io, socket.id)
             }
 
@@ -43,7 +47,9 @@ module.exports = (io) => {
             })
         })
     
-        socket.on("disconnecting", () => {
+        socket.on("disconnect", () => {
+            console.log(`User ${socket.id} disconnected!!`)
+
             console.log(socket.rooms); // the Set contains at least the socket ID
         });
 

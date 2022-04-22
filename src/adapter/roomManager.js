@@ -12,11 +12,49 @@ function setRoomId(socketid, roomId) {
     room[socketid] = roomId
 }
 // from room id to socket id of room owner
+// Each roomOwner instance is an array
 roomOwner = {}
 
 function getRoomOwner(roomId) {
-    return roomOwner[roomId]
+    if (roomOwner[roomId] == null || roomOwner[roomId] == undefined) {
+        return undefined
+    }
+    return roomOwner[roomId][0]
 }
+
+function isRoomOwner(id, roomId) {
+    console.log(`Check if ${id} is the owner of the room ${roomId} - ${getRoomOwner(roomId)}`)
+    return id == getRoomOwner(roomId)
+}
+
+function addRoomOwner(id, roomId) {
+    if (roomOwner[roomId] == null || roomOwner[roomId] == undefined) {
+        roomOwner[roomId] = []
+    }
+    roomOwner[roomId].push(id)
+
+    console.log(`Add id ${id} to room ${roomId}. All client in room is ${roomOwner[roomId]}`)
+}
+
+function removeRoomOwner(id, roomId) {
+    if (roomOwner[roomId] == null || roomOwner[roomId] == undefined) {
+        return 
+    }
+    if (id == getRoomOwner(roomId)) {
+        roomOwner[roomId].shift()
+    } else {
+        let index = roomOwner[roomId].indexOf(id)
+
+        if (index > -1) {
+            roomOwner[roomId].splice(index, 1)
+        }
+    }
+
+    if (roomOwner[roomId].length == 0) {
+        delete roomOwner[roomId]
+    }
+}
+
 
 function isSocketIdExist(socketid) {
     return !(getUsername(socketid) == null)
@@ -38,19 +76,6 @@ function getAllClientInRoom(io, roomId) {
 // TODO: there io and nothing to do about it.
 function isRoomExist(io, roomId) {
     return io.sockets.adapter.rooms.get(roomId) != undefined
-}
-
-function isRoomOwner(id, roomId) {
-    return id == getRoomOwner(roomId)
-}
-
-function setRoomOwner(id, roomId) {
-    if (getRoomOwner(roomId) != null && getRoomOwner(roomId) != undefined) {
-        console.log("This room already has an owner")
-        return 
-    }
-
-    roomOwner[roomId] = id
 }
 
 function broadcastAllRoom(io, roomId, func) {
@@ -78,7 +103,8 @@ module.exports = {
     getAllClientInRoom,
     isRoomExist,
     isRoomOwner,
-    setRoomOwner,
+    addRoomOwner,
+    removeRoomOwner,
     broadcastAllRoom,
     outRoom
 }

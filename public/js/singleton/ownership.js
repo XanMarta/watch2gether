@@ -13,7 +13,7 @@ export function isRemoteHost(socketid) {
 }
 
 export function setHost(hostId) {
-    console.log(`Set hostId to ${hostId}`)
+    console.log(`** Set hostId to ${hostId}`)
     hostid = hostId 
 }
 
