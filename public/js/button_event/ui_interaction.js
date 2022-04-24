@@ -12,6 +12,7 @@ const usernameInput = document.getElementById("username")
 
 // const localStreamVideo = document.getElementById("local-stream")
 
+import * as Ownership from "../singleton/ownership.js"
 import { getSocket } from "../singleton/init_socket.js"
 import * as peerManager from "../singleton/init_peer.js";
 import { streamConstraints } from "../singleton/constraint.js"
@@ -61,6 +62,11 @@ export function init_listener_button() {
 
     streamStartButton.addEventListener("click", async () => {
         try {
+            if (!Ownership.isHost()) {
+                alert("Only host of room can stream !")
+                return 
+            }
+
             let localStream = await navigator.mediaDevices.getUserMedia(streamConstraints);
             setLocalStream(localStream)
             console.log("Local stream rendered!")

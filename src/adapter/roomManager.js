@@ -37,11 +37,13 @@ function addRoomOwner(id, roomId) {
 }
 
 function removeRoomOwner(id, roomId) {
+    let removeOwner = false 
     if (roomOwner[roomId] == null || roomOwner[roomId] == undefined) {
         return 
     }
     if (id == getRoomOwner(roomId)) {
         roomOwner[roomId].shift()
+        removeOwner = true
     } else {
         let index = roomOwner[roomId].indexOf(id)
 
@@ -53,6 +55,8 @@ function removeRoomOwner(id, roomId) {
     if (roomOwner[roomId].length == 0) {
         delete roomOwner[roomId]
     }
+
+    return removeOwner
 }
 
 

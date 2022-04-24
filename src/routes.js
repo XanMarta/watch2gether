@@ -1,4 +1,4 @@
-let {init_listener_room} = require('./functionality/room')
+let {init_listener_room, initConnectionInRoom} = require('./functionality/room')
 let {deleteUsername, getUsername, init_listener_username} = require('./functionality/username')
 let { init_listener_chat } = require('./functionality/chat')
 const { getRoomId, isInRoom, outRoom, getRoomOwner, removeRoomOwner } = require('./adapter/roomManager')
@@ -18,15 +18,17 @@ module.exports = (io) => {
                 peerId: socket.id
               });
         })
-    
+
         socket.on("disconnect", () => {
             // TODO: khi username out khỏi room/disconnect thì nên có xóa tên người dùng hiện tại đi.
             console.log(`Client ${socket.id} disconnect`)
 
             if (isInRoom(socket.id))
             {
-                removeRoomOwner(socket.id, getRoomId(socket.id))
-                io.to(getRoomId(socket.id)).emit("user-disconnected", {
+                let isOwner = removeRoomOwner(socket.id, getRoomId(socket.id))
+                let roomId = getRoomId(socket.id)
+
+                io.in(getRoomId(socket.id)).emit("user-disconnected", {
                     socketid: socket.id,
                     roomOwnerId: getRoomOwner(getRoomId(socket.id)),
                     username: getUsername(socket.id)
@@ -34,6 +36,10 @@ module.exports = (io) => {
 
                 console.log(`New owner id of room ${getRoomId(socket.id)} is ${getRoomOwner(getRoomId(socket.id))}`)
                 outRoom(io, socket.id)
+
+                if (isOwner) {
+                    initConnectionInRoom(io, roomId)
+                }
             }
 
             if (getUsername(socket.id) != null || getUsername(socket.id) != undefined) {

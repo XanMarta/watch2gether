@@ -2,7 +2,7 @@ import { getSocket } from './singleton/init_socket.js'
 import * as peerManager from './singleton/init_peer.js' 
 import { addMessage, addJoinNotification } from './render/chat.js'
 import { renderRoomMember } from './render/member.js'
-import { renderOwnerView, renderClientView } from './render/perspective.js'
+import { renderOwnerView, renderClientView, renderMainMenu } from './render/perspective.js'
 import { removeRemoteStream } from './render/mainStream.js'
 import { setHost, isHost } from './singleton/ownership.js' 
 
@@ -49,6 +49,10 @@ export function init_listener_room() {
 
         removeRemoteStream(message.socketid)
         setHost(message.roomOwnerId)
+
+        if (isHost()) {
+            renderOwnerView()
+        }
     })
 
     socket.on("stream-disconnected", (message) => {
@@ -67,6 +71,7 @@ export function init_listener_room() {
         console.log(message)
 
         setHost(null)
+        renderMainMenu()
     })
 
     socket.on("room-info", (room) => {

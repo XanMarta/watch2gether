@@ -7,3 +7,7 @@ export function renderOwnerView() {
 export function renderClientView() {
     console.log("Show client view")
 }
+
+export function renderMainMenu() {
+    console.log("Show main menu")
+}

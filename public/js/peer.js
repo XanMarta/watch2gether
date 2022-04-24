@@ -6,7 +6,8 @@ import {
     removeRemoteStream
 } from './render/mainStream.js' 
 import { addJoinNotification } from './render/chat.js'
-import { setHost } from './singleton/ownership.js';
+import { setHost, isHost } from './singleton/ownership.js';
+import { renderOwnerView, renderClientView } from './render/perspective.js'
 
 var listener = {} 
 
@@ -44,14 +45,18 @@ export function init_listener_peer() {
 
             removeRemoteStream(data.peerId)
             setHost(data.roomOwnerId)
+
+            if (isHost()) {
+                renderOwnerView()
+            }
         })
 
         socket.on("user-disconnected", message => {
-            socket.off('signal', listener[message.peerId])
-            delete listener[message.peerId]
+            socket.off('signal', listener[message.socketid])
+            delete listener[message.socketid]
     
-            peerManager.deletePeer(message.peerId)
-            console.log("Erase peer ID: ", message.peerId)
+            peerManager.deletePeer(message.socketid)
+            console.log("Erase peer ID: ", message.socketid)
         })
 
         peer.on("signal", data => {

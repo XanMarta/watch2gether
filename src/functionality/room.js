@@ -14,7 +14,37 @@ let {
     isRoomOwner
 } = require('../adapter/roomManager')
 
-function init_listener_room (io, socket) { 
+function initConnectionInRoom(io, roomId) {
+    console.log(`Init connection in room ${roomId}`)
+    if (isRoomExist(io, roomId))
+    {
+        console.log(`Yes, room exist`)
+        if (numClientInRoom(io, roomId) > 1)
+        {
+            console.log('Yes, there are more than one person in this room')
+            let roomOwnerId = getRoomOwner(roomId);
+
+            getAllClientInRoom(io, roomId).forEach(socketid => {
+                if (socketid == roomOwnerId) {
+                    return
+                }
+                io.to(socketid).emit("peer-init", {
+                    peerId: roomOwnerId,
+                    initiator: false
+                })
+                io.to(roomOwnerId).emit('peer-init', {
+                    peerId: socketid,
+                    initiator: true
+                })
+                console.log(`Send an peer negotiation between ${socketid} and ${roomOwnerId}`)
+            })
+        }
+    }
+}
+
+
+function init_listener_room (io, socket) {
+
     function getMemberInformation(roomId) {
         console.log("Get request for room infomation: ", roomId)
         let clientArrayInRoom = getAllClientInRoom(io, roomId)
@@ -113,7 +143,7 @@ function init_listener_room (io, socket) {
 
         socket.leave(getRoomId(socket.id))
         outRoom(io, socket.id)
-        removeRoomOwner(socket.id, roomid)
+        let isOwner = removeRoomOwner(socket.id, roomid)
 
         socket.emit("leave-room", `Client leave room ${roomid}`)
         socket.to(roomid).emit("leave-room-notify", {
@@ -121,9 +151,14 @@ function init_listener_room (io, socket) {
             roomOwnerId: getRoomOwner(roomid),
             username: username
         })
+
+        if (isOwner) {
+            initConnectionInRoom(io, roomid);
+        }
     })
 }
 
 module.exports = {
-    init_listener_room
+    init_listener_room,
+    initConnectionInRoom
 }
