@@ -47,8 +47,8 @@
                 <h1>Watch2gether</h1>
             </div>
             <div class="card-body">
-                <h5 class="card-title">Watch video with your friends</h5>
-                <p class="card-text">Create or join a room</p>
+                <h5 class="card-title" style="font-size: 30px;">Watch video with your friends</h5>
+                <p class="card-text" style="font-size: 25px;">Create or join a room</p>
                 <!-- <a href="#" class="btn btn-primary">Create a room</a>
         <a href="#" class="btn btn-primary">Join a room</a> -->
                 <button class="btn btn-primary" id="createRoomButton" data-bs-toggle="modal"
@@ -64,51 +64,57 @@
     </div>
     <div class="container-xxl themed-container" id="feature-section">
         <h1>Features</h1>
-        <!--Feature section-->
-        <div class="tab">
-            <button class="tablinks" onclick="openFeature(event, 'feature1')" id="defaultOpen">Feature 1</button>
-            <button class="tablinks" onclick="openFeature(event, 'feature2')">Feature 2</button>
-            <button class="tablinks" onclick="openFeature(event, 'feature3')">Feature 3</button>
-            <button class="tablinks" onclick="openFeature(event, 'feature4')">Feature 4</button>
-        </div>
+        <div class="card flex-row">
+            <!--Feature section-->
+            <div class="tab">
+                <button class="tablinks" onclick="openFeature(event, 'feature1')" id="defaultOpen">Feature 1</button>
+                <button class="tablinks" onclick="openFeature(event, 'feature2')">Feature 2</button>
+                <button class="tablinks" onclick="openFeature(event, 'feature3')">Feature 3</button>
+                <button class="tablinks" onclick="openFeature(event, 'feature4')">Feature 4</button>
+            </div>
 
-        <div id="feature1" class="tabcontent">
-            <h3>Feature 1</h3>
-            <p>Feature 1 blahblahblahblahblahblahblahblahblah</p>
-        </div>
+            <div id="feature1" class="tabcontent">
+                <h1>Feature 1</h1>
+                <p>fashdfhksadjhfjksdahfjksadhfjksdhfkasdhssfkfasdhfkas
+                    jdfhkajsrqweretwertwefaskdhfkjasdhfkasdfhkasdhfkasdhfdkshfsdhhfasfasda</p>
+            </div>
 
-        <div id="feature2" class="tabcontent">
-            <h3>Feature 2</h3>
-            <p>Feature 2 blahblahblahblahblahblahblahblahblah</p>
-        </div>
+            <div id="feature2" class="tabcontent">
+                <h1>Feature 2</h1>
+                <p>Feature 2 blahblahblahblahblahblahblahblahblah</p>
+            </div>
 
-        <div id="feature3" class="tabcontent">
-            <h3>Feature 3</h3>
-            <p>Feature 3 blahblahblahblahblahblahblahblahblah</p>
-        </div>
+            <div id="feature3" class="tabcontent">
+                <h1>Feature 3</h1>
+                <p>Feature 3 blahblahblahblahblahblahblahblahblah</p>
+            </div>
 
-        <div id="feature4" class="tabcontent">
-            <h3>Feature 4</h3>
-            <p>Feature 4 blahblahblahblahblahblahblahblahblah</p>
+            <div id="feature4" class="tabcontent">
+                <h1>Feature 4</h1>
+                <p>Feature 4 blahblahblahblahblahblahblahblahblah</p>
+            </div>
+            <!--End Feature section-->
         </div>
-        <!--End Feature section-->
     </div>
     <div class="container-xxl themed-container" id="review-section">
         <h1>Review</h1>
         <!--Review section-->
-        <div id="review-card">
-            <div class="picture-card">
-                <div></div>
-            </div>
-            <div class="content-card">
-                <div class="content-card-text">
-                    afsdkjfh
-                </div>
+        <div class="card flex-row">
+            <img class="card-img-left example-card-img-responsive"
+                src="https://images.unsplash.com/photo-1611915387288-fd8d2f5f928b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8Mnx8fGVufDB8fHx8&w=1000&q=80"
+                width="30%" height="30%"
+                style="padding-left: 2rem;padding-top: 5rem;padding-bottom: 10rem;padding-right: 2rem;" />
+            <div class="card-body" style="padding-left: 5rem; padding-top:5rem;">
+                <blockquote class="blockquote mb-5">
+                    <p style="font-size:200%">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere
+                        erat a ante.</p>
+                    <footer class="blockquote-footer" style="padding-left: 5rem; padding-top:5rem; font-size: 200%">
+                        Someone famous in <cite title="Source Title">Source Title</cite>
+                    </footer>
+                </blockquote>
             </div>
         </div>
-
-    </div>
-    <!--End Review section-->
+        <!--End Review section-->
     </div>
     <!--Footer section-->
     <footer class="mt-auto">

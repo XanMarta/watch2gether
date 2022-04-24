@@ -22,8 +22,8 @@ export function homepage_init_listener_button() {
 
     let roomId = roomIdInputJoin.value;
 
-    localStorage.setItem("join-room-id", roomId);
-    localStorage.setItem("username", username);
+    sessionStorage.setItem("join-room-id", roomId);
+    sessionStorage.setItem("username", username);
     alert("Join room: " + roomId + "with user is: " + username);
     window.location.replace('../../views/joinRoom.html');
     //window.location.href = "../../views/joinRoom.html"
@@ -48,8 +48,8 @@ export function homepage_init_listener_button() {
 
     let roomId = roomIdInputCreate.value;
 
-    localStorage.setItem("create-room-id", roomId);
-    localStorage.setItem("username", username);
+    sessionStorage.setItem("create-room-id", roomId);
+    sessionStorage.setItem("username", username);
     alert("Join room: " + roomId + "with user is: " + username);
     window.location.replace('../../views/hostRoom.html');
     //window.location.href = "../../views/hostRoom.html"

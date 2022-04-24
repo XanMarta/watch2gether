@@ -314,17 +314,18 @@ setSocket(socket)
 //init_listener_button()
 //homepage first
 
-if (localStorage.getItem("username") === null && localStorage.getItem("create-room-id") === null && localStorage.getItem("join-room-id") === null) {
+
+if (sessionStorage.getItem("username") === null && sessionStorage.getItem("create-room-id") === null && sessionStorage.getItem("join-room-id") === null) {
   homepage_init_listener_button();
 } else {
   init_listener_username();
-  if (localStorage.getItem("join-room-id") === null) {
+  if (sessionStorage.getItem("join-room-id") === null) {
     // if (localStorage.getItem("create-room-id") === null) {
     //you're in join room perspective
     hostRoomPage_init_listener_button();
   }
   // if (localStorage.getItem("join-room-id") === null) {
-  if (localStorage.getItem("create-room-id") === null) {
+  if (sessionStorage.getItem("create-room-id") === null) {
     //you're in create room perspective
     joinRoomPage_init_listener_button();
   }

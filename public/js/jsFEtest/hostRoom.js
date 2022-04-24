@@ -73,4 +73,10 @@ export function hostRoomPage_init_listener_button() {
     // localStreamVideo.srcObject = null
     // localStreamManager.setLocalStream(null)
   })
+
+  window.addEventListener('beforeunload', function (e) {
+    e.preventDefault();
+    console.log("lmao")
+    //e.returnValue = '';
+  });
 }
