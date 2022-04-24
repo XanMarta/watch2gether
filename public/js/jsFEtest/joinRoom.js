@@ -47,8 +47,8 @@ const outButton = document.getElementById("out-room")
 import { getSocket } from "../singleton/init_socket.js"
 export function joinRoomPage_init_listener_button() {
   const socket = getSocket();
-  const roomId = localStorage.getItem("join-room-id");
-  const username = localStorage.getItem("username");
+  const roomId = sessionStorage.getItem("join-room-id");
+  const username = sessionStorage.getItem("username");
   console.log("Room id is: " + roomId + " and username is " + username);
   socket.emit("register-username", username);
   socket.emit("join-room", roomId);
@@ -59,7 +59,7 @@ export function joinRoomPage_init_listener_button() {
       socket.emit("leave-room")
       // localStorage.removeItem("username");
       // localstorage.removeItem("join-room-id");
-      localStorage.clear();
+      sessionStorage.clear();
       //go back to home page
       window.location.replace("/");
     }
