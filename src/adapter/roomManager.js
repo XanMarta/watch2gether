@@ -37,9 +37,9 @@ function addRoomOwner(id, roomId) {
 }
 
 function removeRoomOwner(id, roomId) {
-    let removeOwner = false 
+    let removeOwner = false
     if (roomOwner[roomId] == null || roomOwner[roomId] == undefined) {
-        return 
+        return
     }
     if (id == getRoomOwner(roomId)) {
         roomOwner[roomId].shift()
@@ -66,7 +66,7 @@ function isSocketIdExist(socketid) {
 
 function isInRoom(socketid) {
     var currentRoom = getRoomId(socketid)
-    return currentRoom!= null && currentRoom != undefined
+    return currentRoom != null && currentRoom != undefined
 }
 
 function numClientInRoom(io, roomId) {

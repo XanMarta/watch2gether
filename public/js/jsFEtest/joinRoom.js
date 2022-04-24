@@ -43,9 +43,28 @@
 //   }
 // })
 
+import { init_listener_room } from "../room.js"
+import { init_listener_username } from "../username.js"
+import { init_listener_peer } from "../peer.js"
+import { setSocket } from "../singleton/init_socket.js"
+
+
+const WS_ENDPOINT = "ws://127.0.0.1:3000"
+const socket = io(WS_ENDPOINT)
+console.log("Join room view");
+setSocket(socket)
+
 const outButton = document.getElementById("out-room")
+
+//chat
+var sendMessage = document.getElementById("send-message");
+var chatMessages = document.getElementsByClassName('chat-messages')[0];
+var messageInput = document.getElementById("message-input");
 import { getSocket } from "../singleton/init_socket.js"
-export function joinRoomPage_init_listener_button() {
+
+
+//make sure room and username in sessionStorage are cleared
+function joinRoomPage_init_listener_button() {
   const socket = getSocket();
   const roomId = sessionStorage.getItem("join-room-id");
   const username = sessionStorage.getItem("username");
@@ -59,7 +78,10 @@ export function joinRoomPage_init_listener_button() {
       socket.emit("leave-room")
       // localStorage.removeItem("username");
       // localstorage.removeItem("join-room-id");
-      sessionStorage.clear();
+      //sessionStorage.clear();
+
+      localStorage.removeItem("username");
+      localstorage.removeItem("join-room-id");
       //go back to home page
       window.location.replace("/");
     }
@@ -73,9 +95,35 @@ export function joinRoomPage_init_listener_button() {
     // localStreamManager.setLocalStream(null)
   })
 
+  //chat
+  sendMessage.addEventListener("click", () => {
+    let message = messageInput.value;
+    console.log("Client want to send message: ", message)
+    socket.emit("broadcast_message_room", (message))
+  })
+
+  sendMessage.addEventListener("keyup", (e) => {
+    e.preventDefault();
+    let message = messageInput.value;
+    console.log("Enter clicked")
+    //click enter with keycode = 13
+    if (e.keyCode == 13) {
+      console.log("Client want to send message: ", message)
+      socket.emit("broadcast_message_room", (message))
+    }
+  })
+
+  //notification
+
   window.addEventListener('beforeunload', function (e) {
     e.preventDefault();
     console.log("lmao")
     //e.returnValue = '';
   });
 }
+
+//start running
+init_listener_username();
+joinRoomPage_init_listener_button()
+init_listener_peer();
+init_listener_room();

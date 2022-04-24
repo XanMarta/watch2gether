@@ -1,10 +1,10 @@
 import { getSocket } from './singleton/init_socket.js'
-import * as peerManager from './singleton/init_peer.js' 
+import * as peerManager from './singleton/init_peer.js'
 import { addMessage, addJoinNotification } from './render/chat.js'
 import { renderRoomMember } from './render/member.js'
 import { renderOwnerView, renderClientView, renderMainMenu } from './render/perspective.js'
 import { removeRemoteStream } from './render/mainStream.js'
-import { setHost, isHost } from './singleton/ownership.js' 
+import { setHost, isHost } from './singleton/ownership.js'
 
 export function init_listener_room() {
     const socket = getSocket()
@@ -20,7 +20,7 @@ export function init_listener_room() {
         console.log(`Room ${message.roomId} Joined!`)
 
         addJoinNotification('You have', 'join')
-        
+
         setHost(message.roomOwnerId)
 
         if (isHost()) {
@@ -32,7 +32,7 @@ export function init_listener_room() {
         }
 
         renderRoomMember(message.member)
-    }) 
+    })
 
     socket.on("room-message", (message) => {
         console.log("** got room-message")
@@ -60,13 +60,13 @@ export function init_listener_room() {
         console.log(`User ${message.peerId} stream disconnected`)
         removeRemoteStream(message.peerId)
     })
-    
+
     socket.on("leave-room-reject", message => {
         console.log("** get leave-room-reject")
         alert(message)
     })
-    
-    socket.on("leave-room", message => { 
+
+    socket.on("leave-room", message => {
         console.log("** got leave-room")
         console.log(message)
 
@@ -77,15 +77,15 @@ export function init_listener_room() {
     socket.on("room-info", (room) => {
         console.log("** got room-info")
         console.log('All client id from same room: ')
-        console.log(typeof(room))
+        console.log(typeof (room))
         console.log(room)
     })
-    
+
     socket.on("not-in-room", () => {
         console.log("** got not-in-room")
         alert("Client havent joined a room yet.")
     })
-    
+
     socket.on("already-in-room", () => {
         console.log("** got already-in-room")
         alert("Client already in a room.")

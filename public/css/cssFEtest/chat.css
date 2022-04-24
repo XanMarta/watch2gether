@@ -7,7 +7,7 @@
   margin-left: 1rem;
   pointer-events: auto;
 }
-.chat-title {
+#chat-title {
   padding: 0.5em;
   background-color: green;
   color: white;
@@ -18,7 +18,7 @@
   height: 60vh;
   overflow: auto;
 }
-#chat-text-current-user {
+.chat-text-current-user {
   float: left;
   margin: 1rem 5rem 1.5rem 1rem;
   width: 70%;
@@ -30,7 +30,7 @@
   padding-right:1rem;
 }
 
-#chat-text-other-user {
+.chat-text-other-user {
   float: right;
   /* margin-top: 1rem;
   margin-right: 0rem; */
@@ -38,4 +38,17 @@
   width: 60%;
   border-style: solid;
   word-break: break-all;
+}
+
+.notification {
+  float: right;
+  /* margin-top: 1rem;
+  margin-right: 0rem; */
+  margin: 1rem 5rem 2rem 0rem;
+  width: 60%;
+  border-style: solid;
+  word-break: break-all;
+  text-align: center;
+  font-size: 15px;
+  color: gray
 }
