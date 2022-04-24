@@ -10,14 +10,15 @@ const roomIdInput = document.getElementById("room-id");
 const messageInput = document.getElementById("message-input")
 const usernameInput = document.getElementById("username")
 
-const localStreamVideo = document.getElementById("local-stream")
+// const localStreamVideo = document.getElementById("local-stream")
 
-import { getSocket } from "./singleton/init_socket.js"
-import * as peerManager from "./singleton/init_peer.js";
-import { streamConstraints } from "./singleton/constraint.js"
-import * as localStreamManager from "./singleton/init_localstream.js";
-import { remoteStreamClose } from "./stream.js"
- 
+import * as Ownership from "../singleton/ownership.js"
+import { getSocket } from "../singleton/init_socket.js"
+import * as peerManager from "../singleton/init_peer.js";
+import { streamConstraints } from "../singleton/constraint.js"
+import * as localStreamManager from "../singleton/init_localstream.js";
+import { setLocalStream, removeLocalStream, removeRemoteStream } from "../render/mainStream.js"
+
 export function init_listener_button() { 
     const socket = getSocket();
     
@@ -47,10 +48,11 @@ export function init_listener_button() {
         
         // TODO: What should it be when out room?
         // Delete all stream.
-        peerManager.deletePeerAll(remoteStreamClose)
+        peerManager.deletePeerAll((id) => {})
 
-        // Set local stream to null.
-        localStreamVideo.srcObject = null
+        // delete both remote and localStream
+        removeRemoteStream()
+        removeLocalStream()
         localStreamManager.setLocalStream(null)
     })
 
@@ -60,8 +62,13 @@ export function init_listener_button() {
 
     streamStartButton.addEventListener("click", async () => {
         try {
+            if (!Ownership.isHost()) {
+                alert("Only host of room can stream !")
+                return 
+            }
+
             let localStream = await navigator.mediaDevices.getUserMedia(streamConstraints);
-            localStreamVideo.srcObject = localStream;
+            setLocalStream(localStream)
             console.log("Local stream rendered!")
 
             peerManager.addStreamAll(localStream)
@@ -74,6 +81,7 @@ export function init_listener_button() {
     })
 
     streamStopButton.addEventListener("click", () => {
+        // is Streaming, is host -> stop streaming
         if (localStreamManager.getLocalStream() != null && localStreamManager.getLocalStream() != undefined) 
         {
             peerManager.removeStreamAll(localStreamManager.getLocalStream(), (peerId) => {
@@ -83,7 +91,7 @@ export function init_listener_button() {
             })
 
             localStreamManager.setLocalStream(null)
-            localStreamVideo.srcObject = null
+            removeLocalStream()
         }
     })
 }

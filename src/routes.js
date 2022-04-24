@@ -1,5 +1,7 @@
-let {outRoom, isInRoom, init_listener_room} = require('./room')
-let {deleteUsername, getUsername, init_listener_username} = require('./username')
+let {init_listener_room, initConnectionInRoom} = require('./functionality/room')
+let {deleteUsername, getUsername, init_listener_username} = require('./functionality/username')
+let { init_listener_chat } = require('./functionality/chat')
+const { getRoomId, isInRoom, outRoom, getRoomOwner, removeRoomOwner } = require('./adapter/roomManager')
 
 module.exports = (io) => {
     io.on("connection", (socket) => {
@@ -16,20 +18,32 @@ module.exports = (io) => {
                 peerId: socket.id
               });
         })
-    
+
         socket.on("disconnect", () => {
             // TODO: khi username out khỏi room/disconnect thì nên có xóa tên người dùng hiện tại đi.
             console.log(`Client ${socket.id} disconnect`)
-            deleteUsername(socket.id)
 
             if (isInRoom(socket.id))
             {
-                if (getUsername(socket.id) == null) {
-                    return
+                let isOwner = removeRoomOwner(socket.id, getRoomId(socket.id))
+                let roomId = getRoomId(socket.id)
+
+                io.in(getRoomId(socket.id)).emit("user-disconnected", {
+                    socketid: socket.id,
+                    roomOwnerId: getRoomOwner(getRoomId(socket.id)),
+                    username: getUsername(socket.id)
+                })
+
+                console.log(`New owner id of room ${getRoomId(socket.id)} is ${getRoomOwner(getRoomId(socket.id))}`)
+                outRoom(io, socket.id)
+
+                if (isOwner) {
+                    initConnectionInRoom(io, roomId)
                 }
-    
-                io.to(room[socket.id]).emit("user-disconnected", socket.id)
-                outRoom(socket.id)
+            }
+
+            if (getUsername(socket.id) != null || getUsername(socket.id) != undefined) {
+                deleteUsername(socket.id)
             }
         })
     
@@ -39,11 +53,14 @@ module.exports = (io) => {
             })
         })
     
-        socket.on("disconnecting", () => {
+        socket.on("disconnect", () => {
+            console.log(`User ${socket.id} disconnected!!`)
+
             console.log(socket.rooms); // the Set contains at least the socket ID
         });
 
         init_listener_room(io, socket)
+        init_listener_chat(socket)
         init_listener_username(io, socket)
     })
 }
