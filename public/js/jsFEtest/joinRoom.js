@@ -80,8 +80,9 @@ function joinRoomPage_init_listener_button() {
       // localstorage.removeItem("join-room-id");
       //sessionStorage.clear();
 
-      localStorage.removeItem("username");
-      localstorage.removeItem("join-room-id");
+      // sessionStorage.removeItem("username");
+      // sessionStorage.removeItem("join-room-id");
+      sessionStorage.clear();
       //go back to home page
       window.location.replace("/");
     }
