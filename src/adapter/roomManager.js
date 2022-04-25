@@ -2,7 +2,7 @@ console.log("Create room management for the first time")
 let { getUsername } = require('../functionality/username')
 
 // from socket id to room id 
-room = {}
+const room = {}
 
 function getRoomId(socketid) {
     return room[socketid]
@@ -13,7 +13,7 @@ function setRoomId(socketid, roomId) {
 }
 // from room id to socket id of room owner
 // Each roomOwner instance is an array
-roomOwner = {}
+const roomOwner = {}
 
 function getRoomOwner(roomId) {
     if (roomOwner[roomId] == null || roomOwner[roomId] == undefined) {

@@ -1,4 +1,4 @@
-chatLog = {}
+const chatLog = {}
 
 function saveChatLog(object) {
     let roomId = object['roomId']

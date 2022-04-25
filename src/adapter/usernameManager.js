@@ -1,5 +1,5 @@
-usernameToSocketId = {}
-socketIdToUsername = {}
+const usernameToSocketId = {}
+const socketIdToUsername = {}
 
 function getUsername(socketid) {
     return socketIdToUsername[socketid]
