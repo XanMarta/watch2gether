@@ -3,7 +3,8 @@ let {
     getSocketId,
     isUsernameExist,
     deleteUsername,
-    setUsername
+    setUsername,
+    getUsernameFromSocketId
 } = require("../adapter/usernameManager")
 
 function init_listener_username (io, socket) {
@@ -11,7 +12,7 @@ function init_listener_username (io, socket) {
         if (isUsernameExist(username)) {
             socket.emit("register-username-reject", "Name already exist!")
         } else {
-            if (socketIdToUsername[socket.id] != null && socketIdToUsername[socket.id] != undefined) {
+            if (getUsernameFromSocketId(socket.id) != null && getUsernameFromSocketId(socket.id) != undefined) {
                 deleteUsername(socket.id)
             }
             setUsername(socket.id, username)

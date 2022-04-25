@@ -23,10 +23,15 @@ function deleteUsername(socketid) {
     delete socketIdToUsername[socketid]
 }
 
+function getUsernameFromSocketId(socketid) {
+    return socketIdToUsername[socketid]
+}
+
 module.exports = {
     getUsername,
     getSocketId,
     isUsernameExist,
     deleteUsername,
-    setUsername
+    setUsername,
+    getUsernameFromSocketId
 }
