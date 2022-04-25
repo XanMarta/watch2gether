@@ -16,10 +16,6 @@ function setRoomId(socketid, roomId) {
 roomOwner = {}
 
 function getRoomOwner(roomId) {
-    if (!isRoomExist(io, roomId)) {
-        return undefined
-    }
-
     if (roomOwner[roomId] == null || roomOwner[roomId] == undefined) {
         return undefined
     }
@@ -27,9 +23,6 @@ function getRoomOwner(roomId) {
 }
 
 function isRoomOwner(id, roomId) {
-    if (!isRoomExist(io, roomId)) {
-        return undefined
-    }
 
     console.log(`Check if ${id} is the owner of the room ${roomId} - ${getRoomOwner(roomId)}`)
     return id == getRoomOwner(roomId)
@@ -45,10 +38,6 @@ function addRoomOwner(id, roomId) {
 }
 
 function removeRoomOwner(id, roomId) {
-    if (!isRoomExist(io, roomId)) {
-        return undefined
-    }
-
     let removeOwner = false 
     if (roomOwner[roomId] == null || roomOwner[roomId] == undefined) {
         return 
