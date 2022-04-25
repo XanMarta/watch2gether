@@ -1,5 +1,5 @@
-usernameToSocketId = {}
-socketIdToUsername = {}
+const usernameToSocketId = {}
+const socketIdToUsername = {}
 
 function getUsername(socketid) {
     return socketIdToUsername[socketid]
@@ -23,10 +23,15 @@ function deleteUsername(socketid) {
     delete socketIdToUsername[socketid]
 }
 
+function getUsernameFromSocketId(socketid) {
+    return socketIdToUsername[socketid]
+}
+
 module.exports = {
     getUsername,
     getSocketId,
     isUsernameExist,
     deleteUsername,
-    setUsername
+    setUsername,
+    getUsernameFromSocketId
 }

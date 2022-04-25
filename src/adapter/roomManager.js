@@ -2,7 +2,7 @@ console.log("Create room management for the first time")
 let { getUsername } = require('../functionality/username')
 
 // from socket id to room id 
-room = {}
+const room = {}
 
 function getRoomId(socketid) {
     return room[socketid]
@@ -13,7 +13,7 @@ function setRoomId(socketid, roomId) {
 }
 // from room id to socket id of room owner
 // Each roomOwner instance is an array
-roomOwner = {}
+const roomOwner = {}
 
 function getRoomOwner(roomId) {
     if (roomOwner[roomId] == null || roomOwner[roomId] == undefined) {
@@ -23,6 +23,7 @@ function getRoomOwner(roomId) {
 }
 
 function isRoomOwner(id, roomId) {
+
     console.log(`Check if ${id} is the owner of the room ${roomId} - ${getRoomOwner(roomId)}`)
     return id == getRoomOwner(roomId)
 }
@@ -70,10 +71,16 @@ function isInRoom(socketid) {
 }
 
 function numClientInRoom(io, roomId) {
+    if (!isRoomExist(io, roomId)) {
+        return undefined
+    }
     return Array.from(io.sockets.adapter.rooms.get(roomId)).length
 }
 
 function getAllClientInRoom(io, roomId) {
+    if (!isRoomExist(io, roomId)) {
+        return undefined
+    }
     return Array.from(io.sockets.adapter.rooms.get(roomId))
 }
 
@@ -83,6 +90,10 @@ function isRoomExist(io, roomId) {
 }
 
 function broadcastAllRoom(io, roomId, func) {
+    if (!isRoomExist(io, roomId)) {
+        return undefined
+    }
+    
     Array.from(io.sockets.adapter.rooms.get(roomId)).forEach(
         func
     )
