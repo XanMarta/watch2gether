@@ -22,7 +22,7 @@
 
         <div>
             <h1>Extra: Chatbox</h1>
-            <div id="chatbox"> 
+            <div id="chat-container"> 
 
             </div>
             <input id="message-input" placeholder="Enter message">
@@ -38,10 +38,7 @@
             <button id="video-start-button">Start Video</button>
             <button id="video-stop-button">Stop Video</button>
             <div>
-                <video id="local-stream" autoplay></video>
-                <div id="remote-video-container">
-                    <video id="remote-stream" autoplay></video>
-                </div>
+                <video id="main-stream" width="1200" height="720" autoplay></video>
             </div>
         </div>
 
@@ -66,19 +63,6 @@
                 <video id="video-player-remote-player-2" autoplay></video>
             </div>
 
-        </div>
-
-        <div>
-            <h1>Step 5: Youtube Player</h1>
-
-            <input type="text" id="video-stream-youtube-link" placeholder="Enter youtube link here">
-            <button id="video-stream-enter-youtube-link-button">Enter</button>
-            <button id="video-stream-delete-youtube-button">Dispose</button>
-
-            <div id="youtube-video-frame">
-
-            </div>
-            
         </div>
 
         <script src="/socket.io/socket.io.js"></script>
