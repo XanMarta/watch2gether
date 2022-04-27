@@ -2,11 +2,13 @@ const init = require("./init_test")
 
 
 describe('user-join-room test', () => {
-    let clients, io
+    let clients = []
+    let io
+    const port = 3000
     const roomid = 13
 
     beforeAll(() => {
-        io = init.init_server()
+        io = init.init_server(port)
     })
 
     afterAll(() => {
@@ -14,7 +16,7 @@ describe('user-join-room test', () => {
     })
 
     beforeEach(async () => {
-        clients = await init.init_client(2, false)
+        clients = await init.init_client(port, 2, false)
     })
 
     afterEach(() => {
@@ -96,10 +98,12 @@ describe('user-join-room test', () => {
 
 
 describe("user-in-room test", () => {
-    let clients, io
+    let clients = []
+    let io
+    const port = 3001
 
     beforeAll(() => {
-        io = init.init_server()
+        io = init.init_server(port)
     })
 
     afterAll(() => {
@@ -107,7 +111,7 @@ describe("user-in-room test", () => {
     })
 
     beforeEach(async () => {
-        clients = await init.init_client(2, true)
+        clients = await init.init_client(port, 2, true)
     })
 
     afterEach(() => {

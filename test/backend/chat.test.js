@@ -2,10 +2,12 @@ const init = require('./init_test')
 
 
 describe("chat test", () => {
-    let clients, io
+    let clients = []
+    let io 
+    const port = 3002
 
     beforeAll(() => {
-        io = init.init_server()
+        io = init.init_server(port)
     })
 
     afterAll(() => {
@@ -13,7 +15,7 @@ describe("chat test", () => {
     })
 
     beforeEach(async () => {
-        clients = await init.init_client(2, true)
+        clients = await init.init_client(port, 2, true)
     })
 
     afterEach(() => {

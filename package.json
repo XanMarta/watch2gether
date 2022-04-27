@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon src/index.js",
-    "test": "jest --passWithNoTests",
-    "tests": "jest --passWithNoTests --silent"
+    "test": "jest"
   },
   "keywords": [],
   "author": "",
@@ -20,8 +19,18 @@
     "video.js": "^7.18.1"
   },
   "devDependencies": {
-    "jest": "^27.5.1",
+    "@babel/plugin-transform-modules-commonjs": "^7.17.9",
+    "jest": "^26.6.3",
     "nodemon": "^2.0.15",
     "socket.io-client": "^4.4.1"
+  },
+  "babel": {
+    "env": {
+      "test": {
+        "plugins": [
+          "@babel/plugin-transform-modules-commonjs"
+        ]
+      }
+    }
   }
 }
