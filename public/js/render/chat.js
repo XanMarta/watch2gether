@@ -38,13 +38,15 @@ function addNotification(content) {
 export function addJoinNotification(username, type) {
     // content: str
 
-    if (type == 'join') {
+    if (type == 'create') {
+        addNotification(`${username} has create the room !!!`)
+    } else if (type == 'join') {
         addNotification(`${username} joined the room !!!`)
     } else if (type == 'disconnect') {
         addNotification(`${username} disconnected !!!`)
     } else if (type == 'leave') {
         addNotification(`${username} leave the room !!!`)
     } else if (type == 'owner') {
-        addNotification(`${username} is the room owner`)
+        addNotification(`${username} is now the room owner !!!`)
     }
 }
