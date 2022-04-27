@@ -4,9 +4,7 @@ console.log("Create a peers object.")
 
 export function setPeer(peerId, peer) {
     console.log(`Set peer with key ${peerId}`)
-    peers[peerId] = peer
-
-    console.log("Number of peers after set new peer: ", Object.keys(peers).length)
+    peers[peerId] = peer 
 }
 
 export function getPeer(peerId) { 
@@ -18,10 +16,6 @@ export function deletePeer(peerId) {
         return
     peers[peerId].destroy()
     delete peers[peerId]
-
-    console.log(`Delete peer with id ${peerId}`)
-    
-    console.log("Number of peers after delete peer: ", Object.keys(peers).length)
 }
 
 export function deletePeerAll(callback = (peerId) => {}) {
@@ -41,7 +35,11 @@ export function addStreamAll(stream, callback = (peerId) => {}) {
     if (Object.keys(peers).length == 0) return;
 
     Object.entries(peers).forEach(([peerId, peer]) => {
-        peers[peerId].addStream(stream)
+
+        stream.getTracks().forEach(track => {
+            console.log(`Track added to ${peerId}`)
+            peers[peerId].addTrack(track, stream)
+        })
         callback(peerId)
     })
 }
@@ -50,7 +48,10 @@ export function removeStreamAll(stream, callback = (peerId) => {}) {
     if (Object.keys(peers).length == 0) return;
 
     Object.entries(peers).forEach(([peerId, peer]) => {
-        peers[peerId].removeStream(stream)
+
+        stream.getTracks().forEach(track => {
+            peers[peerId].removeTrack(track, stream)
+        })
         callback(peerId)
     })
 }

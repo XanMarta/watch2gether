@@ -1,13 +1,7 @@
 import { getSocket } from './singleton/init_socket.js'
 import * as peerManager from './singleton/init_peer.js'
 import { getLocalStream } from './singleton/init_localstream.js';
-import { 
-    setRemoteStream, 
-    removeRemoteStream
-} from './render/mainStream.js' 
-import { addJoinNotification } from './render/chat.js'
-import { setHost, isHost } from './singleton/ownership.js';
-import { renderOwnerView, renderClientView } from './render/perspective.js'
+import { remoteStreamRender, remoteStreamClose } from './stream.js'
 
 var listener = {} 
 
@@ -30,33 +24,16 @@ export function init_listener_peer() {
         listener[remotePeerId] = signalListener
 
         socket.on("signal", signalListener)
-
         socket.on("leave-room-notify", (data) => {
             console.log("** got leave-room-notify")
             console.log(`User ${data.username} has left the room.`)
-
-            addJoinNotification(data.username, 'leave')
     
             socket.off('signal', listener[data.peerId])
             delete listener[data.peerId]
             peerManager.deletePeer(data.peerId)
 
             console.log("Erase peer ID: ", data.peerId)
-
-            removeRemoteStream(data.peerId)
-            setHost(data.roomOwnerId)
-
-            if (isHost()) {
-                renderOwnerView()
-            }
-        })
-
-        socket.on("user-disconnected", message => {
-            socket.off('signal', listener[message.socketid])
-            delete listener[message.socketid]
-    
-            peerManager.deletePeer(message.socketid)
-            console.log("Erase peer ID: ", message.socketid)
+            remoteStreamClose(data.peerId)
         })
 
         peer.on("signal", data => {
@@ -67,10 +44,10 @@ export function init_listener_peer() {
             })
         })
 
-        peer.on("stream", stream => {
+        peer.on("stream", data => {
             console.log("** PEER - got 'stream'")
-            console.log("Get stream: ", stream)
-            setRemoteStream(remotePeerId, stream)
+            console.log("Get stream: ", data)
+            remoteStreamRender(remotePeerId, data)
         })
 
         peer.on("connect", () => {
@@ -83,6 +60,13 @@ export function init_listener_peer() {
             console.log("Peer get data: " + data)
         })
 
+        peer.on("track", (track, stream) => {
+            console.log("** PEER - got 'track'")
+            console.log("Get track: ", track, stream)
+
+            remoteStreamRender(remotePeerId, stream)
+        })
+
         peer.on("close", () => {
             console.log("** PEER - got 'close'")
 
@@ -92,7 +76,7 @@ export function init_listener_peer() {
             
             console.log("Erase peer ID: ", remotePeerId)
 
-            removeRemoteStream(remotePeerId)
+            remoteStreamClose(remotePeerId)
         })
 
         peer.on("error", (err) => {
@@ -105,8 +89,7 @@ export function init_listener_peer() {
             console.log("Erase peer ID: ", remotePeerId)
             
             console.log("Get error: ", err)
-            
-            removeRemoteStream(remotePeerId)
+            remoteStreamClose(remotePeerId)
         })
 
         // TODO: peer disconnect
