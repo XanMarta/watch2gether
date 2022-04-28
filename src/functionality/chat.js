@@ -15,7 +15,7 @@ function init_listener_chat(socket) {
 
         console.log(`Client ${getUsername(socket.id)} send message to ${getRoomId(socket.id)}`)
 
-        messageLog = {
+        var messageLog = {
             type: 'broadcast',
             senderId: socket.id,
             senderUsername: getUsername(socket.id),
