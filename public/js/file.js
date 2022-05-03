@@ -9,7 +9,7 @@ const sendStreamButton = document.querySelector("#video-stream-send-stream")
 const video = document.querySelector('#video-player-local').getElementsByTagName('video')[0]
 
 export function init_listener_file() {
-    inputFileUpload.addEventListener('change', () => {
+    inputFileUpload.addEventListener('change', async () => {
         if (!Ownership.isHost()) {
             alert("Người dùng không phải chủ phòng. Không thể gửi file.")
             return;
@@ -24,10 +24,10 @@ export function init_listener_file() {
         console.log("Thao tác trên DOM element video sau:")
         console.log(video)
         video.src = url 
-        video.play()
+        await video.play()
 
         // Capture stream and send stream.
-        var stream = video.captureStream();
+        var stream = await video.captureStream();
 
         setLocalStream(stream)
         renderLocalStream(stream)
