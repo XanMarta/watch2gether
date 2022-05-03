@@ -1,7 +1,6 @@
 const outButton = document.getElementById("out-room")
 const sendMessageButton = document.getElementById("send-message")
 const getRoomInfoButton = document.getElementById("get-room-info")
-const streamStartButton = document.getElementById("stream-start-button")
 const streamStopButton = document.getElementById("stream-stop-button")
 
 const messageInput = document.getElementById("message-input")
@@ -16,21 +15,41 @@ const createRoomContainer = document.getElementById("create-room-container")
 const createRoomBackButton = document.getElementById("create-room-back")
 const createRoomEnableButton = document.getElementById("create-room-form-button")
 
+const streamFaceButton = document.getElementById("stream-face-button")
+
 const createRoomButton = document.getElementById("create-room")
 const joinRoomButton = document.getElementById("join-room")
 
 // const localStreamVideo = document.getElementById("local-stream")
 
-import * as Ownership from "../singleton/ownership.js"
 import { getSocket } from "../singleton/init_socket.js"
 import * as peerManager from "../singleton/init_peer.js";
-import { streamConstraints } from "../singleton/constraint.js"
 import * as localStreamManager from "../singleton/init_localstream.js";
-import { setLocalStream, removeLocalStream } from "../render/mainStream.js"
+import { removeLocalStream, renderLocalStream } from "../render/mainStream.js"
 import { roomCreated, roomJoined, roomLeave } from "../room.js"
+import { streamConstraints } from "../singleton/constraint.js"
 
 export function init_listener_button() { 
     const socket = getSocket();
+
+    streamFaceButton.addEventListener("click", async () => {
+        try {
+            let stream = await navigator.mediaDevices.getUserMedia(streamConstraints)
+
+            // localStreamManager.setLocalStream(stream)
+
+            console.log("Đã nhận được stream khuôn mặt.\n Tiến hành render trên local")
+            // renderLocalStream(stream);
+
+            document.querySelector("#main-stream").srcObject = stream
+
+            // console.log("Gửi stream cho các peer khác trong room.")
+            // peerManager.addStreamAll(stream);
+        }
+        catch (err) {
+            console.log(err)
+        }
+    })
 
     createRoomEnableButton.addEventListener("click", () => {
         createRoomContainer.hidden = false
@@ -89,27 +108,9 @@ export function init_listener_button() {
         socket.emit("get-room-info")
     })
 
-    streamStartButton.addEventListener("click", async () => {
-        try {
-            if (!Ownership.isHost()) {
-                alert("Only host of room can stream !")
-                return 
-            }
-
-            let localStream = await navigator.mediaDevices.getUserMedia(streamConstraints);
-            setLocalStream(localStream)
-            console.log("Local stream rendered!")
-
-            peerManager.addStreamAll(localStream)
-
-            localStreamManager.setLocalStream(localStream)
-        }
-        catch (err) {
-            console.log("Local stream cannot be rendered: ", err)
-        }
-    })
-
     streamStopButton.addEventListener("click", () => {
+        // Sử dụng để xóa file đang stream hiện tại, phục vụ chọn file mới.
+        // TODO: Hiện tại procedure đang sai, cần phải chỉnh cả view.
         // is Streaming, is host -> stop streaming
         if (localStreamManager.getLocalStream() != null && localStreamManager.getLocalStream() != undefined) 
         {
@@ -118,7 +119,7 @@ export function init_listener_button() {
                     peerId: peerId
                 })
             })
-
+    
             localStreamManager.setLocalStream(null)
             removeLocalStream()
         }

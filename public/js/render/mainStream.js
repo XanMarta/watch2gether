@@ -1,9 +1,11 @@
 // everything about render stream to html element go here
 import * as Ownership from '../singleton/ownership.js'
 
-const mainStreamVideo = document.getElementById("main-stream")
+const mainStreamVideo = document.querySelector("#main-stream")
+// const mainStreamVideo = document.querySelector('#video-player-local').getElementsByTagName('video')[0]
 
-export function setLocalStream(stream) { 
+
+export function renderLocalStream(stream) { 
     if (Ownership.isHost())
     {
         mainStreamVideo.srcObject = stream 
@@ -25,7 +27,7 @@ export function removeLocalStream() {
     }
 }
 
-export function setRemoteStream(socketid, stream) { 
+export function renderRemoteStream(socketid, stream) { 
     // socketid, peer id from remote
     if (Ownership.isRemoteHost(socketid))
     {

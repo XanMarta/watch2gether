@@ -2,7 +2,7 @@ import { getSocket } from './singleton/init_socket.js'
 import * as peerManager from './singleton/init_peer.js'
 import { getLocalStream } from './singleton/init_localstream.js';
 import { 
-    setRemoteStream, 
+    renderRemoteStream, 
     removeRemoteStream
 } from './render/mainStream.js' 
 import { addJoinNotification } from './render/chat.js'
@@ -16,6 +16,7 @@ export function init_listener_peer() {
 
     socket.on("peer-init", data => {
         console.log('** got peer-init')
+        console.log(data)
 
         console.log(`Init a peer connection to ${data.peerId}`)
         let peer = new SimplePeer({initiator: data.initiator, stream: getLocalStream()})
@@ -70,7 +71,7 @@ export function init_listener_peer() {
         peer.on("stream", stream => {
             console.log("** PEER - got 'stream'")
             console.log("Get stream: ", stream)
-            setRemoteStream(remotePeerId, stream)
+            renderRemoteStream(remotePeerId, stream)
         })
 
         peer.on("connect", () => {
@@ -111,7 +112,8 @@ export function init_listener_peer() {
 
         // TODO: peer disconnect
         // If remove by server user-disconnected event work, then this can be ignored.
-
+        
+        console.log("Thêm vào peerManager với id là: ", remotePeerId)
         peerManager.setPeer(remotePeerId, peer)
     })
 }

@@ -1,4 +1,6 @@
 // --- Singleton for peers management
+import * as Ownership from "./ownership.js"
+
 var peers = {}
 console.log("Create a peers object.")
 
@@ -38,12 +40,24 @@ export function deletePeerAll(callback = (peerId) => {}) {
 }
 
 export function addStreamAll(stream, callback = (peerId) => {}) {
-    if (Object.keys(peers).length == 0) return;
+    if (!Ownership.isHost()) {
+        alert("Người dùng không phải chủ phòng. Không thể gửi stream.")
+        return;
+    }
+    if (Object.keys(peers).length == 0) 
+    {
+        console.log("Không có người dùng trên stream.")
+        return;
+    }
 
     Object.entries(peers).forEach(([peerId, peer]) => {
         peers[peerId].addStream(stream)
+        console.log("Thêm stream vào peer: ")
+        console.log(peers[peerId])
         callback(peerId)
     })
+
+    console.log("Gửi stream đến toàn bộ người dùng.")
 }
 
 export function removeStreamAll(stream, callback = (peerId) => {}) {
