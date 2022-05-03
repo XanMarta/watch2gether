@@ -29,26 +29,24 @@ import { removeLocalStream, renderLocalStream } from "../render/mainStream.js"
 import { roomCreated, roomJoined, roomLeave } from "../room.js"
 import { streamConstraints } from "../singleton/constraint.js"
 
+var peer1, peer2;
+
 export function init_listener_button() { 
     const socket = getSocket();
 
     streamFaceButton.addEventListener("click", async () => {
-        try {
-            let stream = await navigator.mediaDevices.getUserMedia(streamConstraints)
+        function addMedia (stream) {
+            var video = document.querySelector('#main-stream')
 
-            // localStreamManager.setLocalStream(stream)
-
-            console.log("Đã nhận được stream khuôn mặt.\n Tiến hành render trên local")
-            // renderLocalStream(stream);
-
-            document.querySelector("#main-stream").srcObject = stream
-
-            // console.log("Gửi stream cho các peer khác trong room.")
-            // peerManager.addStreamAll(stream);
+            video.srcObject = stream
         }
-        catch (err) {
+
+        // then, anytime later...
+        navigator.mediaDevices.getUserMedia({
+            video: true,
+        }).then(addMedia).catch((err) => {
             console.log(err)
-        }
+        })
     })
 
     createRoomEnableButton.addEventListener("click", () => {
