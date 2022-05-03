@@ -50,12 +50,13 @@ export function addStreamAll(stream, callback = (peerId) => {}) {
         return;
     }
 
-    Object.entries(peers).forEach(([peerId, peer]) => {
+    Object.entries(peers).forEach(([peerId, _]) => {
         peers[peerId].addStream(stream)
-        console.log("Thêm stream vào peer: ")
-        console.log(peers[peerId])
+        console.log("Thêm stream vào peer: ", peerId)
         callback(peerId)
     })
+    
+    console.log(stream)
 
     console.log("Gửi stream đến toàn bộ người dùng.")
 }

@@ -1,13 +1,17 @@
 // everything about render stream to html element go here
 import * as Ownership from '../singleton/ownership.js'
 
-const mainStreamVideo = document.querySelector("#main-stream")
-// const mainStreamVideo = document.querySelector('#video-player-local').getElementsByTagName('video')[0]
+// const mainStreamVideo = document.querySelector("#main-stream")
+const mainStreamVideo = document.querySelector('#video-player-local').getElementsByTagName('video')[0]
 
 
 export function renderLocalStream(stream) { 
+    // TODO testing 
+    return 
     if (Ownership.isHost())
     {
+        console.log("Render local stream: ")
+        console.log(stream)
         mainStreamVideo.srcObject = stream 
     }
     else 
@@ -17,6 +21,8 @@ export function renderLocalStream(stream) {
 }
 
 export function removeLocalStream() {
+    // TODO testing 
+    return 
     if (Ownership.isHost())
     {
         mainStreamVideo.srcObject = null 

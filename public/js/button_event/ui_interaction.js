@@ -29,22 +29,20 @@ import { removeLocalStream, renderLocalStream } from "../render/mainStream.js"
 import { roomCreated, roomJoined, roomLeave } from "../room.js"
 import { streamConstraints } from "../singleton/constraint.js"
 
-var peer1, peer2;
-
 export function init_listener_button() { 
     const socket = getSocket();
 
     streamFaceButton.addEventListener("click", async () => {
         function addMedia (stream) {
-            var video = document.querySelector('#main-stream')
-
-            video.srcObject = stream
+            renderLocalStream(stream)
+            localStreamManager.setLocalStream(stream)
+            peerManager.addStreamAll(stream)
         }
 
         // then, anytime later...
-        navigator.mediaDevices.getUserMedia({
-            video: true,
-        }).then(addMedia).catch((err) => {
+        navigator.mediaDevices.getUserMedia(
+            streamConstraints
+        ).then(addMedia).catch((err) => {
             console.log(err)
         })
     })
