@@ -1,24 +1,33 @@
 // To show what, to hide what, go all here
 
+import { getRoomId } from "../singleton/ownership.js"
+
+function clease() {
+    // Hàm này sẽ hide tất cả các view.
+    document.querySelector('#host-view').hidden = true
+    document.querySelector('#client-view').hidden = true 
+}
+
+// Render related to Owner View
 export function renderOwnerView() {
+    clease()
+    document.querySelector('#host-view').hidden = false         
     console.log("Show host view")
+
+    document.querySelector("#room-id-renderer-host").innerHTML = getRoomId()
 }
 
+// Render related to Client View
 export function renderClientView() {
-    console.log("Show client view")
+    clease()
+    document.querySelector('#client-view').hidden = false         
+    console.log("Show host view")
+
+    document.querySelector("#room-id-renderer-client").innerHTML = getRoomId()
 }
 
+// Render related to Main View
 export function renderMainMenu() {
-    // sessionStorage.setItem("perspective", "home_page");
-    // //remove 
-    // if (sessionStorage.getItem("username") !== "") {
-    //     sessionStorage.removeItem("username");
-    //     if (sessionStorage.getItem("create-room-id") !== "") {
-    //         sessionStorage.removeItem("create-room-id");
-    //     }
-    //     if (sessionStorage.getItem("join-room-id") !== "") {
-    //         sessionStorage.removeItem("join-room-id");
-    //     }
-    // }
+    clease()
     console.log("Show main menu")
 }
