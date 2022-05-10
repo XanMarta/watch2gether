@@ -68,11 +68,20 @@ import { getSocket } from "../singleton/init_socket.js"
 function room_init_listener_button() {
   const socket = getSocket();
   const username = sessionStorage.getItem("username");
-  socket.emit("create-room", {
-    username: username
-  }, roomCreated)
-  const roomId = sessionStorage.getItem("create-room-id");
-  console.log("Room id is: " + roomId + " and username is " + username);
+  if (sessionStorage.getItem("perspective") === "host") {
+    socket.emit("create-room", {
+      username: username
+    }, roomCreated)
+    const roomId = sessionStorage.getItem("create-room-id");
+    console.log("Room id is: " + roomId + " and username is " + username);
+  } else {
+    const roomId = sessionStorage.getItem("join-room-id");
+    socket.emit("join-room", {
+      username: username,
+      roomid: roomId
+    }, roomJoined)
+    console.log("Room id is: " + roomId + " and username is " + username);
+  }
   // outButton.addEventListener("click", () => {
   //   console.log(`Client leave room - Button clicked`)
   //   if (confirm("Do you want to leave the room?") === true) {
@@ -123,5 +132,5 @@ function room_init_listener_button() {
 //start running
 init_listener_username();
 room_init_listener_button();
-init_listener_peer();
+//init_listener_peer();
 init_listener_room();

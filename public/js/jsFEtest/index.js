@@ -49,10 +49,14 @@ function homepage_init_listener_button() {
     console.log("Người dùng chọn username là: ", username)
     console.log("Người dùng chọn room id là: ", roomid)
 
-    socket.emit("join-room", {
-      username: username,
-      roomid: roomid
-    }, roomJoined)
+    sessionStorage.setItem("username", username);
+    sessionStorage.setItem("perspective", "client")
+
+    //session store room id
+    sessionStorage.setItem("join-room-id", roomid);
+
+    window.location.href = "../../views/room.html"
+
   });
 
   createButton.addEventListener("click", function () {
@@ -69,6 +73,7 @@ function homepage_init_listener_button() {
     alert("Người dùng chọn username là: " + username);
     console.log("Người dùng chọn username là: ", username)
     sessionStorage.setItem("username", username);
+    sessionStorage.setItem("perspective", "host")
     window.location.href = "../../views/room.html"
     // socket.emit("create-room", {
     //   username: username

@@ -8,6 +8,7 @@ import { getLocalStream } from './singleton/init_localstream.js';
 import { addJoinNotification } from './render/chat.js'
 import { setHost, isHost } from './singleton/ownership.js';
 import { renderOwnerView, renderClientView } from './render/perspective.js'
+//import SimplePeer from 'simple-peer';
 
 var listener = {}
 
