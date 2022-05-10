@@ -51,7 +51,7 @@
               </div>
               <div style="display: flex;
               justify-content: center; width: 70%;">
-                <input class="form-control mr-sm-1" type="search" placeholder="Generate room id" aria-label="Copy"
+                <input class="form-control mr-sm-1" type="search" id="roomId" placeholder="Generate room id" aria-label="Copy"
                   style="height:30%;">
                 <!-- <button class="btn btn-outline-success my-2 my-sm-0" type="submit" style="width:25%;">Copy</button> -->
                 <img src="../img/copyIcon.png" width="40" height="30" id="copy-room-id" data-toggle="tooltip"
@@ -177,7 +177,10 @@
   </div>
   <!--End Footer section-->
 
-  <script src="../js/jsFEtest/room.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="./script/simplepeer.min.js"></script>
+  <script src="./script/video.min.js"></script>
+  <script type="module" src="../js/jsFEtest/roomHandler.js"></script>
   <script src="../js/jsFEtest/uploadFile.js"></script>
 </body>
 

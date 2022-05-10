@@ -1,15 +1,15 @@
 import { getSocket } from './singleton/init_socket.js'
 import * as peerManager from './singleton/init_peer.js'
 import { getLocalStream } from './singleton/init_localstream.js';
-import { 
-    renderRemoteStream, 
-    removeRemoteStream
-} from './render/mainStream.js' 
+// import { 
+//     renderRemoteStream, 
+//     removeRemoteStream
+// } from './render/mainStream.js' 
 import { addJoinNotification } from './render/chat.js'
 import { setHost, isHost } from './singleton/ownership.js';
 import { renderOwnerView, renderClientView } from './render/perspective.js'
 
-var listener = {} 
+var listener = {}
 
 export function init_listener_peer() {
     const socket = getSocket();
@@ -19,7 +19,7 @@ export function init_listener_peer() {
         console.log(data)
 
         console.log(`Init a peer connection to ${data.peerId}`)
-        let peer = new SimplePeer({initiator: data.initiator, stream: getLocalStream()})
+        let peer = new SimplePeer({ initiator: data.initiator, stream: getLocalStream() })
         let remotePeerId = data.peerId;
 
         const signalListener = data => {
@@ -37,14 +37,14 @@ export function init_listener_peer() {
             console.log(`User ${data.username} has left the room.`)
 
             addJoinNotification(data.username, 'leave')
-    
+
             socket.off('signal', listener[data.peerId])
             delete listener[data.peerId]
             peerManager.deletePeer(data.peerId)
 
             console.log("Erase peer ID: ", data.peerId)
 
-            removeRemoteStream(data.peerId)
+            //removeRemoteStream(data.peerId)
             setHost(data.roomOwnerId)
 
             if (isHost()) {
@@ -55,7 +55,7 @@ export function init_listener_peer() {
         socket.on("user-disconnected", message => {
             socket.off('signal', listener[message.socketid])
             delete listener[message.socketid]
-    
+
             peerManager.deletePeer(message.socketid)
             console.log("Erase peer ID: ", message.socketid)
         })
@@ -71,7 +71,7 @@ export function init_listener_peer() {
         peer.on("stream", stream => {
             console.log("** PEER - got 'stream'")
             console.log("Get stream: ", stream)
-            renderRemoteStream(remotePeerId, stream)
+            //renderRemoteStream(remotePeerId, stream)
         })
 
         peer.on("connect", () => {
@@ -90,29 +90,29 @@ export function init_listener_peer() {
             socket.off('signal', listener[remotePeerId])
             delete listener[remotePeerId]
             peerManager.deletePeer(remotePeerId)
-            
+
             console.log("Erase peer ID: ", remotePeerId)
 
-            removeRemoteStream(remotePeerId)
+            //removeRemoteStream(remotePeerId)
         })
 
         peer.on("error", (err) => {
             console.log("** PEER - got 'error'")
-            
+
             socket.off('signal', listener[remotePeerId])
             delete listener[remotePeerId]
             peerManager.deletePeer(remotePeerId)
 
             console.log("Erase peer ID: ", remotePeerId)
-            
+
             console.log("Get error: ", err)
-            
-            removeRemoteStream(remotePeerId)
+
+            //removeRemoteStream(remotePeerId)
         })
 
         // TODO: peer disconnect
         // If remove by server user-disconnected event work, then this can be ignored.
-        
+
         console.log("Thêm vào peerManager với id là: ", remotePeerId)
         peerManager.setPeer(remotePeerId, peer)
     })

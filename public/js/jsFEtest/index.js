@@ -6,6 +6,12 @@ if (sessionStorage.getItem("username") !== null && (sessionStorage.getItem("crea
 
 import { setSocket } from "../singleton/init_socket.js"
 
+import * as peerManager from "../singleton/init_peer.js";
+import * as localStreamManager from "../singleton/init_localstream.js";
+//import { removeLocalStream, renderLocalStream } from "../render/mainStream.js"
+import { roomCreated, roomJoined, roomLeave } from "../room.js"
+import { streamConstraints } from "../singleton/constraint.js"
+
 const WS_ENDPOINT = "ws://127.0.0.1:3000"
 const socket = io(WS_ENDPOINT)
 console.log("Home page view");
@@ -32,25 +38,41 @@ function homepage_init_listener_button() {
 
     //socket.emit("register-username", username);
 
-    let roomId = roomIdInputJoin.value;
+    let roomid = roomIdInputJoin.value;
 
-    sessionStorage.setItem("join-room-id", roomId);
-    sessionStorage.setItem("username", username);
-    alert("Join room: " + roomId + "with user is: " + username);
-    window.location.replace('../../views/joinRoom.html');
+    // sessionStorage.setItem("join-room-id", roomId);
+    // sessionStorage.setItem("username", username);
+    // alert("Join room: " + roomId + "with user is: " + username);
+    // window.location.replace('../../views/joinRoom.html');
+
+    //let roomid = document.querySelector('#join-name-roomid').value
+    console.log("Người dùng chọn username là: ", username)
+    console.log("Người dùng chọn room id là: ", roomid)
+
+    socket.emit("join-room", {
+      username: username,
+      roomid: roomid
+    }, roomJoined)
   });
 
   createButton.addEventListener("click", function () {
     //modal.hide();
     console.log("Create")
     let username = usernameInputCreate.value;
-    let roomId = roomIdInputCreate.value;
+    // let roomId = roomIdInputCreate.value;
 
-    sessionStorage.setItem("create-room-id", roomId);
+    // sessionStorage.setItem("create-room-id", roomId);
+    // sessionStorage.setItem("username", username);
+    // alert("Join room: " + roomId + "with user is: " + username);
+    // window.location.replace('../../views/room.html');
+    // //window.location.href = "../../views/hostRoom.html"
+    alert("Người dùng chọn username là: " + username);
+    console.log("Người dùng chọn username là: ", username)
     sessionStorage.setItem("username", username);
-    alert("Join room: " + roomId + "with user is: " + username);
-    window.location.replace('../../views/hostRoom.html');
-    //window.location.href = "../../views/hostRoom.html"
+    window.location.href = "../../views/room.html"
+    // socket.emit("create-room", {
+    //   username: username
+    // }, roomCreated)
   });
 }
 
