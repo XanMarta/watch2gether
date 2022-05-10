@@ -18,7 +18,7 @@ export function roomCreated(data) {
         console.log("Các thành viên trong room:\n", data.member)
 
         //session store room id
-        sessionStorage.setItem("create-room-id", data.roomid);
+        //sessionStorage.setItem("create-room-id", data.roomid);
 
         roomIdInput.value = data.roomid;
 
@@ -48,6 +48,7 @@ export function roomJoined(data) {
 
         // TODO: Render các thông tin cần thiết cho người dùng
 
+        roomIdInput.value = data.roomid;
         setRoomId(data.roomid)
         addJoinNotification('You have', 'join')
         setHost(data.hostSocketId)
@@ -67,6 +68,8 @@ export function roomLeave(data) {
     if (data.isSuccess) {
         console.log("Rời khỏi phòng thành công !!")
         console.log("Id của phòng: ", data.roomid)
+
+        alert("leave room id:" + data.roomid)
 
         // TODO: Render các thông tin cần thiết cho người dùng
         peerManager.deletePeerAll((id) => { })

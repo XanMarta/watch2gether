@@ -39,23 +39,38 @@ function homepage_init_listener_button() {
     //socket.emit("register-username", username);
 
     let roomid = roomIdInputJoin.value;
-
-    // sessionStorage.setItem("join-room-id", roomId);
-    // sessionStorage.setItem("username", username);
-    // alert("Join room: " + roomId + "with user is: " + username);
-    // window.location.replace('../../views/joinRoom.html');
-
-    //let roomid = document.querySelector('#join-name-roomid').value
     console.log("Người dùng chọn username là: ", username)
     console.log("Người dùng chọn room id là: ", roomid)
+
+    //check room exists?
+    // socket.emit("join-room", {
+    //   username: username,
+    //   roomid: roomid
+    // }, roomJoined)
 
     sessionStorage.setItem("username", username);
     sessionStorage.setItem("perspective", "client")
 
     //session store room id
     sessionStorage.setItem("join-room-id", roomid);
-
+    alert("Username is " + username + " and roomid is: " + roomid);
     window.location.href = "../../views/room.html"
+    //console.log("LMAO1423421");
+
+    //const roomId = sessionStorage.getItem("join-room-id");
+
+    // if (sessionStorage.getItem("roomValid") == true) {
+    //   sessionStorage.setItem("username", username);
+    //   sessionStorage.setItem("perspective", "client")
+
+    //   //session store room id
+    //   sessionStorage.setItem("join-room-id", roomid);
+    //   console.log("LMAO1423421");
+
+    //   //const roomId = sessionStorage.getItem("join-room-id");
+    //   //window.location.href = "../../views/room.html"
+    // }
+    // //console.log("Room id is: " + roomId + " and username is " + username);
 
   });
 

@@ -51,8 +51,8 @@
               </div>
               <div style="display: flex;
               justify-content: center; width: 70%;">
-                <input class="form-control mr-sm-1" type="search" id="roomId" placeholder="Generate room id" aria-label="Copy"
-                  style="height:30%;">
+                <input class="form-control mr-sm-1" type="search" id="roomId"
+                  aria-label="Copy" style="height:30%;" readonly>
                 <!-- <button class="btn btn-outline-success my-2 my-sm-0" type="submit" style="width:25%;">Copy</button> -->
                 <img src="../img/copyIcon.png" width="40" height="30" id="copy-room-id" data-toggle="tooltip"
                   title="Copy room id">
@@ -62,26 +62,6 @@
             </div>
           </div>
           <div class="card-body" style="overflow: auto;" id="chat-container">
-            <div class="bubbleWrapper">
-              <span class="username-other"> Other - 08:41</span>
-              <div class="inlineContainer">
-                <!-- <img class="inlineIcon" src="https://cdn1.iconfinder.com/data/icons/ninja-things-1/1772/ninja-simple-512.png"> -->
-                <div class="otherBubble other">
-                  No ninjas!
-                </div>
-              </div>
-            </div>
-            <div class="bubbleWrapper">
-              <span class="username-own">Me - 08:41</span>
-              <div class="inlineContainer own">
-                <!-- <img class="inlineIcon"
-                src="https://www.pinclipart.com/picdir/middle/205-2059398_blinkk-en-mac-app-store-ninja-icon-transparent.png"> -->
-                <div class="ownBubble own">
-                  The first rule of being a ninja is, 'Do no harm.'
-                </div>
-              </div>
-            </div>
-            <p class="notification">User has joined the room</p>
           </div>
           <div class="card-footer">
             <div class="message-sent">
@@ -102,8 +82,8 @@
             </div>
           </div>
           <div class="card-body" style="overflow: auto;">
-            <ul class="list-group list-group-flush">
-              <li class="list-group-item">fsdafsa
+            <ul class="list-group list-group-flush" id="members-list">
+              <!-- <li class="list-group-item">fsdafsa
                 <button style="float: right;">Ban</button>
               </li>
               <li class="list-group-item">fsdafsa
@@ -111,16 +91,16 @@
               </li>
               <li class="list-group-item">fsdafsa
                 <button style="float: right;">Ban</button>
-              </li>
+              </li> -->
             </ul>
           </div>
           <div class="card-footer">
             <div class="message-sent">
               <!-- <textarea type="text" id="message-input"></textarea> -->
               <!-- <textarea type="text" class="form-control" id="message-input"></textarea> -->
-              <!-- <div id="message-input">
+              <div id="message-input">
                 Chat container
-              </div> -->
+              </div>
               <img src="../img/sendIcon.png" id="send-message" type="button">
               <!-- <img src="https://www.seekpng.com/png/detail/95-955357_open-send-icon-png.png" id="send-message"> -->
             </div>
@@ -134,7 +114,7 @@
     </div>
   </div>
   <!--Footer section-->
-  <div style="margin-top: 4rem;">
+  <div style="margin-top: 9rem;">
     <footer class="mt-auto">
       <footer class="bg-dark text-center text-white">
         <!-- Grid container -->
@@ -178,7 +158,7 @@
   <!--End Footer section-->
 
   <script src="/socket.io/socket.io.js"></script>
-  <script src="./script/simplepeer.min.js"></script>
+  <script src="../script/simplepeer.min.js"></script>
   <script src="./script/video.min.js"></script>
   <script type="module" src="../js/jsFEtest/roomHandler.js"></script>
   <script src="../js/jsFEtest/uploadFile.js"></script>

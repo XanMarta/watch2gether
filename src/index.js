@@ -1,7 +1,7 @@
 // --- Define library --- Server run port ---
 
 const fs = require('fs')
-const cors = require('cors') 
+const cors = require('cors')
 const express = require('express')
 const socket = require('socket.io')
 const bodyParser = require('body-parser')

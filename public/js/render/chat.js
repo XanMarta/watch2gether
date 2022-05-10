@@ -9,7 +9,6 @@ const notification_type = "p"
 //chat container
 const chat_container = document.querySelector("#chat-container")
 const messageInput = document.querySelector("#message-input");
-const current_time = new Date().toLocaleTimeString();
 
 export function addMessage(content) {
     // content = {
@@ -22,22 +21,8 @@ export function addMessage(content) {
     //check the message is from remote user or current user?
     if (content.senderUsername === "Me") {
         console.log(`Add chat: ${content}`)
-        // //current time
-        // //render chat goes here
-        // console.log("Button clicked")
-        // const currentUser = document.createElement("div");
-        // currentUser.setAttribute("class", "chat-text-current-user");
-        // const user_info = document.createElement("h6");
-        // user_info.setAttribute("class", "userinfo");
-        // user_info.textContent = `${content.senderUsername}: - Time: ${current_time}`;
-
-        // const messageContent = document.createElement(message_type);
-        // messageContent.textContent = `${content.content}`;
-        // currentUser.append(user_info, messageContent);
-        // chat_container.appendChild(currentUser);
-        // chat_container.scrollTop = chat_container.scrollHeight;
-        // messageInput.value = "";
-
+        //current time
+        let current_time = new Date().toLocaleTimeString();
         const bubbleWrapper = document.createElement("div");
         bubbleWrapper.setAttribute("class", "bubbleWrapper");
         const username_own = document.createElement("span");
@@ -57,21 +42,7 @@ export function addMessage(content) {
     } else {
         console.log(`Add chat: ${content}`)
         //current time
-        //const current_time = new Date().toLocaleTimeString();
-        // //render chat goes here
-        // console.log("Button clicked")
-        // const currentUser = document.createElement("div");
-        // currentUser.setAttribute("class", "chat-text-other-user");
-        // const user_info = document.createElement("h6");
-        // user_info.setAttribute("class", "userinfo");
-        // user_info.textContent = `${content.senderUsername}: - Time: ${current_time}`;
-
-        // const messageContent = document.createElement(message_type);
-        // messageContent.textContent = `${content.content}`;
-        // currentUser.append(user_info, messageContent);
-        // chat_container.appendChild(currentUser);
-        // chat_container.scrollTop = chat_container.scrollHeight;
-        // const bubbleWrapper = document.createElement("div");
+        let current_time = new Date().toLocaleTimeString();
         const bubbleWrapper = document.createElement("div");
         bubbleWrapper.setAttribute("class", "bubbleWrapper");
         const username_other = document.createElement("span");

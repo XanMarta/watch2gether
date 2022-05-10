@@ -56,12 +56,14 @@ console.log("Host room view");
 
 setSocket(socket)
 
-const outButton = document.getElementById("out-room")
+const leaveRoom = document.querySelector("#leave-room")
 
 //chat
 var sendMessage = document.querySelector("#send-message");
 var chatMessages = document.getElementsByClassName('chat-messages')[0];
 var messageInput = document.getElementById("message-input");
+var roomIdCopy = document.querySelector("#copy-room-id")
+var roomIdInput = document.querySelector("#roomId")
 //var roomIdInput = document.querySelector('#roomId');
 
 import { getSocket } from "../singleton/init_socket.js"
@@ -74,7 +76,8 @@ function room_init_listener_button() {
     }, roomCreated)
     const roomId = sessionStorage.getItem("create-room-id");
     console.log("Room id is: " + roomId + " and username is " + username);
-  } else {
+  }
+  else {
     const roomId = sessionStorage.getItem("join-room-id");
     socket.emit("join-room", {
       username: username,
@@ -82,26 +85,23 @@ function room_init_listener_button() {
     }, roomJoined)
     console.log("Room id is: " + roomId + " and username is " + username);
   }
-  // outButton.addEventListener("click", () => {
-  //   console.log(`Client leave room - Button clicked`)
-  //   if (confirm("Do you want to leave the room?") === true) {
-  //     //txt = "You pressed OK!";
-  //     // localStorage.removeItem("username");
-  //     // localstorage.removeItem("create-room-id");
-  //     sessionStorage.clear();
-  //     socket.emit("leave-room")
-  //     //go back to home page
-  //     window.location.replace("/");
-  //   }
+  leaveRoom.addEventListener("click", () => {
+    if (confirm("Do you want to leave the room?") === true) {
+      sessionStorage.clear();
+      console.log(`Client leave room - Button clicked`)
+      socket.emit("leave-room", roomLeave)
+      //go back to home page
+      // window.location.replace("/");
+    }
 
-  //   // TODO: What should it be when out room?
-  //   // Delete all stream.
-  //   //peerManager.deletePeerAll(remoteStreamClose)
+    // TODO: What should it be when out room?
+    // Delete all stream.
+    //peerManager.deletePeerAll(remoteStreamClose)
 
-  //   // Set local stream to null.
-  //   // localStreamVideo.srcObject = null
-  //   // localStreamManager.setLocalStream(null)
-  // })
+    // Set local stream to null.
+    // localStreamVideo.srcObject = null
+    // localStreamManager.setLocalStream(null)
+  })
 
   //chat
   sendMessage.addEventListener("click", (e) => {
@@ -127,10 +127,21 @@ function room_init_listener_button() {
     console.log("lmao")
     //e.returnValue = '';
   });
+
+  roomIdCopy.addEventListener("click", (e) => {
+    roomIdInput.select();
+
+    /* Copy the text inside the text field */
+    navigator.clipboard.writeText(roomIdInput.value);
+
+    /* Alert the copied text */
+    alert("room id copied: " + roomIdInput.value);
+  })
+
 }
 
 //start running
 init_listener_username();
 room_init_listener_button();
-//init_listener_peer();
+init_listener_peer();
 init_listener_room();
