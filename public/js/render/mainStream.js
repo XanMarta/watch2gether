@@ -7,7 +7,7 @@ const mainStreamVideo = document.querySelector('#video-player-local').getElement
 
 export function renderLocalStream(stream) { 
     // TODO testing 
-    return 
+    return
     if (Ownership.isHost())
     {
         console.log("Render local stream: ")
@@ -22,7 +22,7 @@ export function renderLocalStream(stream) {
 
 export function removeLocalStream() {
     // TODO testing 
-    return 
+    return
     if (Ownership.isHost())
     {
         mainStreamVideo.srcObject = null 

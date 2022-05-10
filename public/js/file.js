@@ -10,6 +10,7 @@ const video = document.querySelector('#video-player-local').getElementsByTagName
 
 export function init_listener_file() {
     inputFileUpload.addEventListener('change', async () => {
+        // TODO: Chua check TH không phải file video
         if (!Ownership.isHost()) {
             alert("Người dùng không phải chủ phòng. Không thể gửi file.")
             return;

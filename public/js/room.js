@@ -64,6 +64,7 @@ export function roomLeave(data) {
         // TODO: Render các thông tin cần thiết cho người dùng
         peerManager.deletePeerAll((id) => {})
         setHost(null)
+        // BUG
         removeRemoteStream()
         removeLocalStream()
         localStreamManager.setLocalStream(null)
@@ -88,6 +89,8 @@ export function init_listener_room() {
 
         // TODO: Add new member to room
         addJoinNotification(information['username'], 'join')
+
+        // TODO: từ cái information này, trích thông tin của ng dùng mới vào và render
     })
 
     socket.on("room-message", (message) => {
@@ -109,6 +112,8 @@ export function init_listener_room() {
         if (isHost()) {
             renderOwnerView()
         }
+
+        // TODO: xóa thông tin liên quan đến người này trong phần member
     })
 
     socket.on("stream-disconnected", (message) => {

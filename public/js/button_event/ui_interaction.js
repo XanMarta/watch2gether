@@ -15,8 +15,6 @@ const createRoomContainer = document.getElementById("create-room-container")
 const createRoomBackButton = document.getElementById("create-room-back")
 const createRoomEnableButton = document.getElementById("create-room-form-button")
 
-const streamFaceButton = document.getElementById("stream-face-button")
-
 const createRoomButton = document.getElementById("create-room")
 const joinRoomButton = document.getElementById("join-room")
 
@@ -27,25 +25,9 @@ import * as peerManager from "../singleton/init_peer.js";
 import * as localStreamManager from "../singleton/init_localstream.js";
 import { removeLocalStream, renderLocalStream } from "../render/mainStream.js"
 import { roomCreated, roomJoined, roomLeave } from "../room.js"
-import { streamConstraints } from "../singleton/constraint.js"
 
 export function init_listener_button() { 
     const socket = getSocket();
-
-    streamFaceButton.addEventListener("click", async () => {
-        function addMedia (stream) {
-            renderLocalStream(stream)
-            localStreamManager.setLocalStream(stream)
-            peerManager.addStreamAll(stream)
-        }
-
-        // then, anytime later...
-        navigator.mediaDevices.getUserMedia(
-            streamConstraints
-        ).then(addMedia).catch((err) => {
-            console.log(err)
-        })
-    })
 
     createRoomEnableButton.addEventListener("click", () => {
         createRoomContainer.hidden = false
