@@ -29,12 +29,17 @@
     <div class="fill-available">
       <div id="left">
         <div class="drag-area">
-          <div class="icon"><i class="fas fa-cloud-upload-alt"></i></div>
-          <header>Drag & Drop to Upload Video</header>
-          <span>OR</span>
-          <button class="btn btn-close-white">Browse Video</button>
-          <input type="file" hidden>
-          <!-- <video></video> -->
+          <div id="drag-area-host" style="display: inline-block;justify-content: center">
+            <header>Drag & Drop to Upload Video</header>
+            <span style="margin: 0rem 2rem 0rem 9rem;">OR</span>
+            <br>
+            <button class="btn btn-close-white" style="margin: 0rem 2rem 0rem 5rem;">Browse Video</button>
+            <input type="file" hidden>
+          </div>
+          <div id="drag-area-client" style="display: inline-block;justify-content: center" hidden="true">
+            <header>Host has not streamed any video yet!</header>
+            <p>Please wait :(((()))</p>
+          </div>
         </div>
         <div id="button-area" style="float: right;
         margin-right: 3rem; 
@@ -51,8 +56,8 @@
               </div>
               <div style="display: flex;
               justify-content: center; width: 70%;">
-                <input class="form-control mr-sm-1" type="search" id="roomId"
-                  aria-label="Copy" style="height:30%;" readonly>
+                <input class="form-control mr-sm-1" type="search" id="roomId" aria-label="Copy" style="height:30%;"
+                  readonly>
                 <!-- <button class="btn btn-outline-success my-2 my-sm-0" type="submit" style="width:25%;">Copy</button> -->
                 <img src="../img/copyIcon.png" width="40" height="30" id="copy-room-id" data-toggle="tooltip"
                   title="Copy room id">

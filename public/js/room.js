@@ -28,7 +28,7 @@ export function roomCreated(data) {
         addJoinNotification('You', 'create')
         setHost(data.hostSocketId)
 
-        //renderOwnerView()
+        renderOwnerView()
         renderRoomMember(data.member)
 
     } else {
@@ -54,7 +54,7 @@ export function roomJoined(data) {
         setHost(data.hostSocketId)
 
         // Since a client who join cannot be owner
-        //renderClientView()
+        renderClientView()
         renderRoomMember(data.member)
 
     } else {
