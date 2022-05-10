@@ -1,0 +1,37 @@
+#container {
+  padding: 0.5em;
+  margin: 0.5em;
+}
+
+/* #container > div {
+  border: 1px solid blue;
+  padding: 0.5em;
+  margin: 0.5em;
+} */
+
+.min-content {
+  width: min-content;
+}
+
+.max-content {
+  width: max-content;
+}
+
+.fit-content {
+  width: fit-content;
+}
+
+.fill-available {
+  width: -webkit-fill-available;
+  display: flex;
+}
+
+#left {
+  height: 38rem;
+  flex: 4
+}
+
+#right {
+  flex: 1;
+  height: 38rem;
+}
