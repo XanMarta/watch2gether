@@ -114,7 +114,7 @@ function init_listener_room (socket) {
     socket.on("join-room", (data, callback) => {
         console.log(`Get join room request from ${socket.id} under the name ${data.username}, to join room ${data.roomid}`);
 
-        if (isUsernameExist(socket.id)) {
+        if (isUsernameExist(data.username)) {
             let response = {
                 isSuccess: false,
                 message: "Tên người dùng đã tồn tại."

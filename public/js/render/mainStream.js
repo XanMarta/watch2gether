@@ -38,6 +38,7 @@ export function renderRemoteStream(socketid, stream) {
     if (Ownership.isRemoteHost(socketid))
     {
         mainStreamVideo.srcObject = stream 
+        mainStreamVideo.play()
     }
     else 
     {
