@@ -13,15 +13,28 @@
   "dependencies": {
     "body-parser": "^1.19.2",
     "cors": "^2.8.5",
+    "dotenv": "^16.0.0",
     "express": "^4.17.3",
+    "mongodb": "^4.5.0",
     "simple-peer": "^9.11.1",
     "socket.io": "^4.4.1",
     "uuid": "^8.3.2",
+    "underscore": "^1.13.2",
     "video.js": "^7.18.1"
   },
   "devDependencies": {
-    "jest": "^27.5.1",
+    "@babel/plugin-transform-modules-commonjs": "^7.17.9",
+    "jest": "^26.6.3",
     "nodemon": "^2.0.15",
     "socket.io-client": "^4.4.1"
+  },
+  "babel": {
+    "env": {
+      "test": {
+        "plugins": [
+          "@babel/plugin-transform-modules-commonjs"
+        ]
+      }
+    }
   }
 }
