@@ -3,7 +3,7 @@ import { addMessage, addJoinNotification } from './render/chat.js'
 import { renderRoomMember } from './render/member.js'
 import { renderOwnerView, renderClientView, renderMainMenu } from './render/perspective.js'
 import { removeLocalStream, removeRemoteStream } from './render/mainStream.js'
-import { setHost, isHost } from './singleton/ownership.js'
+import { setHost, isHost, setRoomId } from './singleton/ownership.js'
 import * as peerManager from "./singleton/init_peer.js";
 import * as localStreamManager from "./singleton/init_localstream.js";
 
@@ -17,6 +17,7 @@ export function roomCreated(data) {
 
         // TODO: Render các thông tin cần thiết cho người dùng
 
+        setRoomId(data.roomid)
         addJoinNotification('You', 'create')
         setHost(data.hostSocketId)
 
@@ -40,6 +41,7 @@ export function roomJoined(data) {
 
         // TODO: Render các thông tin cần thiết cho người dùng
 
+        setRoomId(data.roomid)
         addJoinNotification('You have', 'join')
         setHost(data.hostSocketId)
 
@@ -62,6 +64,7 @@ export function roomLeave(data) {
         // TODO: Render các thông tin cần thiết cho người dùng
         peerManager.deletePeerAll((id) => {})
         setHost(null)
+        // BUG
         removeRemoteStream()
         removeLocalStream()
         localStreamManager.setLocalStream(null)
@@ -86,6 +89,8 @@ export function init_listener_room() {
 
         // TODO: Add new member to room
         addJoinNotification(information['username'], 'join')
+
+        // TODO: từ cái information này, trích thông tin của ng dùng mới vào và render
     })
 
     socket.on("room-message", (message) => {
@@ -107,6 +112,8 @@ export function init_listener_room() {
         if (isHost()) {
             renderOwnerView()
         }
+
+        // TODO: xóa thông tin liên quan đến người này trong phần member
     })
 
     socket.on("stream-disconnected", (message) => {

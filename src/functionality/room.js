@@ -146,17 +146,10 @@ function init_listener_room (socket) {
         // TODO: Enable code above. Add no join when room is full.
         console.log(`Client ${getUsername(socket.id)} want to join ${roomId}`);
 
-        if (isRoomExist(roomId))
-        {
-            if (numClientInRoom(roomId) > 0)
-            {
-                // Assume the onwer is the first one get in the room. So current client is not onwer.
-                socket.emit("peer-init", {
-                    peerId: getRoomOwner(roomId),
-                    initiator: false
-                })
-            }
-        }
+        socket.emit("peer-init", {
+            peerId: getRoomOwner(roomId),
+            initiator: false
+        })
 
         socket.join(roomId)
 
@@ -166,6 +159,8 @@ function init_listener_room (socket) {
         setRoomId(socket.id, roomId)
 
         // Ta giả thiết rằng khi phòng tồn tại và người dùng muốn vào phòng. Trong phòng chắc chắn có ít nhất 1 người.
+        console.log("Send to Room Owner peer-init request:")
+        console.log("From: ", socket.id)
         getIo().to(getRoomOwner(roomId)).emit('peer-init', {
             peerId: socket.id,
             initiator: true

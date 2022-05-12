@@ -8,11 +8,11 @@
 
     <body>
         <div id="room-management-container">
-            <h1>For host to create room</h1>
+            <h2>For host to create room</h2>
             <button id="create-room-form-button">Create room</button>
             <br>
             <h1>OR</h1>
-            <h1>For client to join room</h1>
+            <h2>For client to join room</h2>
             <button id="join-room-form-button">Join room</button>
         </div>
 
@@ -31,7 +31,21 @@
             <button id="join-room-back">Back</button>
         </div>
 
-        <div id="inroom-management" hidden>
+        <div id="host-view" hidden>
+            <h3>Host view</h3>
+            <h2>ROOM ID: </h2>
+            <h2 id="room-id-renderer-host"></h2>
+
+            <button id="out-room">Out Room</button>
+            <button id="kick-user">Kick user</button>
+            <button id="mute-user">Mute user</button>
+            <button id="get-room-info">Get Room Info</button>
+        </div>
+
+        <div id="client-view" hidden>
+            <h3>Client view</h3>
+            <h2>ROOM ID: </h2>
+            <h2 id="room-id-renderer-client"></h2>
             <button id="out-room">Out Room</button>
             <button id="get-room-info">Get Room Info</button>
         </div>
@@ -46,28 +60,24 @@
         </div>
 
         <div>
-            <h1>Step 3: Streaming - Start stream to start, stop stream to stop</h1>
-            
-            <button id="stream-start-button">Start Streaming</button>
-            <button id="stream-connect">Connect Stream</button>
-            <button id="stream-stop-button">Stop Streaming</button>
-            <button id="video-start-button">Start Video</button>
-            <button id="video-stop-button">Stop Video</button>
-            <div>
-                <video id="main-stream" width="1200" height="720" autoplay></video>
-            </div>
-        </div>
-
-        <div>
-            <h1>Step 4: Video Rendering</h1>
-
+            <h1>Video Rendering</h1>
             <div>
                 <h2>Video from local</h2>
                 
                 <input id="video-stream-get-file-from-local" type="file">
-                <button id="video-stream-send-stream-button">Send Stream</button>
-                <button id="video-stream-stop-stream-button">Stop Stream</button>
-                <video id="video-player-local" class="video-js" data-setup='{}' controls></video>
+                <h2>Current Video Rendering: </h2>
+                <h2 id="current-play-video-name">...</h2>
+                <button id="video-stream-send-stream">SEND STREAM</button>
+                <br>
+                <!-- do tương tác là làm hết trên element video rồi, nên sẽ không cần các button. -->
+                <video id="video-player-local" class="video-js" height="360" width="640" data-setup='{}' controls autoplay>
+                    <source src="//vjs.zencdn.net/v/oceans.mp4" type="video/mp4">
+                    <source src="//vjs.zencdn.net/v/oceans.webm" type="video/webm">
+                </video>
+                <button id="stream-stop-button">Stop stream</button>
+
+                <video id="main-stream" height="360" width="640" autoplay></video>
+                <button id="stream-face-button">Start Stream Face</button>
             </div>
 
         </div>
