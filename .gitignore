@@ -148,3 +148,5 @@ node_modules_123/
 public/video
 public/js/dev
 
+*.mkv
+*.mp4
