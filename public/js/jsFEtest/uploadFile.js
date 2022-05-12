@@ -15,6 +15,8 @@ const left = document.querySelector("#left");
 const buttonArea = document.querySelector("#button-area")
 const right = document.querySelector("#right");
 const stopStreaming = document.querySelector("#stop-streaming")
+const dragAreaHost = document.querySelector("#drag-area-host")
+let videoElement = document.querySelector("#drag-area").getElementsByTagName('video')[0];
 let changeVid = '';
 sessionStorage.setItem("count", 0);
 
@@ -84,39 +86,44 @@ function showVideo(e) {
   //let count = 0;
   //let count = sessionStorage.getItem("count");
   //console.log(count)
-  dropArea.hidden = true;
-  const videoCreate = document.createElement("video");
-  if (document.querySelector(".vidElement") !== null) {
-    document.querySelector(".vidElement").remove();
-    return;
-  }
-  videoCreate.setAttribute("class", "vidElement")
+  // dropArea.hidden = true;
+  // const videoCreate = document.createElement("video");
+  // if (document.querySelector(".vidElement") !== null) {
+  //   document.querySelector(".vidElement").remove();
+  //   return;
+  // }
+  // videoCreate.setAttribute("class", "vidElement")
+  // let videoContainer = document.querySelector("#vidElement")
+  // let videoElement = document.querySelector("#vidElement").getElementsByTagName('video')[0];
+  videoElement.hidden = false;
+  dragAreaHost.hidden = true;
   if (e.target.files && e.target.files[0]) {
     var reader = new FileReader();
 
     reader.onload = function (e) {
       console.log('loaded')
-      videoCreate.src = e.target.result
-      videoCreate.controls = true;
-      videoCreate.autoplay = true;
+      videoElement.src = e.target.result
+      videoElement.controls = true;
+      videoElement.autoplay = true;
+      //videoElement.margin = "1rem 1rem 1rem 1rem;"
     }.bind(this)
 
     reader.readAsDataURL(e.target.files[0]);
   }
   //vidLayout.append(videoCreate);
-  videoCreate.hidden = false;
-  left.prepend(videoCreate);
-  videoCreate.addEventListener("pause", () => {
-    dropArea.hidden = false;
-    videoCreate.hidden = true;
+  //videoCreate.hidden = false;
+  //left.prepend(videoCreate);
+  videoElement.addEventListener("pause", () => {
+    dragAreaHost.hidden = false;
+    videoElement.hidden = true;
     console.log("LOLOLOLOLO")
     let buttonContinue = document.createElement("button");
     buttonContinue.textContent = "Continue Streaming";
     buttonContinue.setAttribute("id", "continue-streaming");
     buttonArea.append(buttonContinue);
     buttonContinue.addEventListener("click", () => {
-      dropArea.hidden = true;
-      videoCreate.hidden = false;
+      dragAreaHost.hidden = true;
+      videoElement.hidden = false;
       buttonContinue.remove();
     })
   });

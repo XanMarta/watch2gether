@@ -8,17 +8,17 @@
   background: #5256ad;
 } */
 #left {
-  margin: 2rem 0rem 0rem 2rem;
+  margin: 2rem 0rem 0rem 1rem;
 }
 #right {
-  margin: 2rem 0rem 0rem 2rem;
+  margin: 1rem 0rem 0rem 1rem;
 }
 .drag-area {
   border: 2px dashed black;
   /* background-color: green; */
   position: relative;
-  width: 100% !important;
-  height: 100% !important;
+  width: 95% !important;
+  height: 95% !important;
   position: relative;
   display: flex;
   align-items: center;
@@ -27,10 +27,16 @@
 }
 
 .vidElement {
-  position: relative;
+  /* position: relative;
   min-width: 40%;
   height: 95%;
   display: inline-block;  
+  align-items: center;
+  justify-content: center;  
+  flex-direction: column; */
+  margin: 2rem 2rem 2rem 2rem;
+  position: relative;
+  display: flex;
   align-items: center;
   justify-content: center;  
   flex-direction: column;
