@@ -24,7 +24,6 @@ function getRoomOwner(roomId) {
 }
 
 function isRoomOwner(id, roomId) {
-
     console.log(`Check if ${id} is the owner of the room ${roomId} - ${getRoomOwner(roomId)}`)
     return id == getRoomOwner(roomId)
 }
