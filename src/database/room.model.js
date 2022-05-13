@@ -76,10 +76,7 @@ module.exports = {
                 await col.collection.updateOne({
                     roomid
                 }, {
-                    $set: {
-                        host: userid,
-                        users: []
-                    }
+                    $setOnInsert: { host: userid },
                 }, {
                     upsert: true
                 })
