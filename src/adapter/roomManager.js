@@ -29,7 +29,15 @@ async function addRoomOwner(id, roomId) {
 }
 
 async function removeRoomOwner(id, roomId) {
-    await Room.removeRoomOwner(id, roomId)
+    let ownerChanged = await Room.removeRoomOwner(id, roomId)
+    if (ownerChanged != null) {
+        let users = await Room.getAllClientInRoom(roomId)
+        if (users.length == 0) {
+            console.log("No user in room")
+        } else {
+            await Room.setRoomOwner(users[0], roomId)
+        }
+    }
 }
 
 

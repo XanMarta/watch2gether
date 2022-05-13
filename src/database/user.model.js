@@ -81,7 +81,11 @@ module.exports = {
                 }, {
                     $set: { roomid: null }
                 })
-                return result.value
+                if (result.value != null) {
+                    return result.value.roomid
+                } else {
+                    return null
+                }
                 // Call outRoom in Room model next
             },
         }

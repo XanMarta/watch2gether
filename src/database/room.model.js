@@ -82,14 +82,25 @@ module.exports = {
                 })
             },
 
-            removeRoomOwner: async (userid, roomid) => {
+            setRoomOwner: async (userid, roomid) => {
                 await col.collection.updateOne({
+                    roomid
+                }, {
+                    $set: {
+                        host: userid
+                    }
+                })
+            },
+
+            removeRoomOwner: async (userid, roomid) => {
+                return (await col.collection.findOneAndUpdate({
+                    roomid,
                     host: userid
                 }, {
                     $set: {
                         host: null
                     }
-                })
+                })).value
             },
 
             getRoomInfo: async (roomid) => {
