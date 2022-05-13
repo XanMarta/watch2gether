@@ -6,11 +6,11 @@ if (sessionStorage.getItem("username") !== null && (sessionStorage.getItem("crea
 
 import { setSocket } from "../singleton/init_socket.js"
 
-import * as peerManager from "../singleton/init_peer.js";
-import * as localStreamManager from "../singleton/init_localstream.js";
-//import { removeLocalStream, renderLocalStream } from "../render/mainStream.js"
-import { roomCreated, roomJoined, roomLeave } from "../room.js"
-import { streamConstraints } from "../singleton/constraint.js"
+// import * as peerManager from "../singleton/init_peer.js";
+// import * as localStreamManager from "../singleton/init_localstream.js";
+// //import { removeLocalStream, renderLocalStream } from "../render/mainStream.js"
+// import { roomCreated, roomJoined, roomLeave } from "../room.js"
+// import { streamConstraints } from "../singleton/constraint.js"
 
 const WS_ENDPOINT = "ws://127.0.0.1:3000"
 const socket = io(WS_ENDPOINT)

@@ -28,23 +28,26 @@
   <div id="container">
     <div class="fill-available">
       <div id="left">
-        <div class="drag-area">
+        <div id="drag-area">
           <div id="drag-area-host" style="display: inline-block;justify-content: center">
             <header>Drag & Drop to Upload Video</header>
             <span style="margin: 0rem 2rem 0rem 9rem;">OR</span>
             <br>
             <button class="btn btn-close-white" style="margin: 0rem 2rem 0rem 5rem;">Browse Video</button>
-            <input type="file" hidden>
+            <input id="video-stream-get-file-from-local" type="file" hidden>
           </div>
-          <video width="1080" hidden="true" style="margin-top: 1px; margin-right: 0.5px; margin-bottom: 1px; margin-left: 1px;"></video>
+          <video width="1080" hidden="true" id="video-player-local"
+            style="margin-top: 1px; margin-right: 0.5px; margin-bottom: 1px; margin-left: 1px;" controls
+            autoplay></video>
           <div id="drag-area-client" style="display: inline-block;justify-content: center" hidden="true">
             <header>Host has not streamed any video yet!</header>
             <p>Please wait :(((()))</p>
           </div>
         </div>
-        <div id="button-area" style="float: right;
+        <div id="button-area" style="float: left;
         margin-right: 3rem; 
         margin-top: 2rem;">
+          <button id="video-stream-send-stream">SEND STREAM</button>
         </div>
       </div>
       <div id="right">
@@ -165,9 +168,9 @@
 
   <script src="/socket.io/socket.io.js"></script>
   <script src="../script/simplepeer.min.js"></script>
-  <script src="./script/video.min.js"></script>
+  <script src="../script/video.min.js"></script>
   <script type="module" src="../js/jsFEtest/roomHandler.js"></script>
-  <script src="../js/jsFEtest/uploadFile.js"></script>
+  <!-- <script src="../js/jsFEtest/uploadFile.js"></script> -->
 </body>
 
 </html>

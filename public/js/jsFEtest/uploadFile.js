@@ -1,5 +1,4 @@
-//selecting all required elements
-const dropArea = document.querySelector(".drag-area"),
+const dropArea = document.querySelector("#drag-area"),
   dragText = dropArea.querySelector("header"),
   button = dropArea.querySelector("button"),
   input = dropArea.querySelector("input");
@@ -16,9 +15,10 @@ const buttonArea = document.querySelector("#button-area")
 const right = document.querySelector("#right");
 const stopStreaming = document.querySelector("#stop-streaming")
 const dragAreaHost = document.querySelector("#drag-area-host")
-let videoElement = document.querySelector("#drag-area").getElementsByTagName('video')[0];
-let changeVid = '';
-sessionStorage.setItem("count", 0);
+let videoElement = document.querySelector('video')
+let sendStreamButton = document.querySelector("#video-stream-send-stream")
+const inputFileUpload = document.querySelector("#video-stream-get-file-from-local")
+//const sendStreamButton = document.querySelector("#video-stream-send-stream")
 
 displayMember.addEventListener("click", (e) => {
   console.log("clicked")
@@ -103,8 +103,7 @@ function showVideo(e) {
     reader.onload = function (e) {
       console.log('loaded')
       videoElement.src = e.target.result
-      videoElement.controls = true;
-      videoElement.autoplay = true;
+      
       //videoElement.margin = "1rem 1rem 1rem 1rem;"
     }.bind(this)
 
@@ -161,9 +160,15 @@ function showVideo(e) {
 //     console.log("Change video button appeared");
 //   })
 // }
-if (changeVid !== '') {
-  changeVid.addEventListener("click", function (e) {
-    console.log("Change video button appeared");
-  })
-}
+// sendStreamButton.addEventListener('click', () => {
+//   console.log("Bấm nút SEND STREAM!!")
+//   var stream = video.captureStream();
+
+//   setLocalStream(stream)
+//   renderLocalStream(stream)
+//   PeerManager.addStreamAll(getLocalStream())
+
+//   console.log("Stream đã được gửi: ")
+//   console.log(stream)
+// })
 

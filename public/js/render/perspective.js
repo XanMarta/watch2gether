@@ -17,6 +17,7 @@ function clease() {
 
     document.querySelector('#drag-area-host').hidden = true
     document.querySelector('#drag-area-client').hidden = true
+    document.querySelector("#video-stream-send-stream").hidden = true;
 
 }
 
@@ -24,6 +25,7 @@ function clease() {
 export function renderOwnerView() {
     clease()
     document.querySelector('#drag-area-host').hidden = false
+    document.querySelector("#video-stream-send-stream").hidden = false;
     //document.querySelector('#host-view').hidden = false
     console.log("Show host view")
 

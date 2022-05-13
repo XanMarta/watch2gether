@@ -13,7 +13,7 @@
 #right {
   margin: 1rem 0rem 0rem 1rem;
 }
-.drag-area {
+#drag-area {
   border: 2px dashed black;
   /* background-color: green; */
   position: relative;
@@ -48,25 +48,25 @@
    margin-top: 2rem;
 }
 
-.drag-area.active{
+#drag-area.active{
   border: 2px dashed black;
 }
-.drag-area .icon{
+#drag-area .icon{
   font-size: 100px;
   color: black;
 }
-.drag-area header{
+#drag-area header{
   font-size: 30px;
   font-weight: 500;
   color: black;
 }
-.drag-area span{
+#drag-area span{
   font-size: 25px;
   font-weight: 500;
   color: black;
   margin: 10px 0 15px 0;
 }
-.drag-area button{
+#drag-area button{
   padding: 10px 25px;
   font-size: 20px;
   font-weight: 500;
@@ -77,7 +77,7 @@
   border-radius: 5px;
   cursor: pointer;
 }
-.drag-area img{
+#drag-area img{
   height: 100%;
   width: 100%;
   object-fit: cover;
