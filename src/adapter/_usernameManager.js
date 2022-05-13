@@ -1,27 +1,29 @@
 const { User } = require("../database")
 
 async function getUsername(socketid) {
-    return await User.getUsername(socketid)
+    return socketIdToUsername[socketid]
 }
 
 async function setUsername(socketid, username) {
-    await User.setUsername(socketid, username)
+    usernameToSocketId[username] = socketid
+    socketIdToUsername[socketid] = username
 }
 
 async function getSocketId(username) {
-    await User.getSocketId(username)
+    return usernameToSocketId[username]
 }
 
 async function isUsernameExist(username) {
-    return await User.isUsernameExist(username)
+    return username in usernameToSocketId
 }
 
 async function deleteUsername(socketid) {
-    await User.deleteUsername(socketid)
+    delete usernameToSocketId[socketIdToUsername[socketid]]
+    delete socketIdToUsername[socketid]
 }
 
 async function getUsernameFromSocketId(socketid) {
-    return await getUsername(socketid)
+    return socketIdToUsername[socketid]
 }
 
 module.exports = {

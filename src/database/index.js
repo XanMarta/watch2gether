@@ -32,7 +32,7 @@ db.connect_db = async () => {   // Must be called first
     }
     // Init db
     for (var col_name in db.collections) {
-        console.log(`Set collection: ${col_name}`)
+        // console.log(`Set collection: ${col_name}`)
         db.collections[col_name].collection = db.db.collection(col_name)
     }
     for (var col_name in db.modules) {
@@ -40,11 +40,14 @@ db.connect_db = async () => {   // Must be called first
             await db.modules[col_name]._init()
         }
     }
+    console.log("Database init successfully ...")
 }
 
 // Set collection
 
-db.Product = _init(require("./product.model"))
+db.Chat = _init(require("./chat.model"))
+db.Room = _init(require("./room.model"))
+db.User = _init(require("./user.model"))
 
 
 module.exports = db

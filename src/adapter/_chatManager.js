@@ -4,8 +4,13 @@
 
 const { Chat } = require("../database")
 
+const chatLog = {}
+
 async function saveChatLog(object) {
-    await Chat.saveChatLog(object)
+    let roomId = object['roomId']
+    if (chatLog[roomId] == undefined || chatLog[roomId] == null) {
+        chatLog[roomId] = []
+    }
 
     console.log(`New chat log: ${object}`)
 }

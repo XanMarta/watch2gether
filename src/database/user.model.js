@@ -4,17 +4,19 @@ module.exports = {
     func: (col) => {
         return {
             _init: async () => {
-                await col.collection.createIndex({ socketid: 1}, { unique: true })
+                await col.collection.createIndex({ socketid: 1 }, { unique: true })
                 await col.collection.createIndex({ username: 1 }, { unique: true })
             },
 
             setUsername: async (socketid, username) => {
-                try {
-                    let result = await col.collection.insertOne({ socketid, username, roomid: null })
-                    return result.insertedId.toString(0)
-                } catch (error) {
-                    return null
-                }
+                await col.collection.updateOne({
+                    socketid
+                }, {
+                    $set: { username },
+                    $setOnInsert: { roomid: null }
+                }, {
+                    upsert: true
+                })
             },
 
             getUsername: async (socketid) => {
@@ -26,7 +28,7 @@ module.exports = {
                 return username
             },
 
-            getSocketid: async (username) => {
+            getSocketId: async (username) => {
                 let result = await col.collection.find({ username }).toArray()
                 let socketid = null
                 if (result.length != 0) {
@@ -60,7 +62,28 @@ module.exports = {
                 }, {
                     $set: { roomid }
                 })
-            }
+            },
+
+            isInRoom: async (socketid) => {
+                let result = await col.collection.find({ socketid }).toArray()
+                let inRoom = false
+                if (result.length != 0) {
+                    if (result[0].roomid != null) {
+                        inRoom = true
+                    }
+                }
+                return inRoom
+            },
+
+            outRoom: async (socketid) => {
+                let result = await col.collection.findOneAndUpdate({
+                    socketid
+                }, {
+                    $set: { roomid: null }
+                })
+                return result.value
+                // Call outRoom in Room model next
+            },
         }
     }
 }

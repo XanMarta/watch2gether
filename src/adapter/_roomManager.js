@@ -4,32 +4,61 @@ const { getIo } = require('../singleton/io')
 const { Room, User } = require("../database")
 
 // from socket id to room id 
+const room = {}
 
 async function getRoomId(socketid) {
-    return await User.getRoomId(socketid)
+    return room[socketid]
 }
 
 async function setRoomId(socketid, roomId) {
-    await User.setRoomId(socketid, roomId)
-    await Room.setRoomId(socketid, roomId)
+    room[socketid] = roomId
 }
 // from room id to socket id of room owner
 // Each roomOwner instance is an array
+const roomOwner = {}
 
 async function getRoomOwner(roomId) {
-    return await Room.getRoomOwner(roomId)
+    if (roomOwner[roomId] == null || roomOwner[roomId] == undefined) {
+        return undefined
+    }
+    return roomOwner[roomId][0]
 }
 
 async function isRoomOwner(id, roomId) {
-    return await Room.isRoomOwner(id, roomId)
+    console.log(`Check if ${id} is the owner of the room ${roomId} - ${await getRoomOwner(roomId)}`)
+    return id == await getRoomOwner(roomId)
 }
 
 async function addRoomOwner(id, roomId) {
-    await Room.addRoomOwner(id, roomId)
+    if (roomOwner[roomId] == null || roomOwner[roomId] == undefined) {
+        roomOwner[roomId] = []
+    }
+    roomOwner[roomId].push(id)
+
+    console.log(`Add id ${id} to room ${roomId}. Room owner is ${roomOwner[roomId]}`)
 }
 
 async function removeRoomOwner(id, roomId) {
-    await Room.removeRoomOwner(id, roomId)
+    let removeOwner = false 
+    if (roomOwner[roomId] == null || roomOwner[roomId] == undefined) {
+        return 
+    }
+    if (id == await getRoomOwner(roomId)) {
+        roomOwner[roomId].shift()
+        removeOwner = true
+    } else {
+        let index = roomOwner[roomId].indexOf(id)
+
+        if (index > -1) {
+            roomOwner[roomId].splice(index, 1)
+        }
+    }
+
+    if (roomOwner[roomId].length == 0) {
+        delete roomOwner[roomId]
+    }
+
+    return removeOwner
 }
 
 
@@ -72,11 +101,12 @@ async function broadcastAllRoom(roomId, func) {
 }
 
 async function outRoom(socketid) {
-    let roomid = await User.outRoom(socketid)
-    if (roomid != null) {
-        await Room.outRoom(roomid, socketid)
+    console.log(`Delete room name ${socketid}`)
+
+    if (await getRoomOwner(room[socketid]) == socketid) {
+        console.log(`Check type to set room owner in the future: ${await getAllClientInRoom(room[socketid])}`)
     }
-    // Check room owner change
+    delete room[socketid]
 }
 
 module.exports = {

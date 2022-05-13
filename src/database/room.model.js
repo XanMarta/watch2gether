@@ -77,7 +77,8 @@ module.exports = {
                     roomid
                 }, {
                     $set: {
-                        host: userid
+                        host: userid,
+                        users: []
                     }
                 }, {
                     upsert: true
@@ -93,6 +94,58 @@ module.exports = {
                     }
                 })
             },
+
+            getRoomInfo: async (roomid) => {
+                let result = await col.collection.find({ roomid }).toArray()
+                if (result.length != 0) {
+                    return result[0]
+                } else {
+                    return null
+                }
+            },
+
+            numClientInRoom: async (roomid) => {
+                let result = await col.collection.find({ roomid }).toArray()
+                if (result.length != 0) {
+                    return result[0].users.length
+                } else {
+                    return 0
+                }
+            },
+
+            getAllClientInRoom: async (roomid) => {
+                let result = await col.collection.find({ roomid }).toArray()
+                if (result.length != 0) {
+                    return result[0].users
+                } else {
+                    return []
+                }
+            },
+
+            isRoomExist: async (roomid) => {
+                let result = await col.collection.find({ roomid }).toArray()
+                return (result.length != 0)
+            },
+
+            outRoom: async (roomid, socketid) => {
+                await col.collection.updateOne({
+                    roomid
+                }, {
+                    $pull: {
+                        users: socketid
+                    }
+                })
+            },
+
+            setRoomId: async (socketid, roomid) => {
+                await col.collection.updateOne({
+                    roomid
+                }, {
+                    $push: {
+                        users: socketid
+                    }
+                })
+            }
         }
     }
 }
