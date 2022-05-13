@@ -38,9 +38,9 @@ export function init_listener_file() {
         console.log(stream)
     })
 
-    sendStreamButton.addEventListener('click', () => {
+    sendStreamButton.addEventListener('click', async () => {
         console.log("Bấm nút SEND STREAM!!")
-        var stream = video.captureStream();
+        var stream = await video.captureStream();
 
         setLocalStream(stream)
         renderLocalStream(stream)

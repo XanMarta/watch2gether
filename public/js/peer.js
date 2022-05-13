@@ -7,7 +7,7 @@ import {
 } from './render/mainStream.js' 
 import { addJoinNotification } from './render/chat.js'
 import { setHost, isHost } from './singleton/ownership.js';
-import { renderOwnerView, renderClientView } from './render/perspective.js'
+import { renderOwnerView } from './render/perspective.js'
 
 var listener = {} 
 
@@ -26,6 +26,12 @@ export function init_listener_peer() {
             console.log('** got signal')
             if (data.peerId == remotePeerId) {
                 peer.signal(data.signal)
+            }
+
+            if (data.stream) 
+            {
+                console.log("** Got stream inside signal")
+                console.log(data.stream)
             }
         }
         listener[remotePeerId] = signalListener
@@ -68,10 +74,10 @@ export function init_listener_peer() {
             })
         })
 
-        peer.on("stream", async (stream) => {
+        peer.on("stream", (stream) => {
             console.log("** PEER - got 'stream'")
             console.log("Get stream: ", stream)
-            await renderRemoteStream(remotePeerId, stream)
+            renderRemoteStream(remotePeerId, stream)
         })
 
         peer.on("connect", () => {

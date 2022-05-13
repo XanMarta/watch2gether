@@ -146,6 +146,22 @@ function init_listener_room (socket) {
         // TODO: Enable code above. Add no join when room is full.
         console.log(`Client ${await getUsername(socket.id)} want to join ${roomId}`);
 
+        // Add this id to candidate roomOwner list
+        await addRoomOwner(socket.id, roomId)
+        await setUsername(socket.id, data.username)
+        await setRoomId(socket.id, roomId)
+
+        let response = {
+            isSuccess: true,
+            roomid: roomId,
+            hostUsername: await getUsername(await getRoomOwner(roomId)),
+            hostSocketId: await getRoomOwner(roomId),
+            member: await getMemberInformation(roomId)
+        }
+        // tạo phòng bên client trước, để set host các thứ
+        callback(response)
+
+        // init peer connection sau
         socket.emit("peer-init", {
             peerId: await getRoomOwner(roomId),
             initiator: false
@@ -153,14 +169,10 @@ function init_listener_room (socket) {
 
         socket.join(roomId)
 
-        // Add this id to candidate roomOwner list
-        await addRoomOwner(socket.id, roomId)
-        await setUsername(socket.id, data.username)
-        await setRoomId(socket.id, roomId)
-
         // Ta giả thiết rằng khi phòng tồn tại và người dùng muốn vào phòng. Trong phòng chắc chắn có ít nhất 1 người.
         console.log("Send to Room Owner peer-init request:")
         console.log("From: ", socket.id)
+        
         getIo().to(await getRoomOwner(roomId)).emit('peer-init', {
             peerId: socket.id,
             initiator: true
@@ -171,15 +183,6 @@ function init_listener_room (socket) {
             username: await getUsername(socket.id) 
         });
 
-        let response = {
-            isSuccess: true,
-            roomid: roomId,
-            hostUsername: await getUsername(await getRoomOwner(roomId)),
-            hostSocketId: await getRoomOwner(roomId),
-            member: await getMemberInformation(roomId)
-        }
-
-        callback(response)
         console.log(getIo().sockets.adapter.rooms)
     })
 
