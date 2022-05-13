@@ -4,7 +4,7 @@ const { getIo } = require('../singleton/io')
 const { Room, User } = require("../database")
 
 // from socket id to room id 
-const room = {}
+const room = {} 
 
 async function getRoomId(socketid) {
     return room[socketid]

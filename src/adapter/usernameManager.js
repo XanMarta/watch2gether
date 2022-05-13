@@ -5,7 +5,7 @@ async function getUsername(socketid) {
 }
 
 async function setUsername(socketid, username) {
-    await User.setUsername(socketid, username)
+    await User.setUsername(socketid, username) 
 }
 
 async function getSocketId(username) {

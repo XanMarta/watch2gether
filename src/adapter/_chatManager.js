@@ -16,5 +16,5 @@ async function saveChatLog(object) {
 }
 
 module.exports = {
-    saveChatLog
+    saveChatLog 
 }

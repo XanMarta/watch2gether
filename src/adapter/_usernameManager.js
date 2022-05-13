@@ -3,7 +3,7 @@ const { User } = require("../database")
 async function getUsername(socketid) {
     return socketIdToUsername[socketid]
 }
-
+ 
 async function setUsername(socketid, username) {
     usernameToSocketId[username] = socketid
     socketIdToUsername[socketid] = username

@@ -68,10 +68,10 @@ export function init_listener_peer() {
             })
         })
 
-        peer.on("stream", stream => {
+        peer.on("stream", async (stream) => {
             console.log("** PEER - got 'stream'")
             console.log("Get stream: ", stream)
-            renderRemoteStream(remotePeerId, stream)
+            await renderRemoteStream(remotePeerId, stream)
         })
 
         peer.on("connect", () => {

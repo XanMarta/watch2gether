@@ -33,12 +33,12 @@ export function removeLocalStream() {
     }
 }
 
-export function renderRemoteStream(socketid, stream) { 
+export async function renderRemoteStream(socketid, stream) { 
     // socketid, peer id from remote
     if (Ownership.isRemoteHost(socketid))
     {
         mainStreamVideo.srcObject = stream 
-        mainStreamVideo.play()
+        await mainStreamVideo.play()
     }
     else 
     {
