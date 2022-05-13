@@ -4,7 +4,7 @@
 
 const chatLog = {}
 
-function saveChatLog(object) {
+async function saveChatLog(object) {
     let roomId = object['roomId']
     if (chatLog[roomId] == undefined || chatLog[roomId] == null) {
         chatLog[roomId] = []

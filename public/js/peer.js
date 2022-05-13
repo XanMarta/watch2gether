@@ -32,7 +32,7 @@ export function init_listener_peer() {
 
         socket.on("signal", signalListener)
 
-        socket.on("leave-room-notify", (data) => {
+        socket.on("leave-room-notify", async (data) => {
             console.log("** got leave-room-notify")
             console.log(`User ${data.username} has left the room.`)
 
@@ -48,7 +48,7 @@ export function init_listener_peer() {
             setHost(data.roomOwnerId)
 
             if (isHost()) {
-                renderOwnerView()
+                await renderOwnerView()
             }
         })
 

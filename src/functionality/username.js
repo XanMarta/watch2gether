@@ -8,14 +8,15 @@ let {
 } = require("../adapter/usernameManager")
 
 function init_listener_username (socket) {
-    socket.on("register-username", (username) => {
-        if (isUsernameExist(username)) {
+    socket.on("register-username", async (username) => {
+        if (await isUsernameExist(username)) {
             socket.emit("register-username-reject", "Name already exist!")
         } else {
-            if (getUsernameFromSocketId(socket.id) != null && getUsernameFromSocketId(socket.id) != undefined) {
-                deleteUsername(socket.id)
+            let username = await getUsernameFromSocketId(socket.id)
+            if (username != null && username != undefined) {
+                await deleteUsername(socket.id)
             }
-            setUsername(socket.id, username)
+            await setUsername(socket.id, username)
 
             console.log(`New user name has registed: ${socket.id} map to ${username}`)
             socket.emit("register-username-done")

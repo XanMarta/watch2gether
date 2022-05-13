@@ -3,35 +3,38 @@ let { getRoomId, isInRoom } = require('../adapter/roomManager')
 let { saveChatLog } = require('../adapter/chatManager')
 
 function init_listener_chat(socket) {
-    socket.on("broadcast_message_room", (message) => {
-        if (getUsername(socket.id) == null || getUsername(socket.id) == undefined) {
+    socket.on("broadcast_message_room", async (message) => {
+        let username = await getUsername(socket.id);
+        let roomId = await getRoomId(socket.id);
+
+        if (username == null || username == undefined) {
             socket.emit("username-require")
             return
         }
-        if (!isInRoom(socket.id)) {
+        if (!await isInRoom(socket.id)) {
             socket.emit("leave-room", "Client not in a room.")
             return 
         }
 
-        console.log(`Client ${getUsername(socket.id)} send message to ${getRoomId(socket.id)}`)
+        console.log(`Client ${username} send message to ${roomId}`)
 
         messageLog = {
             type: 'broadcast',
             senderId: socket.id,
-            senderUsername: getUsername(socket.id),
-            roomId: getRoomId(socket.id),
+            senderUsername: username,
+            roomId: roomId,
             content: message
         }
 
-        saveChatLog(messageLog)
+        await saveChatLog(messageLog)
 
-        socket.to(getRoomId(socket.id)).emit("room-message", messageLog)
+        socket.to(roomId).emit("room-message", messageLog)
 
         messageLog = {
             type: 'broadcast',
             senderId: socket.id,
             senderUsername: 'Me',
-            roomId: getRoomId(socket.id),
+            roomId: roomId,
             content: message
         }
 

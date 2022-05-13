@@ -1,29 +1,29 @@
 const usernameToSocketId = {}
 const socketIdToUsername = {}
 
-function getUsername(socketid) {
+async function getUsername(socketid) {
     return socketIdToUsername[socketid]
 }
 
-function setUsername(socketid, username) {
+async function setUsername(socketid, username) {
     usernameToSocketId[username] = socketid
     socketIdToUsername[socketid] = username
 }
 
-function getSocketId(username) {
+async function getSocketId(username) {
     return usernameToSocketId[username]
 }
 
-function isUsernameExist(username) {
+async function isUsernameExist(username) {
     return username in usernameToSocketId
 }
 
-function deleteUsername(socketid) {
+async function deleteUsername(socketid) {
     delete usernameToSocketId[socketIdToUsername[socketid]]
     delete socketIdToUsername[socketid]
 }
 
-function getUsernameFromSocketId(socketid) {
+async function getUsernameFromSocketId(socketid) {
     return socketIdToUsername[socketid]
 }
 

@@ -5,30 +5,30 @@ const { getIo } = require('../singleton/io')
 // from socket id to room id 
 const room = {}
 
-function getRoomId(socketid) {
+async function getRoomId(socketid) {
     return room[socketid]
 }
 
-function setRoomId(socketid, roomId) {
+async function setRoomId(socketid, roomId) {
     room[socketid] = roomId
 }
 // from room id to socket id of room owner
 // Each roomOwner instance is an array
 const roomOwner = {}
 
-function getRoomOwner(roomId) {
+async function getRoomOwner(roomId) {
     if (roomOwner[roomId] == null || roomOwner[roomId] == undefined) {
         return undefined
     }
     return roomOwner[roomId][0]
 }
 
-function isRoomOwner(id, roomId) {
-    console.log(`Check if ${id} is the owner of the room ${roomId} - ${getRoomOwner(roomId)}`)
-    return id == getRoomOwner(roomId)
+async function isRoomOwner(id, roomId) {
+    console.log(`Check if ${id} is the owner of the room ${roomId} - ${await getRoomOwner(roomId)}`)
+    return id == await getRoomOwner(roomId)
 }
 
-function addRoomOwner(id, roomId) {
+async function addRoomOwner(id, roomId) {
     if (roomOwner[roomId] == null || roomOwner[roomId] == undefined) {
         roomOwner[roomId] = []
     }
@@ -37,12 +37,12 @@ function addRoomOwner(id, roomId) {
     console.log(`Add id ${id} to room ${roomId}. Room owner is ${roomOwner[roomId]}`)
 }
 
-function removeRoomOwner(id, roomId) {
+async function removeRoomOwner(id, roomId) {
     let removeOwner = false 
     if (roomOwner[roomId] == null || roomOwner[roomId] == undefined) {
         return 
     }
-    if (id == getRoomOwner(roomId)) {
+    if (id == await getRoomOwner(roomId)) {
         roomOwner[roomId].shift()
         removeOwner = true
     } else {
@@ -61,36 +61,36 @@ function removeRoomOwner(id, roomId) {
 }
 
 
-function isSocketIdExist(socketid) {
-    return !(getUsername(socketid) == null)
+async function isSocketIdExist(socketid) {
+    return !(await getUsername(socketid) == null)
 }
 
-function isInRoom(socketid) {
-    var currentRoom = getRoomId(socketid)
+async function isInRoom(socketid) {
+    var currentRoom = await getRoomId(socketid)
     return currentRoom!= null && currentRoom != undefined
 }
 
-function numClientInRoom(roomId) {
-    if (!isRoomExist(getIo(), roomId)) {
+async function numClientInRoom(roomId) {
+    if (!await isRoomExist(getIo(), roomId)) {
         return undefined
     }
     return Array.from(getIo().sockets.adapter.rooms.get(roomId)).length
 }
 
-function getAllClientInRoom(roomId) {
-    if (!isRoomExist(roomId)) {
+async function getAllClientInRoom(roomId) {
+    if (!await isRoomExist(roomId)) {
         return []
     }
     return Array.from(getIo().sockets.adapter.rooms.get(roomId))
 }
 
 // TODO: there io and nothing to do about it.
-function isRoomExist(roomId) {
+async function isRoomExist(roomId) {
     return getIo().sockets.adapter.rooms.get(roomId) != undefined
 }
 
-function broadcastAllRoom(roomId, func) {
-    if (!isRoomExist(getIo(), roomId)) {
+async function broadcastAllRoom(roomId, func) {
+    if (!await isRoomExist(getIo(), roomId)) {
         return undefined
     }
     
@@ -99,11 +99,11 @@ function broadcastAllRoom(roomId, func) {
     )
 }
 
-function outRoom(socketid) {
+async function outRoom(socketid) {
     console.log(`Delete room name ${socketid}`)
 
-    if (getRoomOwner(room[socketid]) == socketid) {
-        console.log(`Check type to set room owner in the future: ${getAllClientInRoom(room[socketid])}`)
+    if (await getRoomOwner(room[socketid]) == socketid) {
+        console.log(`Check type to set room owner in the future: ${await getAllClientInRoom(room[socketid])}`)
     }
     delete room[socketid]
 }

@@ -49,7 +49,7 @@ export function init_listener_button() {
         roomManagementContainer.hidden = false  
     })
 
-    createRoomButton.addEventListener('click', () => {
+    createRoomButton.addEventListener('click', async () => {
         let username = document.querySelector('#create-name-username').value;
         console.log("Người dùng chọn username là: ", username)
         socket.emit("create-room", {

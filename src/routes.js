@@ -19,31 +19,35 @@ module.exports = (io) => {
               });
         })
 
-        socket.on("disconnect", () => {
+        socket.on("disconnect", async () => {
             // TODO: khi username out khỏi room/disconnect thì nên có xóa tên người dùng hiện tại đi.
             console.log(`Client ${socket.id} disconnect`)
 
             if (isInRoom(socket.id))
             {
-                let isOwner = removeRoomOwner(socket.id, getRoomId(socket.id))
-                let roomId = getRoomId(socket.id)
+                let roomId = await getRoomId(socket.id)
+                let isOwner = await removeRoomOwner(socket.id, roomId)
+                let roomOnwer = await getRoomOwner(getRoomId(socket.id))
 
-                io.in(getRoomId(socket.id)).emit("user-disconnected", {
+                io.in(roomId).emit("user-disconnected", {
                     socketid: socket.id,
-                    roomOwnerId: getRoomOwner(getRoomId(socket.id)),
-                    username: getUsername(socket.id)
+                    roomOwnerId: await getRoomOwner(roomId),
+                    username: await getUsername(socket.id)
                 })
 
-                console.log(`New owner id of room ${getRoomId(socket.id)} is ${getRoomOwner(getRoomId(socket.id))}`)
-                outRoom(socket.id)
+                console.log(`New owner id of room ${roomId} is ${roomOnwer}`)
+                await outRoom(socket.id)
 
                 if (isOwner) {
+                    // socket bị xóa là của owner, tái xây dựng mạng kết nối trong roomId
                     initConnectionInRoom(roomId)
                 }
             }
+            
+            let username = await getUsername(socket.id);
 
-            if (getUsername(socket.id) != null || getUsername(socket.id) != undefined) {
-                deleteUsername(socket.id)
+            if (username != null || username != undefined) {
+                await deleteUsername(socket.id)
             }
         })
     
