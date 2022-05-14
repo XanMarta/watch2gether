@@ -142,6 +142,10 @@ async function outRoom(socketid) {
     // Check room owner change
 }
 
+async function deleteUser(socketid) {
+    await Room.deleteUser(socketid)
+}
+
 module.exports = {
     getRoomId,
     setRoomId,
@@ -155,5 +159,6 @@ module.exports = {
     addRoomOwner: addRoomOwnerCandidate,
     removeRoomOwner: removeRoomOwnerCandidate,
     broadcastAllRoom,
-    outRoom
+    outRoom,
+    deleteUser
 }

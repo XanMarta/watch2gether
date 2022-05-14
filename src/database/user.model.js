@@ -88,6 +88,10 @@ module.exports = {
                 }
                 // Call outRoom in Room model next
             },
+
+            deleteUser: async (socketid) => {
+                await col.collection.deleteOne({ socketid })
+            }
         }
     }
 }
