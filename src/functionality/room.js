@@ -235,7 +235,7 @@ function init_listener_room (socket) {
          * Hàm này phải thực hiện cập nhật record trong user, đồng thời cập nhật record trong room.
          */
 
-        let room = getRoomInfomation(roomId)
+        let room = await getRoomInfomation(roomId)
         /**
          * Lấy thông tin về phòng có tên là roomId
          */
