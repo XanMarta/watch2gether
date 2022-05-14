@@ -40,7 +40,7 @@ module.exports = (io) => {
 
                 if (isOwner) {
                     // socket bị xóa là của owner, tái xây dựng mạng kết nối trong roomId
-                    initConnectionInRoom(roomId)
+                    await initConnectionInRoom(roomId)
                 }
             }
             

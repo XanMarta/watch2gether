@@ -1,65 +1,96 @@
-let { getUsername, isUsernameExist, setUsername } = require('./username')
+let { isUsernameExist } = require('./username')
 let {
-    getRoomId,
-    setRoomId,
-    getRoomOwner,
-    isInRoom,
-    numClientInRoom,
-    getAllClientInRoom,
-    isRoomExist,
-    addRoomOwner,
-    removeRoomOwner,
-    outRoom,
-    isRoomOwner
+    getRoomInfomation,
+    removeUserFromRoom,
+    getUserInformation,
+    addUser,
+    updateUser
 } = require('../adapter/roomManager')
 const { v4: uuidv4 } = require("uuid");
 const { getIo } = require('../singleton/io');
 
 async function initConnectionInRoom(roomId) {
-    console.log(`Init connection in room ${roomId}`)
-    if (await isRoomExist(roomId))
-    {
-        console.log(`Yes, room exist`)
-        if (await numClientInRoom(roomId) > 1)
-        {
-            console.log('Yes, there are more than one person in this room')
-            let roomOwnerId = await getRoomOwner(roomId);
+    /**
+     * Khởi tạo mạng peer mới trong roomId.
+     * Tạo kết nối từ chủ phòng tới tất cả những người nhận.
+     */
 
-            let allClient = await getAllClientInRoom(roomId)
-            allClient.forEach(socketid => {
-                if (socketid == roomOwnerId) {
-                    return
-                }
-                getIo().to(socketid).emit("peer-init", {
-                    peerId: roomOwnerId,
-                    initiator: false
-                })
-                getIo().to(roomOwnerId).emit('peer-init', {
-                    peerId: socketid,
-                    initiator: true
-                })
-                console.log(`Send an peer negotiation between ${socketid} and ${roomOwnerId}`)
-            })
+    // console.log(`Init connection in room ${roomId}`)
+    // if (await isRoomExist(roomId))
+    // {
+    //     console.log(`Yes, room exist`)
+    //     if (await numClientInRoom(roomId) > 1)
+    //     {
+    //         console.log('Yes, there are more than one person in this room')
+    //         let roomOwnerId = await getRoomOwner(roomId);
+    //         let allClient = await getAllClientInRoom(roomId)
+    //         allClient.forEach(socketid => {
+    //             if (socketid == roomOwnerId) {
+    //                 return
+    //             }
+    //             getIo().to(socketid).emit("peer-init", {
+    //                 peerId: roomOwnerId,
+    //                 initiator: false
+    //             })
+    //             getIo().to(roomOwnerId).emit('peer-init', {
+    //                 peerId: socketid,
+    //                 initiator: true
+    //             })
+    //             console.log(`Send an peer negotiation between ${socketid} and ${roomOwnerId}`)
+    //         })
+    //     }
+    // }
+
+    console.log(`Init connection in room ${roomId}`)
+    let room = await getRoomInfomation(roomId);
+    /**
+     * Biến room này lên là 1 Object, trả về tất cả các thông tin liên quan đến room.
+     * Gồm có
+     * - roomid
+     * - host
+     * - users (lưu dưới dạng 1 mảng các socketid)
+     */
+    let roomOwnerId = room.host
+    let allClient = room.users 
+
+    allClient.forEach(socketid => {
+        if (socketid == roomOwnerId) {
+            return
         }
-    }
+        getIo().to(socketid).emit("peer-init", {
+            peerId: roomOwnerId,
+            initiator: false
+        })
+        getIo().to(roomOwnerId).emit('peer-init', {
+            peerId: socketid,
+            initiator: true
+        })
+        console.log(`Send an peer negotiation between ${socketid} and ${roomOwnerId}`)
+    })
 }
 
 
 function init_listener_room (socket) {
 
-    async function getMemberInformation(roomId) {
+    async function getMemberInformation(roomId, room = null) {
         console.log("Get request for room infomation: ", roomId)
-        let clientArrayInRoom = await getAllClientInRoom(roomId)
+        if (room == null) 
+        {
+            room = await getRoomInfomation(roomId)
+        }
+        /**
+         * Trường hợp không cung cấp đối tượng room, sẽ tự động truy vấn trong DB
+         */
+        let clientArrayInRoom = room.users
 
         console.log(clientArrayInRoom)
     
         for (let i=0;i<clientArrayInRoom.length;i++) 
         {
-            let username = await getUsername(clientArrayInRoom[i])
             clientArrayInRoom[i] = {
-                clientId: clientArrayInRoom[i],
-                username: username,
-                isRoomOwner: await isRoomOwner(clientArrayInRoom[i], roomId)
+                clientId: clientArrayInRoom[i].socketid,
+                username: clientArrayInRoom[i].username ,
+                isRoomOwner: clientArrayInRoom[i].socketid == room.host
                 // other information about member in room goes here
             }
         }
@@ -74,96 +105,154 @@ function init_listener_room (socket) {
     socket.on("create-room", async (data, callback) => {
         console.log(`Get create room request from ${socket.id} under the name ${data.username}`);
 
-        if (await isUsernameExist(data.username)) {
+        let userInfo = await getUserInformation(socket.id)
+        /**
+         * userInfo chứa tất cả các thông tin liên quan người dùng có socket.id
+         * Gồm có:
+         * - Socketid 
+         * - Roomid 
+         * - Username
+         */
+
+        if (await isUsernameExist(data.username)) 
+        {
             let response = {
                 isSuccess: false,
                 message: "Tên người dùng đã tồn tại."
             }
             callback(response)
-            return 
+            return
         }
 
-        if (await isInRoom(socket.id)) 
+        if (userInfo != null && userInfo != undefined) 
         {
-            let response = {
-                isSuccess: false,
-                message: "Người dùng đang ở trong một phòng khác."
+            /**
+             * Thông tin về người dùng socket.id đã được lưu trên cơ sở dữ liệu.
+             */
+            if (userInfo.roomid != null && userInfo.roomid != undefined) 
+            {
+                let response = {
+                    isSuccess: false,
+                    message: "Người dùng đang ở trong một phòng khác."
+                }
+                callback(response)
+                return
             }
-            callback(response)
-            return
         }
 
         let roomId = uuidv4()
 
         socket.join(roomId)
 
-        await addRoomOwner(socket.id, roomId)
-        await setUsername(socket.id, data.username)
-        await setRoomId(socket.id, roomId)
+        // await addRoomOwner(socket.id, roomId)
+        // await setUsername(socket.id, data.username)
+        // await setRoomId(socket.id, roomId)
+        if (userInfo != null && userInfo != undefined)
+        {
+            await addUser({
+                socketid: socket.id,
+                roomid: roomId,
+                username: data.username
+            })
+            /**
+             * Add người dùng mới vào cơ sở dữ liệu.
+             * Các thao tác khác như thêm người dùng vào room, chỉnh host, các thứ cũng được thực hiện trong hàm này.
+             */
+        }
+        else 
+        {
+            await updateUser(socket.id, {
+                roomid: roomId,
+                username: data.username
+            })
+            /**
+             * Sửa thông tin trong cơ sở dữ liệu ứng với socket id là socket.id
+             */
+        }
 
         let response = {
             isSuccess: true,
             roomid: roomId,
-            hostUsername: await getUsername(await getRoomOwner(roomId)),
-            hostSocketId: await getRoomOwner(roomId),
-            member: await getMemberInformation(roomId)
+            hostUsername: data.username,
+            hostSocketId: socket.id,
+            member: [socket.id]
         }
+        /**
+         * Member chỉ là mảng 1 phần tử: do đây là tạo phòng mới.
+         */
         callback(response)
     })
 
     socket.on("join-room", async (data, callback) => {
         console.log(`Get join room request from ${socket.id} under the name ${data.username}, to join room ${data.roomid}`);
 
-        if (await isUsernameExist(data.username)) {
-            let response = {
-                isSuccess: false,
-                message: "Tên người dùng đã tồn tại."
-            }
-            callback(response)
-            return 
-        }
+        let userInfo = await getUserInformation(socket.id)
+        /**
+         * userInfo chứa tất cả các thông tin liên quan người dùng có socket.id
+         * Gồm có:
+         * - Socketid 
+         * - Roomid 
+         * - Username
+         */
 
-        if (!(await isRoomExist(data.roomid))) {
-            let response = {
-                isSuccess: false,
-                message: "Phòng không tồn tại."
-            }
-            callback(response)
-            return 
-        }
+         if (await isUsernameExist(data.username)) 
+         {
+             let response = {
+                 isSuccess: false,
+                 message: "Tên người dùng đã tồn tại."
+             }
+             callback(response)
+             return
+         }
 
-        if (await isInRoom(socket.id)) 
-        {
-            let response = {
-                isSuccess: false,
-                message: "Người dùng đang ở trong một phòng khác."
+        if (userInfo != null && userInfo != undefined) {
+            /**
+             * Record tương ứng với socket id có tồn tại.
+             * Thực hiện kiểm tra xem có trong phòng nào khác hay không.
+             */
+            if (userInfo.roomId != null || userInfo.roomId != undefined)
+            {
+                let response = {
+                    isSuccess: false,
+                    message: "Người dùng đang ở trong một phòng khác."
+                }
+                callback(response)
+                return
             }
-            callback(response)
-            return
         }
 
         let roomId = data.roomid
         // TODO: Enable code above. Add no join when room is full.
-        console.log(`Client ${await getUsername(socket.id)} want to join ${roomId}`);
+        console.log(`Client ${socket.id} want to join ${roomId}`);
 
         // Add this id to candidate roomOwner list
-        await addRoomOwner(socket.id, roomId)
-        await setUsername(socket.id, data.username)
-        await setRoomId(socket.id, roomId)
+        await addUserToRoom(roomId, {
+            socketid: socket.id,
+            username: data.username,
+            roomid: roomId
+        })
+        /**
+         * Hàm này phải thực hiện cập nhật record trong user, đồng thời cập nhật record trong room.
+         */
+
+        let room = getRoomInfomation(roomId)
+        /**
+         * Lấy thông tin về phòng có tên là roomId
+         */
 
         let response = {
             isSuccess: true,
             roomid: roomId,
-            hostUsername: await getUsername(await getRoomOwner(roomId)),
-            hostSocketId: await getRoomOwner(roomId),
-            member: await getMemberInformation(roomId)
+            hostUsername: room.hostUsername,
+            hostSocketId: room.host,
+            member: room.users
         }
         // tạo phòng bên client trước, để set host các thứ
         callback(response)
 
         // init peer connection sau
         socket.emit("peer-init", {
-            peerId: await getRoomOwner(roomId),
+            peerId: room.host,
             initiator: false
         })
 
@@ -173,50 +262,88 @@ function init_listener_room (socket) {
         console.log("Send to Room Owner peer-init request:")
         console.log("From: ", socket.id)
         
-        getIo().to(await getRoomOwner(roomId)).emit('peer-init', {
+        getIo().to(room.host).emit('peer-init', {
             peerId: socket.id,
             initiator: true
         })
 
         socket.to(roomId).emit('join-room', {
             socketid: socket.id + 'testing', 
-            username: await getUsername(socket.id) 
+            username: data.username
         });
 
+        /**
+         * DEBUG Only:
+         */
         console.log(getIo().sockets.adapter.rooms)
     })
 
     socket.on("leave-room", async (callback) => {
-        if (!(await isInRoom(socket.id))) {
+        let userInfo = await getUserInformation(socket.id)  
+
+        if (userInfo == null || userInfo == undefined) 
+        {
+            /**
+             * Không tìm thấy đối tượng trong cơ sở dữ liệu.
+             */
             let response = {
                 isSuccess: false,
-                message: "Người dùng không trong phòng."
+                message: "Người dùng chưa được khởi tạo."
             }
             callback(response)
-            return 
+            return
         }
-        let roomid = await getRoomId(socket.id)
-        let username = await getUsername(socket.id)
-
-        if (await numClientInRoom(roomid) > 1) {
-            // there are more than one person in that room.
-            // TODO: change host, broadcast for all client.
-            console.log(`List of candidate client for host: ${await getAllClientInRoom(roomid)}`)
+        else 
+        {
+            if (userInfo.roomid == null || userInfo.roomid == undefined) 
+            {
+                /**
+                 * Người dùng không ở trong phòng.
+                 */
+                let response = {
+                    isSuccess: false,
+                    message: "Người dùng không trong một phòng cụ thể."
+                }
+                callback(response)
+                return
+            }
         }
 
-        socket.leave(await getRoomId(socket.id))
-        await outRoom(socket.id)
-        let isOwner = await removeRoomOwner(socket.id, roomid)
+        let removeUserResult = await removeUserFromRoom(userInfo.roomid, socket.id);
+        /**
+         * Hàm này thực hiện:
+         * - Nếu socket.id là host, đẩy thằng user khác gần nhất lên. Nếu không còn ai, xóa luôn phòng.
+         * - Ngược lại, giữ nguyên host 
+         * - Xóa socket.id khỏi mảng users.
+         * - Trả về một object có 2 trường:
+         *      + host: là host hiện tại sau khi xóa người dùng. null nếu phòng bị xóa.
+         *      + isChange: xem là có sự thay đổi host khi xóa người dùng hay không. true là có, false là không.
+         */
+        let username = userInfo.username;
+        let host = removeUserResult.host 
+        let isChange = removeUserResult.isChange
 
-        socket.to(roomid).emit("leave-room-notify", {
-            peerId: socket.id,
-            roomOwnerId: await getRoomOwner(roomid),
-            username: username
-        })
+        socket.leave(userInfo.roomid)
 
-        if (isOwner) {
-            await initConnectionInRoom(roomid);
+        if (newHost != null && newHost != undefined)
+        {
+            /**
+             * Phòng không bị xóa.
+             */
+            socket.to(roomid).emit("leave-room-notify", {
+                peerId: socket.id,
+                roomOwnerId: host,
+                username: username
+            })
+
+            if (isChange) {
+                /**
+                 * Tạo mới các connection trong room.
+                 */
+                await initConnectionInRoom(userInfo.roomid);
+            }
         }
+
         let response = {
             isSuccess: true
         }

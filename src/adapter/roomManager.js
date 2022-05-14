@@ -5,6 +5,7 @@ const { Room, User } = require("../database")
 
 // from socket id to room id 
 
+
 async function getRoomId(socketid) { 
     /**
      * Đầu vào là một socket id
@@ -142,6 +143,57 @@ async function outRoom(socketid) {
     // Check room owner change
 }
 
+
+async function getUserInformation(socketid) {
+    /**
+     * userInfo chứa tất cả các thông tin liên quan người dùng có socket.id
+     * Gồm có:
+     * - Socketid 
+     * - Roomid 
+     * - Username
+     * Trả về null hoặc undefined nếu không tìm thấy.
+     */
+}
+
+
+async function getRoomInfomation(roomid) {
+    /**
+     * Biến room này nên là 1 Object, trả về tất cả các thông tin liên quan đến room.
+     * Gồm có
+     * - roomid
+     * - host
+     * - hostUsername
+     * - users (lưu dưới dạng 1 mảng các object, mỗi object chứa socketid và username)
+     */
+}
+
+async function removeUserFromRoom(roomid) {
+    /**
+     * Hàm này thực hiện:
+     * - Nếu socket.id là host, đẩy thằng user khác gần nhất lên. Nếu không còn ai, xóa luôn phòng.
+     * - Ngược lại, giữ nguyên host 
+     * - Xóa socket.id khỏi mảng users.
+     * - Trả về một object có 2 trường:
+     *      + host: là host hiện tại sau khi xóa người dùng. null nếu phòng bị xóa.
+     *      + isChange: xem là có sự thay đổi host khi xóa người dùng hay không. true là có, false là không.
+     */
+}
+
+async function updateUser(socketid, updateField) {
+    /**
+     * Sửa thông tin trong cơ sở dữ liệu ứng với socket id là socket.id
+     * Trong updateField có roomid và username.
+     */
+}
+
+async function addUser(userInfo) {
+     /**
+     * Add người dùng mới vào cơ sở dữ liệu.
+     * Các thao tác khác như thêm người dùng vào room, chỉnh host, các thứ cũng được thực hiện trong hàm này.
+     * userInfo chưa socketid, roomid, và username.
+     */
+}
+
 module.exports = {
     getRoomId,
     setRoomId,
@@ -155,5 +207,10 @@ module.exports = {
     addRoomOwner: addRoomOwnerCandidate,
     removeRoomOwner: removeRoomOwnerCandidate,
     broadcastAllRoom,
-    outRoom
+    outRoom,
+    getUserInformation,
+    getRoomInfomation,
+    removeUserFromRoom,
+    updateUser,
+    addUser
 }
