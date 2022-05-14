@@ -109,6 +109,10 @@ module.exports = {
                 }, {
                     upsert: true
                 })
+            },
+
+            deleteUser: async (socketid) => {
+                await col.collection.deleteOne({ socketid })
             }
         }
     }

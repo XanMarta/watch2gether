@@ -220,6 +220,10 @@ async function addUser(userInfo) {
     }
 }
 
+async function deleteUser(socketid) {
+    await Room.deleteUser(socketid)
+}
+
 module.exports = {
     getRoomId,
     setRoomId,
@@ -238,5 +242,6 @@ module.exports = {
     getRoomInfomation,
     removeUserFromRoom,
     updateUser,
-    addUser
+    addUser,
+    deleteUser
 }
