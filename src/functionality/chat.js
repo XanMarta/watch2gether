@@ -1,8 +1,10 @@
 let { saveChatLog } = require('../adapter/chatManager')
+let { getUserInformation } = require("../adapter/roomManager")
 
 function init_listener_chat(socket) {
     socket.on("broadcast_message_room", async (message) => {
         let userInfo = await getUserInformation(socket.id)
+
         let username = userInfo.username;
         let roomId = userInfo.roomid;
 

@@ -226,7 +226,7 @@ function init_listener_room (socket) {
         console.log(`Client ${socket.id} want to join ${roomId}`);
 
         // Add this id to candidate roomOwner list
-        await addUserToRoom(roomId, {
+        await addUser({
             socketid: socket.id,
             username: data.username,
             roomid: roomId

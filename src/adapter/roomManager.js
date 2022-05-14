@@ -153,6 +153,7 @@ async function getUserInformation(socketid) {
      * - Username
      * Trả về null hoặc undefined nếu không tìm thấy.
      */
+    return await User.getUserInformation(socketid)
 }
 
 
@@ -165,9 +166,10 @@ async function getRoomInfomation(roomid) {
      * - hostUsername
      * - users (lưu dưới dạng 1 mảng các object, mỗi object chứa socketid và username)
      */
+    return await Room.getRoomInfo(roomid)
 }
 
-async function removeUserFromRoom(roomid) {
+async function removeUserFromRoom(roomid, socketid) {
     /**
      * Hàm này thực hiện:
      * - Nếu socket.id là host, đẩy thằng user khác gần nhất lên. Nếu không còn ai, xóa luôn phòng.
@@ -177,6 +179,22 @@ async function removeUserFromRoom(roomid) {
      *      + host: là host hiện tại sau khi xóa người dùng. null nếu phòng bị xóa.
      *      + isChange: xem là có sự thay đổi host khi xóa người dùng hay không. true là có, false là không.
      */
+    let host = null
+    let isChange = false
+    let roominfo = await Room.getRoomInfo(roomid)
+    if (roominfo.host == socketid) {
+        var userlist = roominfo.users.filter(e => e !== socketid)
+        if (userlist.length > 0) {
+            host = userlist[0]
+            isChange = true
+            await Room.setRoomOwner(host, roomid)
+        } else {
+            await Room.removeRoom(roomid)
+        }
+    }
+    await Room.outRoom(roomid, socketid)
+    await User.setRoomId(socketid, null)
+    return { host, isChange }
 }
 
 async function updateUser(socketid, updateField) {
@@ -184,6 +202,7 @@ async function updateUser(socketid, updateField) {
      * Sửa thông tin trong cơ sở dữ liệu ứng với socket id là socket.id
      * Trong updateField có roomid và username.
      */
+    await User.updateUser(socketid, updateField.roomid, updateField.username)
 }
 
 async function addUser(userInfo) {
@@ -192,6 +211,13 @@ async function addUser(userInfo) {
      * Các thao tác khác như thêm người dùng vào room, chỉnh host, các thứ cũng được thực hiện trong hàm này.
      * userInfo chưa socketid, roomid, và username.
      */
+    await User.updateUser(userInfo.socketid, userInfo.roomid, userInfo.username)
+    let roominfo = await Room.getRoomInfo(userInfo.roomid)
+    if (roominfo == null) {
+        await Room.addRoomOwner(userInfo.socketid, userInfo.roomid)
+    } else {
+        await Room.setRoomId(userInfo.socketid, userInfo.roomid)
+    }
 }
 
 module.exports = {
