@@ -24,11 +24,17 @@ async function getUsernameFromSocketId(socketid) {
     return await getUsername(socketid)
 }
 
+async function deleteUser(socketid) {
+    console.log(`Xóa user ${socketid} khỏi cơ sở dữ liệu.`)
+    await User.deleteUser(socketid)
+}
+
 module.exports = {
     getUsername,
     getSocketId,
     isUsernameExist,
     deleteUsername,
     setUsername,
-    getUsernameFromSocketId
+    getUsernameFromSocketId,
+    deleteUser
 }

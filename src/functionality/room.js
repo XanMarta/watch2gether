@@ -4,10 +4,12 @@ let {
     removeUserFromRoom,
     getUserInformation,
     addUser,
-    updateUser
+    updateUser,
+    addRoomOwner
 } = require('../adapter/roomManager')
 const { v4: uuidv4 } = require("uuid");
 const { getIo } = require('../singleton/io');
+const { getUsernameFromSocketId } = require('../adapter/usernameManager');
 
 async function initConnectionInRoom(roomId) {
     /**
@@ -144,6 +146,8 @@ function init_listener_room (socket) {
 
         socket.join(roomId)
 
+        await addRoomOwner(socket.id, roomId);
+
         // await addRoomOwner(socket.id, roomId)
         // await setUsername(socket.id, data.username)
         // await setRoomId(socket.id, roomId)
@@ -225,6 +229,25 @@ function init_listener_room (socket) {
         // TODO: Enable code above. Add no join when room is full.
         console.log(`Client ${socket.id} want to join ${roomId}`);
 
+        let room = await getRoomInfomation(roomId)
+        /**
+         * Lấy thông tin về phòng có tên là roomId
+         */
+
+        console.log("Debug - giá trị của room: ", room)
+
+        if (room == null || room == undefined)  {
+            /**
+             * Phòng không tồn tại.
+             */
+             let response = {
+                isSuccess: false,
+                message: "Phòng không tồn tại."
+            }
+            callback(response)
+            return
+        }
+
         // Add this id to candidate roomOwner list
         await addUser({
             socketid: socket.id,
@@ -234,16 +257,15 @@ function init_listener_room (socket) {
         /**
          * Hàm này phải thực hiện cập nhật record trong user, đồng thời cập nhật record trong room.
          */
-
-        let room = await getRoomInfomation(roomId)
+        await addRoomOwner(socket.id, roomId);
         /**
-         * Lấy thông tin về phòng có tên là roomId
+         * Thêm client mới socket.id vào roomId
          */
 
         let response = {
             isSuccess: true,
             roomid: roomId,
-            hostUsername: room.hostUsername,
+            hostUsername: await getUsernameFromSocketId(room.host),
             hostSocketId: room.host,
             member: room.users
         }
@@ -319,18 +341,19 @@ function init_listener_room (socket) {
          *      + host: là host hiện tại sau khi xóa người dùng. null nếu phòng bị xóa.
          *      + isChange: xem là có sự thay đổi host khi xóa người dùng hay không. true là có, false là không.
          */
+        let roomId = userInfo.roomid;
         let username = userInfo.username;
         let host = removeUserResult.host 
         let isChange = removeUserResult.isChange
 
-        socket.leave(userInfo.roomid)
+        socket.leave(roomId)
 
-        if (newHost != null && newHost != undefined)
+        if (host != null && host != undefined)
         {
             /**
              * Phòng không bị xóa.
              */
-            socket.to(roomid).emit("leave-room-notify", {
+            socket.to(roomId).emit("leave-room-notify", {
                 peerId: socket.id,
                 roomOwnerId: host,
                 username: username
@@ -340,7 +363,7 @@ function init_listener_room (socket) {
                 /**
                  * Tạo mới các connection trong room.
                  */
-                await initConnectionInRoom(userInfo.roomid);
+                await initConnectionInRoom(roomId);
             }
         }
 
