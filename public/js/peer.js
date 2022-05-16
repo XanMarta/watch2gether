@@ -2,12 +2,12 @@ import { getSocket } from './singleton/init_socket.js'
 import * as peerManager from './singleton/init_peer.js'
 import { getLocalStream } from './singleton/init_localstream.js';
 import { 
-    setRemoteStream, 
+    renderRemoteStream, 
     removeRemoteStream
 } from './render/mainStream.js' 
 import { addJoinNotification } from './render/chat.js'
 import { setHost, isHost } from './singleton/ownership.js';
-import { renderOwnerView, renderClientView } from './render/perspective.js'
+import { renderOwnerView } from './render/perspective.js'
 
 var listener = {} 
 
@@ -16,6 +16,7 @@ export function init_listener_peer() {
 
     socket.on("peer-init", data => {
         console.log('** got peer-init')
+        console.log(data)
 
         console.log(`Init a peer connection to ${data.peerId}`)
         let peer = new SimplePeer({initiator: data.initiator, stream: getLocalStream()})
@@ -26,12 +27,18 @@ export function init_listener_peer() {
             if (data.peerId == remotePeerId) {
                 peer.signal(data.signal)
             }
+
+            if (data.stream) 
+            {
+                console.log("** Got stream inside signal")
+                console.log(data.stream)
+            }
         }
         listener[remotePeerId] = signalListener
 
         socket.on("signal", signalListener)
 
-        socket.on("leave-room-notify", (data) => {
+        socket.on("leave-room-notify", async (data) => {
             console.log("** got leave-room-notify")
             console.log(`User ${data.username} has left the room.`)
 
@@ -47,7 +54,7 @@ export function init_listener_peer() {
             setHost(data.roomOwnerId)
 
             if (isHost()) {
-                renderOwnerView()
+                await renderOwnerView()
             }
         })
 
@@ -67,10 +74,10 @@ export function init_listener_peer() {
             })
         })
 
-        peer.on("stream", stream => {
+        peer.on("stream", (stream) => {
             console.log("** PEER - got 'stream'")
             console.log("Get stream: ", stream)
-            setRemoteStream(remotePeerId, stream)
+            renderRemoteStream(remotePeerId, stream)
         })
 
         peer.on("connect", () => {
@@ -111,7 +118,8 @@ export function init_listener_peer() {
 
         // TODO: peer disconnect
         // If remove by server user-disconnected event work, then this can be ignored.
-
+        
+        console.log("Thêm vào peerManager với id là: ", remotePeerId)
         peerManager.setPeer(remotePeerId, peer)
     })
 }

@@ -6,5 +6,5 @@ export function renderRoomMember(roomMember) {
     //     member: getMemberInformation(roomId)
     //     // TODO: send more in the future, like colour, and avt
     // }
-    console.log(`All member: ${roomMember}`)
+    console.log(`All member: `, roomMember)
 }

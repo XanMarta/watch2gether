@@ -1,30 +1,32 @@
-const usernameToSocketId = {}
-const socketIdToUsername = {}
+const { User } = require("../database")
 
-function getUsername(socketid) {
-    return socketIdToUsername[socketid]
+async function getUsername(socketid) {
+    return await User.getUsername(socketid)
 }
 
-function setUsername(socketid, username) {
-    usernameToSocketId[username] = socketid
-    socketIdToUsername[socketid] = username
+async function setUsername(socketid, username) {
+    await User.setUsername(socketid, username) 
 }
 
-function getSocketId(username) {
-    return usernameToSocketId[username]
+async function getSocketId(username) {
+    await User.getSocketId(username)
 }
 
-function isUsernameExist(username) {
-    return username in usernameToSocketId
+async function isUsernameExist(username) {
+    return await User.isUsernameExist(username)
 }
 
-function deleteUsername(socketid) {
-    delete usernameToSocketId[socketIdToUsername[socketid]]
-    delete socketIdToUsername[socketid]
+async function deleteUsername(socketid) {
+    await User.deleteUsername(socketid)
 }
 
-function getUsernameFromSocketId(socketid) {
-    return socketIdToUsername[socketid]
+async function getUsernameFromSocketId(socketid) {
+    return await getUsername(socketid)
+}
+
+async function deleteUser(socketid) {
+    console.log(`Xóa user ${socketid} khỏi cơ sở dữ liệu.`)
+    await User.deleteUser(socketid)
 }
 
 module.exports = {
@@ -33,5 +35,6 @@ module.exports = {
     isUsernameExist,
     deleteUsername,
     setUsername,
-    getUsernameFromSocketId
+    getUsernameFromSocketId,
+    deleteUser
 }

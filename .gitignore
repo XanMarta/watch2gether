@@ -146,4 +146,9 @@ node_modules_123/
 .script/
 
 public/video
+public/js/dev
 
+*.mkv
+*.mp4
+
+src/database/_test.js
