@@ -1,13 +1,6 @@
 #container {
-  padding: 0.5em;
-  margin: 0.5em;
+  margin: 3rem 1rem 0rem 1rem;
 }
-
-/* #container > div {
-  border: 1px solid blue;
-  padding: 0.5em;
-  margin: 0.5em;
-} */
 
 .min-content {
   width: min-content;
@@ -26,12 +19,83 @@
   display: flex;
 }
 
+.copyIcon-container {
+  position: relative;
+}
+
+.leaveIcon-container {
+  position: relative;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  opacity: 0;
+  transition: .5s ease;
+  background-color: rgba(251, 251, 251, 0.35)
+}
+
+.copyIcon-container:hover .overlay {
+  opacity: 1;
+}
+
+.leaveIcon-container:hover .overlay {
+  opacity: 1;
+}
+
+.copyIcon-container .tooltiptext {
+  visibility: hidden;
+  width: 50px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+  top: 100%;
+  left: 50%;
+  justify-content: center;
+}
+
+.copyIcon-container:hover .tooltiptext {
+  visibility: visible;
+}
+
+.leaveIcon-container .tooltiptext {
+  visibility: hidden;
+  width: 50px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+  top: 100%;
+  left: 50%;
+  justify-content: center;
+}
+
+.leaveIcon-container:hover .tooltiptext {
+  visibility: visible;
+}
+
 #left {
-  height: 38rem;
+  height: 35rem;
+  width: max-content;
   flex: 4
 }
 
 #right {
   flex: 1;
-  height: 38rem;
+  height: 35rem;
+  width: max-content;
 }

@@ -57,7 +57,10 @@ console.log("Host room view");
 
 setSocket(socket)
 
-const leaveRoom = document.querySelector("#leave-room")
+var leaveRoom = document.querySelector("#leave-room")
+
+var displayChat = document.querySelector("#display-chat")
+var displayMembers = document.querySelector("#display-members")
 
 //chat
 var sendMessage = document.querySelector("#send-message");
@@ -86,6 +89,15 @@ function room_init_listener_button() {
     }, roomJoined)
     console.log("Room id is: " + roomId + " and username is " + username);
   }
+
+  displayChat.addEventListener("click", function () {
+    displayMembers.hidden = false;
+    displayChat.hidden = true;
+  })
+  displayMembers.addEventListener("click", function () {
+    displayChat.hidden = false;
+    displayMembers.hidden = true;
+  })
   leaveRoom.addEventListener("click", () => {
     if (confirm("Do you want to leave the room?") === true) {
       sessionStorage.clear();

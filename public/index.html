@@ -24,39 +24,43 @@
       <div class="collapse navbar-collapse" style="justify-content: center">
         <div class="row" style="padding-right: 4rem;">
           <div class="col-sm-3">
-            <a class="nav-link active" aria-current="page" href="./index.html" style="padding-right: 2rem;">Home</a>
+            <a class="nav-link active" aria-current="page" href="./index.html"
+              style="padding-right: 2rem; color: white">Home</a>
           </div>
           <div class="col-sm-3">
             <a class="nav-link active" aria-current="page" href="#feature-section"
-              style="padding-right: 2rem; ">Feature</a>
+              style="padding-right: 2rem; color: white">Feature</a>
           </div>
           <div class="col-sm-3">
             <a class="nav-link active" aria-current="page" href="#review-section"
-              style="padding-right: 2rem; ">Review</a>
+              style="padding-right: 2rem; color: white">Review</a>
           </div>
         </div>
       </div>
     </div>
   </nav>
   <!--End Navbar-->
-  <div style="background-image: url('../img/wallpaper7.webp');">
-    <div class="container-xxl themed-container" id="upper-top" style="color: rgb(255, 255, 255); opacity: 0.85;">
+  <div class=" background-image">
+    <div class="container-xxl themed-container" id="upper-top"
+      style="color: rgb(255, 255, 255); opacity: 0.85; width: fit-content; height: fit-content;">
       <!--Join/create room section-->
-      <div class="card text-center"
-        style="background-color: rgb(32, 33, 34); box-shadow: 1px 2px 3px 4px rgba(34, 33, 33, 0.4);">
-        <div class="card-body">
-          <h4 class="card-title">Watch video with your friends</h4>
+      <div class="card text-center" style="background-color: rgb(32, 33, 34); 
+        box-shadow: 1px 2px 3px 4px rgba(34, 33, 33, 0.4); height:18rem;">
+        <div class="card-body" style="padding: 2rem 1rem 1rem 1.3rem;">
+          <h4 class="card-title" style="font-size: 35px;">Watch video with your friends</h4>
           <br>
-          <p class="card-text" style="font-size: 25px;">Create or join a room</p>
+          <h5 class="card-text" style="font-size: 35px;">Create or join a room</h5>
           <!-- <a href="#" class="btn btn-primary">Create a room</a>
         <a href="#" class="btn btn-primary">Join a room</a> -->
-          <button class="btn btn-warning" id="createRoomButton" data-bs-toggle="modal"
-            data-bs-target="#createRoomModal">Create a
-            room</button>
-          <button class="btn btn-warning" id="joinRoomButton" data-bs-toggle="modal"
-            data-bs-target="#joinRoomModal">Join
-            a
-            room</button>
+          <div style="margin-top: 2.5rem;">
+            <button class="btn btn-warning btn-lg" id="createRoomButton" data-bs-toggle="modal"
+              data-bs-target="#createRoomModal" style="font-weight:bold;">Create a
+              room</button>
+            <button class="btn btn-warning btn-lg" id="joinRoomButton" data-bs-toggle="modal"
+              data-bs-target="#joinRoomModal" style="font-weight:bold;">Join
+              a
+              room</button>
+          </div>
         </div>
       </div>
       <!--End Join/create room section-->
@@ -66,7 +70,8 @@
       <div class="card flex-row" style="box-shadow: 1px 2px 3px 4px rgba(20,20,20,0.4);">
         <!--Feature section-->
         <div class="tab">
-          <button class="tablinks" onclick="openFeature(event, 'feature1')" id="defaultOpen">Feature 1</button>
+          <button class="tablinks" onclick="openFeature(event, 'feature1')" id="defaultOpen">Feature
+            1</button>
           <button class="tablinks" onclick="openFeature(event, 'feature2')">Feature 2</button>
           <button class="tablinks" onclick="openFeature(event, 'feature3')">Feature 3</button>
           <button class="tablinks" onclick="openFeature(event, 'feature4')">Feature 4</button>
@@ -95,7 +100,7 @@
         <!--End Feature section-->
       </div>
     </div>
-    <div class="container-xxl themed-container" id="review-section">
+    <div class="container-xxl themed-container" id="review-section" style="color: black; opacity: 0.85;">
       <!-- <h1>Review</h1> -->
       <!--Review section-->
       <div class=" card flex-row" style="box-shadow: 1px 2px 3px 4px rgba(20,20,20,0.4);">
@@ -123,24 +128,12 @@
         <!-- Section: Social media -->
         <section class="mb-4">
           <!-- Facebook -->
-          <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"><i
-              class="fab fa-facebook-f"></i></a>
-
-          <!-- Twitter -->
-          <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"><i class="fab fa-twitter"></i></a>
-
-          <!-- Google -->
-          <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"><i class="fab fa-google"></i></a>
-
-          <!-- Instagram -->
-          <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"><i class="fab fa-instagram"></i></a>
-
-          <!-- Linkedin -->
-          <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"><i
-              class="fab fa-linkedin-in"></i></a>
+          <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"><img src="./img/facebook-icon.webp"
+              height=20 width="20" style="border-radius: 50%;"></a>
 
           <!-- Github -->
-          <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"><i class="fab fa-github"></i></a>
+          <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"><img src="./img/github-512.webp"
+              height=20 width="20" style="border-radius: 50%;"></a>
         </section>
         <!-- Section: Social media -->
       </div>
