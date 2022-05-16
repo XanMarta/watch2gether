@@ -1,6 +1,15 @@
 import { getSocket } from './init_socket.js'
 
-var hostid = null 
+var hostid = null
+var roomid = null 
+
+export function setRoomId(roomId) {
+    roomid = roomId
+}
+
+export function getRoomId() {
+    return roomid
+}
 
 export function isHost() {
     console.log("** Ask whether this is host of room")
@@ -15,7 +24,7 @@ export function isRemoteHost(socketid) {
 }
 
 export function setHost(hostId) {
-    console.log(`** Set hostId to ${hostId}`)
+    console.log(`** Set hostId to ${hostId}`) 
     hostid = hostId 
 }
 

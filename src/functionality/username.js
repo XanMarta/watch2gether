@@ -7,7 +7,7 @@ let {
     getUsernameFromSocketId
 } = require("../adapter/usernameManager")
 
-function init_listener_username (io, socket) {
+function init_listener_username (socket) {
     socket.on("register-username", (username) => {
         if (isUsernameExist(username)) {
             socket.emit("register-username-reject", "Name already exist!")

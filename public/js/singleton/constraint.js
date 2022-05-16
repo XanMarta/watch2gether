@@ -1,4 +1,4 @@
 export const streamConstraints = {
+    video: true,
     audio: false,
-    video: { width: 300, height: 300 },
 }

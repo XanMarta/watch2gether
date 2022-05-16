@@ -1,9 +1,8 @@
-let { getUsername } = require('./username')
+let { getUsername, isUsernameExist, setUsername } = require('./username')
 let {
     getRoomId,
     setRoomId,
     getRoomOwner,
-    isSocketIdExist,
     isInRoom,
     numClientInRoom,
     getAllClientInRoom,
@@ -13,26 +12,28 @@ let {
     outRoom,
     isRoomOwner
 } = require('../adapter/roomManager')
+const { v4: uuidv4 } = require("uuid");
+const { getIo } = require('../singleton/io');
 
-function initConnectionInRoom(io, roomId) {
+function initConnectionInRoom(roomId) {
     console.log(`Init connection in room ${roomId}`)
-    if (isRoomExist(io, roomId))
+    if (isRoomExist(roomId))
     {
         console.log(`Yes, room exist`)
-        if (numClientInRoom(io, roomId) > 1)
+        if (numClientInRoom(roomId) > 1)
         {
             console.log('Yes, there are more than one person in this room')
             let roomOwnerId = getRoomOwner(roomId);
 
-            getAllClientInRoom(io, roomId).forEach(socketid => {
+            getAllClientInRoom(roomId).forEach(socketid => {
                 if (socketid == roomOwnerId) {
                     return
                 }
-                io.to(socketid).emit("peer-init", {
+                getIo().to(socketid).emit("peer-init", {
                     peerId: roomOwnerId,
                     initiator: false
                 })
-                io.to(roomOwnerId).emit('peer-init', {
+                getIo().to(roomOwnerId).emit('peer-init', {
                     peerId: socketid,
                     initiator: true
                 })
@@ -43,11 +44,11 @@ function initConnectionInRoom(io, roomId) {
 }
 
 
-function init_listener_room (io, socket) {
+function init_listener_room (socket) {
 
     function getMemberInformation(roomId) {
         console.log("Get request for room infomation: ", roomId)
-        let clientArrayInRoom = getAllClientInRoom(io, roomId)
+        let clientArrayInRoom = getAllClientInRoom(roomId)
 
         console.log(clientArrayInRoom)
     
@@ -67,85 +68,143 @@ function init_listener_room (io, socket) {
         return clientArrayInRoom
     }
 
-    socket.on("join-room", (roomId) => {
-        console.log(`Get join room request from ${socket.id} to join ${roomId}`)
+    /// TODO: Chỉnh lại logic phần này.
+    /// TODO: Tạo thêm event join-room
+    socket.on("create-room", (data, callback) => {
+        console.log(`Get create room request from ${socket.id} under the name ${data.username}`);
 
-        if (!isSocketIdExist(socket.id)) {
-            socket.emit("username-require")
-            return
+        if (isUsernameExist(data.username)) {
+            let response = {
+                isSuccess: false,
+                message: "Tên người dùng đã tồn tại."
+            }
+            callback(response)
+            return 
         }
 
         if (isInRoom(socket.id)) 
         {
-            socket.emit("already-in-room")
+            let response = {
+                isSuccess: false,
+                message: "Người dùng đang ở trong một phòng khác."
+            }
+            callback(response)
             return
         }
-        
+
+        let roomId = uuidv4()
+
+        socket.join(roomId)
+
+        addRoomOwner(socket.id, roomId)
+        setUsername(socket.id, data.username)
+        setRoomId(socket.id, roomId)
+
+        let response = {
+            isSuccess: true,
+            roomid: roomId,
+            hostUsername: getUsername(getRoomOwner(roomId)),
+            hostSocketId: getRoomOwner(roomId),
+            member: getMemberInformation(roomId)
+        }
+        callback(response)
+        console.log('Get all room information: ', getIo().sockets.adapter.rooms)
+    })
+
+    socket.on("join-room", (data, callback) => {
+        console.log(`Get join room request from ${socket.id} under the name ${data.username}, to join room ${data.roomid}`);
+
+        if (isUsernameExist(socket.id)) {
+            let response = {
+                isSuccess: false,
+                message: "Tên người dùng đã tồn tại."
+            }
+            callback(response)
+            return 
+        }
+
+        if (!isRoomExist(data.roomid)) {
+            let response = {
+                isSuccess: false,
+                message: "Phòng không tồn tại."
+            }
+            callback(response)
+            return 
+        }
+
+        if (isInRoom(socket.id)) 
+        {
+            let response = {
+                isSuccess: false,
+                message: "Người dùng đang ở trong một phòng khác."
+            }
+            callback(response)
+            return
+        }
+
+        let roomId = data.roomid
         // TODO: Enable code above. Add no join when room is full.
         console.log(`Client ${getUsername(socket.id)} want to join ${roomId}`);
 
-        if (isRoomExist(io, roomId))
-        {
-            if (numClientInRoom(io, roomId) > 0)
-            {
-                // Assume the onwer is the first one get in the room. So current client is not onwer.
-                socket.emit("peer-init", {
-                    peerId: getRoomOwner(roomId),
-                    initiator: false
-                })
-            }
-        }
+        socket.emit("peer-init", {
+            peerId: getRoomOwner(roomId),
+            initiator: false
+        })
 
         socket.join(roomId)
-        socket.to(roomId).emit('join-room', {
-            socketid: socket.id,
-            username: getUsername(socket.id)
-        });
 
         // Add this id to candidate roomOwner list
         addRoomOwner(socket.id, roomId)
+        setUsername(socket.id, data.username)
+        setRoomId(socket.id, roomId)
 
-        if (numClientInRoom(io, roomId) > 1)
-        {
-            // Send peer init request to every client in the same room (except sender).
-            io.to(getRoomOwner(roomId)).emit('peer-init', {
-                peerId: socket.id,
-                initiator: true
-            })
-        }
-
-        let memberInformation = getMemberInformation(roomId)
-
-        socket.emit("room-joined", {
-            roomId: roomId,
-            roomOwnerId: getRoomOwner(roomId),
-            member: memberInformation
-            // TODO: send more in the future, like colour, and avt
+        // Ta giả thiết rằng khi phòng tồn tại và người dùng muốn vào phòng. Trong phòng chắc chắn có ít nhất 1 người.
+        console.log("Send to Room Owner peer-init request:")
+        console.log("From: ", socket.id)
+        getIo().to(getRoomOwner(roomId)).emit('peer-init', {
+            peerId: socket.id,
+            initiator: true
         })
 
-        setRoomId(socket.id, roomId)
-        console.log(io.sockets.adapter.rooms)
+        socket.to(roomId).emit('join-room', {
+            socketid: socket.id + 'testing',
+            username: getUsername(socket.id) 
+        });
+
+        let response = {
+            isSuccess: true,
+            roomid: roomId,
+            hostUsername: getUsername(getRoomOwner(roomId)),
+            hostSocketId: getRoomOwner(roomId),
+            member: getMemberInformation(roomId)
+        }
+
+        callback(response)
+        console.log(getIo().sockets.adapter.rooms)
     })
 
-    socket.on("leave-room", () => {
+    socket.on("leave-room", callback => {
         if (!isInRoom(socket.id)) {
-            socket.emit("leave-room-reject", "Client not in a room.")
+            let response = {
+                isSuccess: false,
+                message: "Người dùng không trong phòng."
+            }
+            callback(response)
             return 
         }
         let roomid = getRoomId(socket.id)
         let username = getUsername(socket.id)
 
-        if (numClientInRoom(io, roomid) > 1) {
+        if (numClientInRoom(roomid) > 1) {
             // there are more than one person in that room.
             // TODO: change host, broadcast for all client.
-            console.log(`List of candidate client for host: ${getAllClientInRoom(io, roomid)}`)
+            console.log(`List of candidate client for host: ${getAllClientInRoom(roomid)}`)
         }
 
         socket.leave(getRoomId(socket.id))
-        outRoom(io, socket.id)
+        outRoom(socket.id)
         let isOwner = removeRoomOwner(socket.id, roomid)
 
-        socket.emit("leave-room", `Client leave room ${roomid}`)
         socket.to(roomid).emit("leave-room-notify", {
             peerId: socket.id,
             roomOwnerId: getRoomOwner(roomid),
@@ -153,8 +212,12 @@ function init_listener_room (io, socket) {
         })
 
         if (isOwner) {
-            initConnectionInRoom(io, roomid);
+            initConnectionInRoom(roomid);
         }
+        let response = {
+            isSuccess: true
+        }
+        callback(response)
     })
 }
 

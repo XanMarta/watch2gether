@@ -1,5 +1,6 @@
 console.log("Create room management for the first time")
-let { getUsername } = require('../functionality/username')
+const { getUsername } = require('../functionality/username')
+const { getIo } = require('../singleton/io')
 
 // from socket id to room id 
 const room = {}
@@ -34,13 +35,13 @@ function addRoomOwner(id, roomId) {
     }
     roomOwner[roomId].push(id)
 
-    console.log(`Add id ${id} to room ${roomId}. All client in room is ${roomOwner[roomId]}`)
+    console.log(`Add id ${id} to room ${roomId}. Room owner is ${roomOwner[roomId]}`)
 }
 
 function removeRoomOwner(id, roomId) {
-    let removeOwner = false 
+    let removeOwner = false
     if (roomOwner[roomId] == null || roomOwner[roomId] == undefined) {
-        return 
+        return
     }
     if (id == getRoomOwner(roomId)) {
         roomOwner[roomId].shift()
@@ -67,43 +68,43 @@ function isSocketIdExist(socketid) {
 
 function isInRoom(socketid) {
     var currentRoom = getRoomId(socketid)
-    return currentRoom!= null && currentRoom != undefined
+    return currentRoom != null && currentRoom != undefined
 }
 
-function numClientInRoom(io, roomId) {
-    if (!isRoomExist(io, roomId)) {
+function numClientInRoom(roomId) {
+    if (!isRoomExist(getIo(), roomId)) {
         return undefined
     }
-    return Array.from(io.sockets.adapter.rooms.get(roomId)).length
+    return Array.from(getIo().sockets.adapter.rooms.get(roomId)).length
 }
 
-function getAllClientInRoom(io, roomId) {
-    if (!isRoomExist(io, roomId)) {
-        return undefined
+function getAllClientInRoom(roomId) {
+    if (!isRoomExist(roomId)) {
+        return []
     }
-    return Array.from(io.sockets.adapter.rooms.get(roomId))
+    return Array.from(getIo().sockets.adapter.rooms.get(roomId))
 }
 
 // TODO: there io and nothing to do about it.
-function isRoomExist(io, roomId) {
-    return io.sockets.adapter.rooms.get(roomId) != undefined
+function isRoomExist(roomId) {
+    return getIo().sockets.adapter.rooms.get(roomId) != undefined
 }
 
-function broadcastAllRoom(io, roomId, func) {
-    if (!isRoomExist(io, roomId)) {
+function broadcastAllRoom(roomId, func) {
+    if (!isRoomExist(getIo(), roomId)) {
         return undefined
     }
     
-    Array.from(io.sockets.adapter.rooms.get(roomId)).forEach(
+    Array.from(getIo().sockets.adapter.rooms.get(roomId)).forEach(
         func
     )
 }
 
-function outRoom(io, socketid) {
+function outRoom(socketid) {
     console.log(`Delete room name ${socketid}`)
 
     if (getRoomOwner(room[socketid]) == socketid) {
-        console.log(`Check type to set room owner in the future: ${getAllClientInRoom(io, room[socketid])}`)
+        console.log(`Check type to set room owner in the future: ${getAllClientInRoom(room[socketid])}`)
     }
     delete room[socketid]
 }

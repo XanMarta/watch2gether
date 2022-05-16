@@ -35,10 +35,10 @@ module.exports = (io) => {
                 })
 
                 console.log(`New owner id of room ${getRoomId(socket.id)} is ${getRoomOwner(getRoomId(socket.id))}`)
-                outRoom(io, socket.id)
+                outRoom(socket.id)
 
                 if (isOwner) {
-                    initConnectionInRoom(io, roomId)
+                    initConnectionInRoom(roomId)
                 }
             }
 
@@ -59,8 +59,8 @@ module.exports = (io) => {
             console.log(socket.rooms); // the Set contains at least the socket ID
         });
 
-        init_listener_room(io, socket)
+        init_listener_room(socket)
         init_listener_chat(socket)
-        init_listener_username(io, socket)
+        init_listener_username(socket)
     })
 }

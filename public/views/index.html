@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>WebRTC Test</title>
+
+        <link rel="stylesheet" href="css/video-js.min.css">
+    </head>
+
+    <body>
+        <div id="room-management-container">
+            <h2>For host to create room</h2>
+            <button id="create-room-form-button">Create room</button>
+            <br>
+            <h1>OR</h1>
+            <h2>For client to join room</h2>
+            <button id="join-room-form-button">Join room</button>
+        </div>
+
+        <!-- đặt một pop up ở đây -->
+        <div id="create-room-container" hidden>
+            <input id="create-name-username" placeholder="Enter your username">
+            <button id="create-room">Create room</button>
+            <button id="create-room-back">Back</button>
+        </div>
+
+        <!-- đặt một pop up ở đây -->
+        <div id="join-room-container" hidden>
+            <input id="join-name-username" placeholder="Enter your username">
+            <input id="join-name-roomid" placeholder="Enter your room id">
+            <button id="join-room">Join room</button>
+            <button id="join-room-back">Back</button>
+        </div>
+
+        <div id="host-view" hidden>
+            <h3>Host view</h3>
+            <h2>ROOM ID: </h2>
+            <h2 id="room-id-renderer-host"></h2>
+
+            <button id="out-room">Out Room</button>
+            <button id="kick-user">Kick user</button>
+            <button id="mute-user">Mute user</button>
+            <button id="get-room-info">Get Room Info</button>
+        </div>
+
+        <div id="client-view" hidden>
+            <h3>Client view</h3>
+            <h2>ROOM ID: </h2>
+            <h2 id="room-id-renderer-client"></h2>
+            <button id="out-room">Out Room</button>
+            <button id="get-room-info">Get Room Info</button>
+        </div>
+        <!--End Join/create room section-->
+    </div>
+    <div class="container-xxl themed-container" id="feature-section">
+        <h1>Features</h1>
+        <div class="card flex-row">
+            <!--Feature section-->
+            <div class="tab">
+                <button class="tablinks" onclick="openFeature(event, 'feature1')" id="defaultOpen">Feature 1</button>
+                <button class="tablinks" onclick="openFeature(event, 'feature2')">Feature 2</button>
+                <button class="tablinks" onclick="openFeature(event, 'feature3')">Feature 3</button>
+                <button class="tablinks" onclick="openFeature(event, 'feature4')">Feature 4</button>
+            </div>
+
+            <div id="feature1" class="tabcontent">
+                <h1>Feature 1</h1>
+                <p>fashdfhksadjhfjksdahfjksadhfjksdhfkasdhssfkfasdhfkas
+                    jdfhkajsrqweretwertwefaskdhfkjasdhfkasdfhkasdhfkasdhfdkshfsdhhfasfasda</p>
+            </div>
+
+            <div id="feature2" class="tabcontent">
+                <h1>Feature 2</h1>
+                <p>Feature 2 blahblahblahblahblahblahblahblahblah</p>
+            </div>
+
+        <div>
+            <h1>Video Rendering</h1>
+            <div>
+                <h2>Video from local</h2>
+                
+                <input id="video-stream-get-file-from-local" type="file">
+                <h2>Current Video Rendering: </h2>
+                <h2 id="current-play-video-name">...</h2>
+                <button id="video-stream-send-stream">SEND STREAM</button>
+                <br>
+                <!-- do tương tác là làm hết trên element video rồi, nên sẽ không cần các button. -->
+                <video id="video-player-local" class="video-js" height="360" width="640" data-setup='{}' controls autoplay>
+                    <source src="//vjs.zencdn.net/v/oceans.mp4" type="video/mp4">
+                    <source src="//vjs.zencdn.net/v/oceans.webm" type="video/webm">
+                </video>
+                <button id="stream-stop-button">Stop stream</button>
+
+                <video id="main-stream" height="360" width="640" autoplay></video>
+                <button id="stream-face-button">Start Stream Face</button>
+            </div>
+            <!-- Grid container -->
+
+            <!-- Copyright -->
+            <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+                © 2022 Copyright:
+                <a class="text-white" href="#">Watch2gether</a>
+            </div>
+            <!-- Copyright -->
+        </footer>
+    </footer>
+    <!--End Footer section-->
+    <!--Modal section-->
+    <!-- Modal create room -->
+    <div class="modal fade" id="createRoomModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Create a room</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Enter your name</label>
+                        <input type="text" class="form-control" id="username-create" aria-describedby="username">
+                    </div>
+                    <div class="mb-3">
+                        <label for="roomid" class="form-label">Enter your room ID</label>
+                        <input type="text" class="form-control" id="room-id-create">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="createRoomCloseButton" class="btn btn-secondary"
+                        data-bs-dismiss="modal">Close</button>
+                    <button type="button" id="create-room-btn" class="btn btn-primary">Create a room</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Modal create room -->
+    <!-- Modal join room -->
+    <div class="modal fade" id="joinRoomModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Join a room</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Enter your name</label>
+                        <input type="text" class="form-control" id="username-join" aria-describedby="username">
+                    </div>
+                    <div class="mb-3">
+                        <label for="roomid" class="form-label">Enter your room ID</label>
+                        <input type="text" class="form-control" id="room-id-join">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="joinRoomCloseButton" class="btn btn-secondary"
+                        data-bs-dismiss="modal">Close</button>
+                    <button type="button" id="join-room-btn" class="btn btn-primary">Join a room</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Modal join room -->
+    <!--End Modal section-->
+</body>
+<script>
+    //Modal section
+    const createRoomModal = document.getElementById("createRoomModal");
+    const modalCreateRoom = new bootstrap.Modal(createRoomModal);
+
+    const joinRoomModal = document.getElementById("joinRoomModal")
+    const modalJoinRoom = new bootstrap.Modal(joinRoomModal);
+
+    //joining room modal
+    document.getElementById("joinRoomButton").addEventListener("click", function () {
+        modalJoinRoom.show();
+    });
+    document.getElementById("joinRoomCloseButton").addEventListener("click", function () {
+        modalJoinRoom.hide();
+    });
+
+    //create a room Modal
+    document.getElementById("createRoomButton").addEventListener("click", function () {
+        modalCreateRoom.show();
+    });
+    document.getElementById("createRoomCloseButton").addEventListener("click", function () {
+        modalCreateRoom.hide();
+    });
+
+    //Feature
+    function openFeature(evt, featureName) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(featureName).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
+
+    // Get the element with id="defaultOpen" and click on it
+    document.getElementById("defaultOpen").click();
+</script>
+<!-- <script type="module" src="./js/jsFEtest/index.js"></script> -->
+<script src="/socket.io/socket.io.js"></script>
+<script src="./script/simplepeer.min.js"></script>
+<script src="./script/video.min.js"></script>
+<script type="module" src="../js/main.js"></script>
+<!-- <script type="module" src="../js/jsFEtest/index.js"></script> -->
+
+</html>
