@@ -48,5 +48,7 @@ export function addJoinNotification(username, type) {
         addNotification(`${username} leave the room !!!`)
     } else if (type == 'owner') {
         addNotification(`${username} is now the room owner !!!`)
+    } else if (type == 'kick') {
+        addNotification(`${username} kicked!!!`)
     }
 }

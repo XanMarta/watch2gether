@@ -150,3 +150,5 @@ public/js/dev
 
 *.mkv
 *.mp4
+
+src/database/_test.js

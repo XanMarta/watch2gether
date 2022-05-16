@@ -1,6 +1,6 @@
 // To show what, to hide what, go all here
 
-import { getRoomId } from "../singleton/ownership.js"
+import { getRoomIdOffline } from "../singleton/ownership.js"
 
 function clease() {
     // Hàm này sẽ hide tất cả các view.
@@ -9,21 +9,21 @@ function clease() {
 }
 
 // Render related to Owner View
-export function renderOwnerView() {
+export async function renderOwnerView() {
     clease()
     document.querySelector('#host-view').hidden = false         
     console.log("Show host view")
 
-    document.querySelector("#room-id-renderer-host").innerHTML = getRoomId()
+    document.querySelector("#room-id-renderer-host").innerHTML = getRoomIdOffline()
 }
 
 // Render related to Client View
-export function renderClientView() {
+export async function renderClientView() {
     clease()
     document.querySelector('#client-view').hidden = false         
     console.log("Show host view")
 
-    document.querySelector("#room-id-renderer-client").innerHTML = getRoomId()
+    document.querySelector("#room-id-renderer-client").innerHTML = getRoomIdOffline()
 }
 
 // Render related to Main View

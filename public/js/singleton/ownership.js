@@ -3,11 +3,11 @@ import { getSocket } from './init_socket.js'
 var hostid = null
 var roomid = null 
 
-export function setRoomId(roomId) {
+export function setRoomIdOffline(roomId) {
     roomid = roomId
 }
 
-export function getRoomId() {
+export function getRoomIdOffline() {
     return roomid
 }
 

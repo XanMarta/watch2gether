@@ -8,6 +8,18 @@ const sendStreamButton = document.querySelector("#video-stream-send-stream")
 
 const video = document.querySelector('#video-player-local').getElementsByTagName('video')[0]
 
+export async function sendStream() {
+    console.log("!! SEND STREAM !!")
+    var stream = await video.captureStream();
+
+    setLocalStream(stream)
+    renderLocalStream(stream)
+    PeerManager.addStreamAll(getLocalStream())
+
+    console.log("Stream đã được gửi: ")
+    console.log(stream)
+}
+
 export function init_listener_file() {
     inputFileUpload.addEventListener('change', async () => {
         // TODO: Chua check TH không phải file video
@@ -38,16 +50,6 @@ export function init_listener_file() {
         console.log(stream)
     })
 
-    sendStreamButton.addEventListener('click', () => {
-        console.log("Bấm nút SEND STREAM!!")
-        var stream = video.captureStream();
-
-        setLocalStream(stream)
-        renderLocalStream(stream)
-        PeerManager.addStreamAll(getLocalStream())
-
-        console.log("Stream đã được gửi: ")
-        console.log(stream)
-    })
+    sendStreamButton.addEventListener('click', sendStream)
 }
 /* <source src="//vjs.zencdn.net/v/oceans.mp4" type="video/mp4"></source> */     

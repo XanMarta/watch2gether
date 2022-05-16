@@ -7,7 +7,7 @@ import {
 } from './render/mainStream.js' 
 import { addJoinNotification } from './render/chat.js'
 import { setHost, isHost } from './singleton/ownership.js';
-import { renderOwnerView, renderClientView } from './render/perspective.js'
+import { renderOwnerView } from './render/perspective.js'
 
 var listener = {} 
 
@@ -27,12 +27,18 @@ export function init_listener_peer() {
             if (data.peerId == remotePeerId) {
                 peer.signal(data.signal)
             }
+
+            if (data.stream) 
+            {
+                console.log("** Got stream inside signal")
+                console.log(data.stream)
+            }
         }
         listener[remotePeerId] = signalListener
 
         socket.on("signal", signalListener)
 
-        socket.on("leave-room-notify", (data) => {
+        socket.on("leave-room-notify", async (data) => {
             console.log("** got leave-room-notify")
             console.log(`User ${data.username} has left the room.`)
 
@@ -48,7 +54,7 @@ export function init_listener_peer() {
             setHost(data.roomOwnerId)
 
             if (isHost()) {
-                renderOwnerView()
+                await renderOwnerView()
             }
         })
 
@@ -68,7 +74,7 @@ export function init_listener_peer() {
             })
         })
 
-        peer.on("stream", stream => {
+        peer.on("stream", (stream) => {
             console.log("** PEER - got 'stream'")
             console.log("Get stream: ", stream)
             renderRemoteStream(remotePeerId, stream)

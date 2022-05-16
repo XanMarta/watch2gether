@@ -3,11 +3,11 @@ import { addMessage, addJoinNotification } from './render/chat.js'
 import { renderRoomMember } from './render/member.js'
 import { renderOwnerView, renderClientView, renderMainMenu } from './render/perspective.js'
 import { removeLocalStream, removeRemoteStream } from './render/mainStream.js'
-import { setHost, isHost, setRoomId } from './singleton/ownership.js'
+import { setHost, isHost, setRoomIdOffline } from './singleton/ownership.js'
 import * as peerManager from "./singleton/init_peer.js";
 import * as localStreamManager from "./singleton/init_localstream.js";
 
-export function roomCreated(data) {
+export async function roomCreated(data) {
     if (data.isSuccess) {
         console.log("Tạo phòng thành công!!")
         console.log("Id của phòng: ", data.roomid)
@@ -17,11 +17,11 @@ export function roomCreated(data) {
 
         // TODO: Render các thông tin cần thiết cho người dùng
 
-        setRoomId(data.roomid)
+        setRoomIdOffline(data.roomid)
         addJoinNotification('You', 'create')
         setHost(data.hostSocketId)
 
-        renderOwnerView()
+        await renderOwnerView()
         renderRoomMember(data.member)
         
     } else {
@@ -41,7 +41,7 @@ export function roomJoined(data) {
 
         // TODO: Render các thông tin cần thiết cho người dùng
 
-        setRoomId(data.roomid)
+        setRoomIdOffline(data.roomid)
         addJoinNotification('You have', 'join')
         setHost(data.hostSocketId)
 
@@ -79,6 +79,33 @@ export function roomLeave(data) {
     }
 }
 
+
+// export function roomKicked(data, container) {
+//     if (data.isSuccess) {
+//         console.log(`Đã kick người dùng ${data.socketid} thành công.`)
+
+//         addJoinNotification(data.username, "kick");
+
+//         // TODO: thay đổi div tương ứng với 
+//         container.remove();
+//     } else {
+//         console.log("Kick người dùng thất bại !!")
+//         console.log("Lý do: ", data.message)
+//     }
+// }
+
+
+// export function initKickRoomButton(button, container, socketid) {
+//     button.addEventListener('click', () => {
+//         const socket = getSocket();
+
+//         socket.emit('kick', {
+//             socketid: socketid
+//         }, (data) => callback(data, container))
+//     })
+// }
+
+
 export function init_listener_room() {
     const socket = getSocket()
 
@@ -100,7 +127,7 @@ export function init_listener_room() {
         addMessage(message)
     })
 
-    socket.on("user-disconnected", message => {
+    socket.on("user-disconnected", async (message) => {
         console.log("** got user-disconnected")
         console.log(`User ${message.socketid} disconnected`)
 
@@ -110,7 +137,7 @@ export function init_listener_room() {
         setHost(message.roomOwnerId)
 
         if (isHost()) {
-            renderOwnerView()
+            await renderOwnerView()
         }
 
         // TODO: xóa thông tin liên quan đến người này trong phần member

@@ -38,6 +38,15 @@ export function renderRemoteStream(socketid, stream) {
     if (Ownership.isRemoteHost(socketid))
     {
         mainStreamVideo.srcObject = stream 
+        mainStreamVideo.play()
+
+        mainStreamVideo.onseeking = function() {
+            alert("Seeking operation began!");
+        };
+
+        mainStreamVideo.onseeked = function() {
+            alert("Seeked operation completed!");
+        };
     }
     else 
     {
