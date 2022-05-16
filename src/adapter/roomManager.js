@@ -143,7 +143,6 @@ async function outRoom(socketid) {
     // Check room owner change
 }
 
-
 async function getUserInformation(socketid) {
     /**
      * userInfo chứa tất cả các thông tin liên quan người dùng có socket.id
@@ -230,6 +229,10 @@ async function addUser(userInfo) {
     }
 }
 
+async function deleteUser(socketid) {
+    await Room.deleteUser(socketid)
+}
+
 module.exports = {
     getRoomId,
     setRoomId,
@@ -248,5 +251,6 @@ module.exports = {
     getRoomInfomation,
     removeUserFromRoom,
     updateUser,
-    addUser
+    addUser,
+    deleteUser
 }
