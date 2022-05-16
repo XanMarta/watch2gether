@@ -6,7 +6,8 @@ import { renderLocalStream } from "./render/mainStream.js"
 const inputFileUpload = document.querySelector("#video-stream-get-file-from-local")
 const sendStreamButton = document.querySelector("#video-stream-send-stream")
 
-const video = document.querySelector('#video-player-local').getElementsByTagName('video')[0]
+//const video = document.querySelector('#video-player-local').getElementsByTagName('video')[0]
+const video = document.querySelector('video')
 
 export async function sendStream() {
     console.log("!! SEND STREAM !!")
@@ -30,13 +31,13 @@ export function init_listener_file() {
         console.log("File change: ")
         document.querySelector("#current-play-video-name").innerHTML = inputFileUpload.files.item(0).name
 
-        var file = inputFileUpload.files[0] 
+        var file = inputFileUpload.files[0]
         var url = URL.createObjectURL(file)
         console.log(url)
 
         console.log("Thao tác trên DOM element video sau:")
         console.log(video)
-        video.src = url 
+        video.src = url
         await video.play()
 
         // Capture stream and send stream.
@@ -52,4 +53,4 @@ export function init_listener_file() {
 
     sendStreamButton.addEventListener('click', sendStream)
 }
-/* <source src="//vjs.zencdn.net/v/oceans.mp4" type="video/mp4"></source> */     
+/* <source src="//vjs.zencdn.net/v/oceans.mp4" type="video/mp4"></source> */

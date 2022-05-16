@@ -1,0 +1,85 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+
+/* body{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: #5256ad;
+} */
+#left {
+  margin: 2rem 0rem 0rem 1rem;
+}
+#right {
+  margin: 1rem 0rem 0rem 1rem;
+}
+#drag-area {
+  border: 2px dashed black;
+  /* background-color: green; */
+  position: relative;
+  width: 95% !important;
+  height: 95% !important;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;  
+  flex-direction: column;
+}
+
+.vidElement {
+  /* position: relative;
+  min-width: 40%;
+  height: 95%;
+  display: inline-block;  
+  align-items: center;
+  justify-content: center;  
+  flex-direction: column; */
+  margin: 2rem 2rem 2rem 2rem;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;  
+  flex-direction: column;
+}
+
+.button-area {
+  float: right;
+   margin-right: 2rem; 
+   margin-top: 2rem;
+}
+
+#drag-area.active{
+  border: 2px dashed black;
+}
+#drag-area .icon{
+  font-size: 100px;
+  color: black;
+}
+#drag-area header{
+  font-size: 30px;
+  font-weight: 500;
+  color: black;
+}
+#drag-area span{
+  font-size: 25px;
+  font-weight: 500;
+  color: black;
+  margin: 10px 0 15px 0;
+}
+#drag-area button{
+  padding: 10px 25px;
+  font-size: 20px;
+  font-weight: 500;
+  border: none;
+  outline: none;
+  background: #fff;
+  color: #5256ad;
+  border-radius: 5px;
+  cursor: pointer;
+}
+#drag-area img{
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  border-radius: 5px;
+}
