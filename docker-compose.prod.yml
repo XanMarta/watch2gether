@@ -1,14 +1,8 @@
 version: '3.8'
 services:
-  frontend:
+  web:
     build:
-      context: ./frontend
-      dockerfile: ./Dockerfile.prod
+      context: .
+      dockerfile: Dockerfile.prod
     ports:
-      - 80:80
-  backend:
-    build:
-      context: ./backend
-      dockerfile: ./Dockerfile.prod
-    environment:
-      - FE_ENDPOINT=frontend
+      - 80:3000

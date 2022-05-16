@@ -1,10 +1,14 @@
 // --- Singleton for peers management
+import * as Ownership from "./ownership.js"
+
 var peers = {}
 console.log("Create a peers object.")
 
 export function setPeer(peerId, peer) {
     console.log(`Set peer with key ${peerId}`)
-    peers[peerId] = peer 
+    peers[peerId] = peer
+
+    console.log("Number of peers after set new peer: ", Object.keys(peers).length)
 }
 
 export function getPeer(peerId) { 
@@ -16,6 +20,10 @@ export function deletePeer(peerId) {
         return
     peers[peerId].destroy()
     delete peers[peerId]
+
+    console.log(`Delete peer with id ${peerId}`)
+    
+    console.log("Number of peers after delete peer: ", Object.keys(peers).length)
 }
 
 export function deletePeerAll(callback = (peerId) => {}) {
@@ -32,26 +40,32 @@ export function deletePeerAll(callback = (peerId) => {}) {
 }
 
 export function addStreamAll(stream, callback = (peerId) => {}) {
-    if (Object.keys(peers).length == 0) return;
+    if (!Ownership.isHost()) {
+        alert("Người dùng không phải chủ phòng. Không thể gửi stream.")
+        return;
+    }
+    if (Object.keys(peers).length == 0) 
+    {
+        console.log("Không có người dùng trên stream.")
+        return;
+    }
 
-    Object.entries(peers).forEach(([peerId, peer]) => {
-
-        stream.getTracks().forEach(track => {
-            console.log(`Track added to ${peerId}`)
-            peers[peerId].addTrack(track, stream)
-        })
+    Object.entries(peers).forEach(([peerId, _]) => {
+        peers[peerId].addStream(stream)
+        console.log("Thêm stream vào peer: ", peerId)
         callback(peerId)
     })
+    
+    console.log(stream)
+
+    console.log("Gửi stream đến toàn bộ người dùng.")
 }
 
 export function removeStreamAll(stream, callback = (peerId) => {}) {
     if (Object.keys(peers).length == 0) return;
 
     Object.entries(peers).forEach(([peerId, peer]) => {
-
-        stream.getTracks().forEach(track => {
-            peers[peerId].removeTrack(track, stream)
-        })
+        peers[peerId].removeStream(stream)
         callback(peerId)
     })
 }

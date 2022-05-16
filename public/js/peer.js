@@ -1,7 +1,13 @@
 import { getSocket } from './singleton/init_socket.js'
 import * as peerManager from './singleton/init_peer.js'
 import { getLocalStream } from './singleton/init_localstream.js';
-import { remoteStreamRender, remoteStreamClose } from './stream.js'
+import { 
+    renderRemoteStream, 
+    removeRemoteStream
+} from './render/mainStream.js' 
+import { addJoinNotification } from './render/chat.js'
+import { setHost, isHost } from './singleton/ownership.js';
+import { renderOwnerView } from './render/perspective.js'
 
 var listener = {} 
 
@@ -10,6 +16,7 @@ export function init_listener_peer() {
 
     socket.on("peer-init", data => {
         console.log('** got peer-init')
+        console.log(data)
 
         console.log(`Init a peer connection to ${data.peerId}`)
         let peer = new SimplePeer({initiator: data.initiator, stream: getLocalStream()})
@@ -20,20 +27,43 @@ export function init_listener_peer() {
             if (data.peerId == remotePeerId) {
                 peer.signal(data.signal)
             }
+
+            if (data.stream) 
+            {
+                console.log("** Got stream inside signal")
+                console.log(data.stream)
+            }
         }
         listener[remotePeerId] = signalListener
 
         socket.on("signal", signalListener)
-        socket.on("leave-room-notify", (data) => {
+
+        socket.on("leave-room-notify", async (data) => {
             console.log("** got leave-room-notify")
             console.log(`User ${data.username} has left the room.`)
+
+            addJoinNotification(data.username, 'leave')
     
             socket.off('signal', listener[data.peerId])
             delete listener[data.peerId]
             peerManager.deletePeer(data.peerId)
 
             console.log("Erase peer ID: ", data.peerId)
-            remoteStreamClose(data.peerId)
+
+            removeRemoteStream(data.peerId)
+            setHost(data.roomOwnerId)
+
+            if (isHost()) {
+                await renderOwnerView()
+            }
+        })
+
+        socket.on("user-disconnected", message => {
+            socket.off('signal', listener[message.socketid])
+            delete listener[message.socketid]
+    
+            peerManager.deletePeer(message.socketid)
+            console.log("Erase peer ID: ", message.socketid)
         })
 
         peer.on("signal", data => {
@@ -44,10 +74,10 @@ export function init_listener_peer() {
             })
         })
 
-        peer.on("stream", data => {
+        peer.on("stream", (stream) => {
             console.log("** PEER - got 'stream'")
-            console.log("Get stream: ", data)
-            remoteStreamRender(remotePeerId, data)
+            console.log("Get stream: ", stream)
+            renderRemoteStream(remotePeerId, stream)
         })
 
         peer.on("connect", () => {
@@ -60,13 +90,6 @@ export function init_listener_peer() {
             console.log("Peer get data: " + data)
         })
 
-        peer.on("track", (track, stream) => {
-            console.log("** PEER - got 'track'")
-            console.log("Get track: ", track, stream)
-
-            remoteStreamRender(remotePeerId, stream)
-        })
-
         peer.on("close", () => {
             console.log("** PEER - got 'close'")
 
@@ -76,7 +99,7 @@ export function init_listener_peer() {
             
             console.log("Erase peer ID: ", remotePeerId)
 
-            remoteStreamClose(remotePeerId)
+            removeRemoteStream(remotePeerId)
         })
 
         peer.on("error", (err) => {
@@ -89,12 +112,14 @@ export function init_listener_peer() {
             console.log("Erase peer ID: ", remotePeerId)
             
             console.log("Get error: ", err)
-            remoteStreamClose(remotePeerId)
+            
+            removeRemoteStream(remotePeerId)
         })
 
         // TODO: peer disconnect
         // If remove by server user-disconnected event work, then this can be ignored.
-
+        
+        console.log("Thêm vào peerManager với id là: ", remotePeerId)
         peerManager.setPeer(remotePeerId, peer)
     })
 }

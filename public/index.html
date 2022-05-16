@@ -7,22 +7,52 @@
     </head>
 
     <body>
-        <div>
-            <h1>Step 1: Enter an <b>UNIQUE</b> username </h1>
-            <input id="username" placeholder="Username">
-            <button id="register-username">Register Username</button>
+        <div id="room-management-container">
+            <h2>For host to create room</h2>
+            <button id="create-room-form-button">Create room</button>
+            <br>
+            <h1>OR</h1>
+            <h2>For client to join room</h2>
+            <button id="join-room-form-button">Join room</button>
         </div>
-        <div>
-            <h1>Step 2: Enter a room ID</h1>
-            <input id="room-id" placeholder="Enter room id">
-            <button id="join-room">Join Room</button>
+
+        <!-- đặt một pop up ở đây -->
+        <div id="create-room-container" hidden>
+            <input id="create-name-username" placeholder="Enter your username">
+            <button id="create-room">Create room</button>
+            <button id="create-room-back">Back</button>
+        </div>
+
+        <!-- đặt một pop up ở đây -->
+        <div id="join-room-container" hidden>
+            <input id="join-name-username" placeholder="Enter your username">
+            <input id="join-name-roomid" placeholder="Enter your room id">
+            <button id="join-room">Join room</button>
+            <button id="join-room-back">Back</button>
+        </div>
+
+        <div id="host-view" hidden>
+            <h3>Host view</h3>
+            <h2>ROOM ID: </h2>
+            <h2 id="room-id-renderer-host"></h2>
+
+            <button id="out-room">Out Room</button>
+            <button id="kick-user">Kick user</button>
+            <button id="mute-user">Mute user</button>
+            <button id="get-room-info">Get Room Info</button>
+        </div>
+
+        <div id="client-view" hidden>
+            <h3>Client view</h3>
+            <h2>ROOM ID: </h2>
+            <h2 id="room-id-renderer-client"></h2>
             <button id="out-room">Out Room</button>
             <button id="get-room-info">Get Room Info</button>
         </div>
 
         <div>
             <h1>Extra: Chatbox</h1>
-            <div id="chatbox"> 
+            <div id="chat-container">  
 
             </div>
             <input id="message-input" placeholder="Enter message">
@@ -30,55 +60,26 @@
         </div>
 
         <div>
-            <h1>Step 3: Streaming - Start stream to start, stop stream to stop</h1>
-            
-            <button id="stream-start-button">Start Streaming</button>
-            <button id="stream-connect">Connect Stream</button>
-            <button id="stream-stop-button">Stop Streaming</button>
-            <button id="video-start-button">Start Video</button>
-            <button id="video-stop-button">Stop Video</button>
-            <div>
-                <video id="local-stream" autoplay></video>
-                <div id="remote-video-container">
-                    <video id="remote-stream" autoplay></video>
-                </div>
-            </div>
-        </div>
-
-        <div>
-            <h1>Step 4: Video Rendering</h1>
-
+            <h1>Video Rendering</h1>
             <div>
                 <h2>Video from local</h2>
                 
                 <input id="video-stream-get-file-from-local" type="file">
-                <button id="video-stream-send-stream-button">Send Stream</button>
-                <button id="video-stream-stop-stream-button">Stop Stream</button>
-                <button id="video-stream-send-face-button">Send Face Stream</button>
-                <button id="video-stream-stop-face-button">Stop Face Stream</button>
-                <video id="video-player-local" class="video-js" data-setup='{}' controls></video>
+                <h2>Current Video Rendering: </h2>
+                <h2 id="current-play-video-name">...</h2>
+                <button id="video-stream-send-stream">SEND STREAM</button>
+                <br>
+                <!-- do tương tác là làm hết trên element video rồi, nên sẽ không cần các button. -->
+                <video id="video-player-local" class="video-js" height="360" width="640" data-setup='{}' controls>
+                    <source src="//vjs.zencdn.net/v/oceans.mp4" type="video/mp4">
+                    <source src="//vjs.zencdn.net/v/oceans.webm" type="video/webm">
+                </video>
+                <button id="stream-stop-button">Stop stream</button>
+
+                <video id="main-stream" height="360" width="640" autoplay></video>
+                <button id="stream-face-button">Start Stream Face</button>
             </div>
 
-            <div>
-                <h2>Video from remote</h2>
-
-                <video id="video-player-remote-player" autoplay></video>
-                <video id="video-player-remote-player-2" autoplay></video>
-            </div>
-
-        </div>
-
-        <div>
-            <h1>Step 5: Youtube Player</h1>
-
-            <input type="text" id="video-stream-youtube-link" placeholder="Enter youtube link here">
-            <button id="video-stream-enter-youtube-link-button">Enter</button>
-            <button id="video-stream-delete-youtube-button">Dispose</button>
-
-            <div id="youtube-video-frame">
-
-            </div>
-            
         </div>
 
         <script src="/socket.io/socket.io.js"></script>

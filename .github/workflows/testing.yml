@@ -1,0 +1,22 @@
+name: Testing
+
+on: push
+
+jobs:
+  Run-Test:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Use NodeJS
+        uses: actions/setup-node@v3
+        with:
+          node-version: '14.x'
+      
+      - name: Install dependencies for testing
+        run: npm install
+      
+      - name: Testing
+        run: npm test
