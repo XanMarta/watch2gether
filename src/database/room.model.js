@@ -76,7 +76,10 @@ module.exports = {
                 await col.collection.updateOne({
                     roomid
                 }, {
-                    $setOnInsert: { host: userid },
+                    $setOnInsert: {
+                        host: userid,
+                        users: [userid]
+                    },
                 }, {
                     upsert: true
                 })
@@ -153,6 +156,10 @@ module.exports = {
                         users: socketid
                     }
                 })
+            },
+
+            removeRoom: async (roomid) => {
+                await col.collection.deleteOne({ roomid })
             }
         }
     }

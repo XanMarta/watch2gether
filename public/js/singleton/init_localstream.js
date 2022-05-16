@@ -8,5 +8,6 @@ export function getLocalStream() {
 }
 
 export function setLocalStream(newLocalStream) {
+    console.log(newLocalStream)
     localStream = newLocalStream
 }

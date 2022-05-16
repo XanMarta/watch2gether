@@ -89,6 +89,28 @@ module.exports = {
                 // Call outRoom in Room model next
             },
 
+            getUserInformation: async (socketid) => {
+                let result = await col.collection.find({ socketid }).toArray()
+                console.log(socketid)
+                console.log("INFO")
+                console.log(result)
+                let user = null
+                if (result.length > 0) {
+                    user = result[0]
+                }
+                return user
+            },
+
+            updateUser: async (socketid, roomid, username) => {
+                console.log("UPDATE")
+                console.log(socketid + " " + roomid + " " + username)
+                await col.collection.updateOne({ socketid }, {
+                    $set: { roomid, username }
+                }, {
+                    upsert: true
+                })
+            },
+
             deleteUser: async (socketid) => {
                 await col.collection.deleteOne({ socketid })
             }

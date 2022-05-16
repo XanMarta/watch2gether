@@ -9,14 +9,18 @@ let {
 
 function init_listener_username (socket) {
     socket.on("register-username", async (username) => {
-        if (await isUsernameExist(username)) {
+        let usernameInfo = await getUsernameInfo(username);
+        
+        if (usernameInfo != null && usernameInfo != undefined) 
+        {
             socket.emit("register-username-reject", "Name already exist!")
-        } else {
-            let username = await getUsernameFromSocketId(socket.id)
-            if (username != null && username != undefined) {
-                await deleteUsername(socket.id)
-            }
+        } 
+        else 
+        {
             await setUsername(socket.id, username)
+            /**
+             * Thay đổi username trong record tương ứng với socket.id trong user
+             */
 
             console.log(`New user name has registed: ${socket.id} map to ${username}`)
             socket.emit("register-username-done")

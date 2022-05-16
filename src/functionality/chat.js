@@ -1,17 +1,18 @@
-let { getUsername } = require('./username')
-let { getRoomId, isInRoom } = require('../adapter/roomManager')
 let { saveChatLog } = require('../adapter/chatManager')
+let { getUserInformation } = require("../adapter/roomManager")
 
 function init_listener_chat(socket) {
     socket.on("broadcast_message_room", async (message) => {
-        let username = await getUsername(socket.id);
-        let roomId = await getRoomId(socket.id);
+        let userInfo = await getUserInformation(socket.id)
+
+        let username = userInfo.username;
+        let roomId = userInfo.roomid;
 
         if (username == null || username == undefined) {
             socket.emit("username-require")
             return
         }
-        if (!await isInRoom(socket.id)) {
+        if (roomId == null || roomId == undefined) {
             socket.emit("leave-room", "Client not in a room.")
             return 
         }

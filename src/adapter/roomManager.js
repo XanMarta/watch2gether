@@ -5,6 +5,7 @@ const { Room, User } = require("../database")
 
 // from socket id to room id 
 
+
 async function getRoomId(socketid) { 
     /**
      * Đầu vào là một socket id
@@ -142,6 +143,92 @@ async function outRoom(socketid) {
     // Check room owner change
 }
 
+async function getUserInformation(socketid) {
+    /**
+     * userInfo chứa tất cả các thông tin liên quan người dùng có socket.id
+     * Gồm có:
+     * - Socketid 
+     * - Roomid 
+     * - Username
+     * Trả về null hoặc undefined nếu không tìm thấy.
+     */
+    return await User.getUserInformation(socketid)
+}
+
+
+async function getRoomInfomation(roomid) {
+    /**
+     * Biến room này nên là 1 Object, trả về tất cả các thông tin liên quan đến room.
+     * Gồm có
+     * - roomid
+     * - host
+     * - hostUsername
+     * - users (lưu dưới dạng 1 mảng các object, mỗi object chứa socketid và username)
+     */
+    return await Room.getRoomInfo(roomid)
+}
+
+async function removeUserFromRoom(roomid, socketid) {
+    /**
+     * Hàm này thực hiện:
+     * - Nếu socket.id là host, đẩy thằng user khác gần nhất lên. Nếu không còn ai, xóa luôn phòng.
+     * - Ngược lại, giữ nguyên host 
+     * - Xóa socket.id khỏi mảng users.
+     * - Trả về một object có 2 trường:
+     *      + host: là host hiện tại sau khi xóa người dùng. null nếu phòng bị xóa.
+     *      + isChange: xem là có sự thay đổi host khi xóa người dùng hay không. true là có, false là không.
+     */
+    let roominfo = await Room.getRoomInfo(roomid)
+    let host = roominfo.host
+    let isChange = false
+
+    console.log(`Xóa người dùng ${socketid} khỏi phòng ${roomid}`)
+    console.log(`About room ${roomid}, the owner is ${roominfo.host}`)
+    if (roominfo.host == socketid) {
+        console.log("Người bị xóa là host!!")
+        var userlist = roominfo.users.filter(e => e !== socketid)
+        console.log(userlist)
+
+        if (userlist.length > 0) {
+            console.log("Số người còn lại lớn hơn 0, đặt host mới: ", userlist[0])
+            host = userlist[0]
+            isChange = true
+            await Room.setRoomOwner(host, roomid)
+        } else {
+            host = undefined
+            await Room.removeRoom(roomid)
+        }
+    }
+    await Room.outRoom(roomid, socketid)
+    await User.setRoomId(socketid, null)
+
+    console.log("Giá trị trả về: ", host)
+    return { host: host, isChange: isChange }
+}
+
+async function updateUser(socketid, updateField) {
+    /**
+     * Sửa thông tin trong cơ sở dữ liệu ứng với socket id là socket.id
+     * Trong updateField có roomid và username.
+     */
+    await User.updateUser(socketid, updateField.roomid, updateField.username)
+}
+
+async function addUser(userInfo) {
+     /**
+     * Add người dùng mới vào cơ sở dữ liệu.
+     * Các thao tác khác như thêm người dùng vào room, chỉnh host, các thứ cũng được thực hiện trong hàm này.
+     * userInfo chưa socketid, roomid, và username.
+     */
+    await User.updateUser(userInfo.socketid, userInfo.roomid, userInfo.username)
+    let roominfo = await Room.getRoomInfo(userInfo.roomid)
+    if (roominfo == null) {
+        await Room.addRoomOwner(userInfo.socketid, userInfo.roomid)
+    } else {
+        await Room.setRoomId(userInfo.socketid, userInfo.roomid)
+    }
+}
+
 async function deleteUser(socketid) {
     await Room.deleteUser(socketid)
 }
@@ -160,5 +247,10 @@ module.exports = {
     removeRoomOwner: removeRoomOwnerCandidate,
     broadcastAllRoom,
     outRoom,
+    getUserInformation,
+    getRoomInfomation,
+    removeUserFromRoom,
+    updateUser,
+    addUser,
     deleteUser
 }
