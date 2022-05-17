@@ -48,9 +48,8 @@ jobs:
       
       - name: Retrieve private key
         run: |
-          mkdir -p ~/.ssh/
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ./.ssh/keys
-          chmod 600 ~/.ssh/keys
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > $GITHUB_WORKSPACE/keys
+          chmod 600 "$GITHUB_WORKSPACE/keys"
 
       - name: Deploy
         run: >
@@ -60,3 +59,4 @@ jobs:
             ${{ secrets.DOCKERHUB_USERNAME }}
             ${{ secrets.DOCKERHUB_TOKEN }}
             ${{ env.RELEASE_TAG }}
+            "$GITHUB_WORKSPACE/keys"
