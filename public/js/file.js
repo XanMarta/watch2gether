@@ -4,15 +4,17 @@ import { getLocalStream, setLocalStream } from "./singleton/init_localstream.js"
 import { renderLocalStream } from "./render/mainStream.js"
 
 const inputFileUpload = document.querySelector("#video-stream-get-file-from-local")
-const sendStreamButton = document.querySelector("#video-stream-send-stream")
+//const sendStreamButton = document.querySelector("#video-stream-send-stream")
 
 const video = document.querySelector('#video-player-local').getElementsByTagName('video')[0]
+const videoArea = document.querySelector('#video-area')
+const hostView = document.querySelector('#host-view');
+//const clientView = document.querySelector('#client-view')
 //const video = document.querySelector('video')
 
 export async function sendStream() {
     console.log("!! SEND STREAM !!")
     var stream = await video.captureStream();
-
     setLocalStream(stream)
     renderLocalStream(stream)
     PeerManager.addStreamAll(getLocalStream())
@@ -35,9 +37,12 @@ export function init_listener_file() {
         var url = URL.createObjectURL(file)
         console.log(url)
 
+        hostView.hidden = true;
+        //clientView.hidden = true;
+        //videoArea.hidden = false;
+
         console.log("Thao tác trên DOM element video sau:")
         console.log(video)
-        video.hidden = false;
         video.src = url
         await video.play()
 
@@ -52,6 +57,6 @@ export function init_listener_file() {
         console.log(stream)
     })
 
-    sendStreamButton.addEventListener('click', sendStream)
+    //sendStreamButton.addEventListener('click', sendStream)
 }
 /* <source src="//vjs.zencdn.net/v/oceans.mp4" type="video/mp4"></source> */

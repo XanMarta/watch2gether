@@ -1,7 +1,7 @@
 const outButton = document.getElementById("out-room")
 const sendMessageButton = document.getElementById("send-message")
 const getRoomInfoButton = document.getElementById("get-room-info")
-const streamStopButton = document.getElementById("stream-stop-button")
+//const streamStopButton = document.getElementById("stream-stop-button")
 
 const messageInput = document.getElementById("message-input")
 
@@ -154,19 +154,19 @@ export function init_listener_button() {
         alert("room id copied: " + roomIdInput.value);
     })
 
-    streamStopButton.addEventListener("click", () => {
-        // Sử dụng để xóa file đang stream hiện tại, phục vụ chọn file mới.
-        // TODO: Hiện tại procedure đang sai, cần phải chỉnh cả view.
-        // is Streaming, is host -> stop streaming
-        if (localStreamManager.getLocalStream() != null && localStreamManager.getLocalStream() != undefined) {
-            peerManager.removeStreamAll(localStreamManager.getLocalStream(), (peerId) => {
-                socket.emit("stream-disconnected", {
-                    peerId: peerId
-                })
-            })
+    // streamStopButton.addEventListener("click", () => {
+    //     // Sử dụng để xóa file đang stream hiện tại, phục vụ chọn file mới.
+    //     // TODO: Hiện tại procedure đang sai, cần phải chỉnh cả view.
+    //     // is Streaming, is host -> stop streaming
+    //     if (localStreamManager.getLocalStream() != null && localStreamManager.getLocalStream() != undefined) {
+    //         peerManager.removeStreamAll(localStreamManager.getLocalStream(), (peerId) => {
+    //             socket.emit("stream-disconnected", {
+    //                 peerId: peerId
+    //             })
+    //         })
 
-            localStreamManager.setLocalStream(null)
-            removeLocalStream()
-        }
-    })
+    //         localStreamManager.setLocalStream(null)
+    //         removeLocalStream()
+    //     }
+    // })
 }
