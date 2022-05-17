@@ -2,7 +2,7 @@
 import * as Ownership from '../singleton/ownership.js'
 
 // const mainStreamVideo = document.querySelector("#main-stream")
-const mainStreamVideo = document.querySelector('#video-player-local').getElementsByTagName('video')[0]
+var mainStreamVideo = undefined;
 
 
 export function renderLocalStream(stream) {
@@ -32,6 +32,9 @@ export function removeLocalStream() {
 export function renderRemoteStream(socketid, stream) {
     // socketid, peer id from remote
     if (Ownership.isRemoteHost(socketid)) {
+        console.log(mainStreamVideo)
+
+        mainStreamVideo = document.querySelector('#video-player-local').getElementsByTagName('video')[0]
         mainStreamVideo.srcObject = stream
         mainStreamVideo.play()
 
@@ -51,6 +54,9 @@ export function renderRemoteStream(socketid, stream) {
 export function removeRemoteStream(socketid) {
     // socketid, peer id from remote
     if (Ownership.isRemoteHost(socketid)) {
+        console.log(mainStreamVideo)
+        
+        mainStreamVideo = document.querySelector('#video-player-local').getElementsByTagName('video')[0]
         mainStreamVideo.srcObject = null
     }
     else {
