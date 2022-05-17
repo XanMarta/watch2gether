@@ -15,7 +15,7 @@ export async function renderOwnerView() {
     console.log("Show host view")
 
     //document.querySelector("#room-id-renderer-host").innerHTML = getRoomIdOffline()
-    document.querySelector("#roomId-copy").value = getRoomIdOffline()
+    document.querySelector("#roomIdInput").value = getRoomIdOffline()
 }
 
 // Render related to Client View
@@ -25,7 +25,7 @@ export async function renderClientView() {
     console.log("Show host view")
 
     //document.querySelector("#room-id-renderer-client").innerHTML = getRoomIdOffline()
-    document.querySelector("#roomId-copy").value = getRoomIdOffline()
+    document.querySelector("#roomIdInput").value = getRoomIdOffline()
 }
 
 // Render related to Main View

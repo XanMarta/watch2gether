@@ -6,8 +6,8 @@ import { renderLocalStream } from "./render/mainStream.js"
 const inputFileUpload = document.querySelector("#video-stream-get-file-from-local")
 const sendStreamButton = document.querySelector("#video-stream-send-stream")
 
-//const video = document.querySelector('#video-player-local').getElementsByTagName('video')[0]
-const video = document.querySelector('video')
+const video = document.querySelector('#video-player-local').getElementsByTagName('video')[0]
+//const video = document.querySelector('video')
 
 export async function sendStream() {
     console.log("!! SEND STREAM !!")
@@ -37,6 +37,7 @@ export function init_listener_file() {
 
         console.log("Thao tác trên DOM element video sau:")
         console.log(video)
+        video.hidden = false;
         video.src = url
         await video.play()
 

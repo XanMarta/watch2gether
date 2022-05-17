@@ -11,8 +11,8 @@
   <link rel="stylesheet" href="./css/jsFEtest/chat.css">
   <link rel="stylesheet" href="./css/jsFEtest/uploadFile.css">
   <link rel="stylesheet" href="./css/jsFEtest/room.css">
-  <link rel="stylesheet" href="css/video-js.min.css">
-  <title>Home page</title>
+  <link rel="stylesheet" href="./css/video-js.min.css">
+  <title>Streaming app</title>
 </head>
 
 <body class="d-flex flex-column min-vh-100">
@@ -26,7 +26,7 @@
       </button>
 
       <div class="collapse navbar-collapse" style="justify-content: center">
-        <div class="row" style="padding-right: 4rem;">
+        <div class="row" id="navbar-content" style="padding-right: 4rem;">
           <div class="col-sm-3">
             <a class="nav-link active" aria-current="page" href="./index.html"
               style="padding-right: 2rem; color: white">Home</a>
@@ -59,10 +59,10 @@
         <a href="#" class="btn btn-primary">Join a room</a> -->
             <div style="margin-top: 2.5rem;">
               <button class="btn btn-warning btn-lg" id="createRoomButton" data-bs-target="#createRoomModal"
-                style="font-weight:bold;">Create a
+                data-bs-toggle="modal" style="font-weight:bold;">Create a
                 room</button>
               <button class="btn btn-warning btn-lg" id="joinRoomButton" data-bs-target="#joinRoomModal"
-                style="font-weight:bold;">Join
+                data-bs-toggle="modal" style="font-weight:bold;">Join
                 a
                 room</button>
             </div>
@@ -140,9 +140,9 @@
               <!-- <button class="btn btn-close-white" style="margin: 0rem 2rem 0rem 5rem;">Browse Video</button> -->
               <input id="video-stream-get-file-from-local" type="file">
             </div>
-            <video width="1080" id="video-player-local" class="video-js"
+            <video id="video-player-local" class="video-js" height="360" width="640"
               style="margin-top: 1px; margin-right: 0.5px; margin-bottom: 1px; margin-left: 1px;" data-setup='{}'
-              controls hidden></video>
+              controls></video>
             <!-- <video id="video-player-local" class="video-js" height="1080" data-setup='{}' controls>
               </video> -->
             <div id="client-view" style="display: inline-block;justify-content: center">
@@ -163,24 +163,24 @@
             <div class="card-header" style="height: 8%">
               <div>
                 <div style="float: left; width: 30%" style="margin-top: 2rem;">
-                  <img src="./img/userIcon.png" width="40" height="30" style="display: inline-block;">
+                  <img src="../img/userIcon.png" id="display-members" width="40" height="30"
+                    style="display: inline-block;">
                   <h5 style="display: inline-block;">1/20</h5>
                 </div>
                 <div style="display: flex;
                 justify-content: center; width: 70%;">
-                  <input class="form-control mr-sm-1" type="search" id="roomId-copy" aria-label="Copy"
-                    style="height:30%;" readonly>
+                  <input class="form-control mr-sm-1" id="roomIdInput" aria-label="Copy" style="height:30%;" readonly>
                   <!-- <button class="btn btn-outline-success my-2 my-sm-0" type="submit" style="width:25%;">Copy</button> -->
                   <!-- <div class="leaveIcon-container"> -->
                   <div class="copyIcon-container">
-                    <img src="./img/copyIcon.png" width="40" height="30" id="copy-room-id" data-toggle="tooltip"
+                    <img src="../img/copyIcon.png" width="40" height="30" id="copy-room-id" data-toggle="tooltip"
                       title="Copy room id">
                     <div class="overlay">
                     </div>
                     <span class="tooltiptext">Copy</span>
                   </div>
                   <div class="leaveIcon-container">
-                    <img src="./img/leaveroom.png" width="40" height="30" id="leave-room" data-toggle="tooltip"
+                    <img src="../img/leaveroom.png" width="40" height="30" id="leave-room" data-toggle="tooltip"
                       title="Leave room">
                     <div class="overlay">
                     </div>
@@ -195,26 +195,29 @@
               </div>
             </div>
             <div class="card-body" style="overflow: auto;" id="chat-container">
-              <div class="card-footer">
-                <div class="message-sent">
-                  <!-- <textarea type="text" id="message-input"></textarea> -->
-                  <textarea type="text" class="form-control" id="message-input"></textarea>
-                  <img src="./img/sendIcon.png" id="send-message" type="button">
-                </div>
+            </div>
+            <div class="card-footer">
+              <div class="message-sent">
+                <!-- <textarea type="text" id="message-input"></textarea> -->
+                <textarea type="text" class="form-control" id="message-input"></textarea>
+                <img src="../img/sendIcon.png" id="send-message" type="button">
+                <!-- <img src="https://www.seekpng.com/png/detail/95-955357_open-send-icon-png.png" id="send-message"> -->
               </div>
             </div>
-            <!--Find member-->
-            <div class="card" id="member-information" hidden="true">
-              <div class="card-header">
-                <div style="display: flex;
+          </div>
+          <!--Find member-->
+          <div class="card" id="members-information" hidden="true">
+            <div class="card-header">
+              <div style="display: flex;
                 justify-content: center; width: 70%">
-                  <input class="form-control mr-sm-1" type="search" placeholder="Generate room id" aria-label="Search">
-                  <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-                </div>
+                <img src="./img/backIcon.png" id="display-chat" width="30" height="30">
+                <input class="form-control mr-sm-1" type="search" placeholder="Generate room id" aria-label="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
               </div>
-              <div class="card-body" style="overflow: auto;">
-                <ul class="list-group list-group-flush" id="members-list">
-                  <!-- <li class="list-group-item">fsdafsa
+            </div>
+            <div class="card-body" style="overflow: auto;">
+              <ul class="list-group list-group-flush" id="members-list">
+                <!-- <li class="list-group-item">fsdafsa
                   <button style="float: right;">Ban</button>
                 </li>
                 <li class="list-group-item">fsdafsa
@@ -223,87 +226,24 @@
                 <li class="list-group-item">fsdafsa
                   <button style="float: right;">Ban</button>
                 </li> -->
-                </ul>
-              </div>
-              <div class="card-footer">
-                <div class="message-sent">
-                  <!-- <textarea type="text" id="message-input"></textarea> -->
-                  <!-- <textarea type="text" class="form-control" id="message-input"></textarea> -->
-                  <div id="message-input">
-                    Chat container
-                  </div>
-                  <img src="./img/sendIcon.png" id="send-message" type="button">
-                  <!-- <img src="https://www.seekpng.com/png/detail/95-955357_open-send-icon-png.png" id="send-message"> -->
-                </div>
-              </div>
+              </ul>
             </div>
-            <div id="button-areaRight">
-              <button class="btn btn-primary" id="display-chat" hidden="true">Chat</button>
-              <button class="btn btn-primary" id="display-members">Members</button>
+            <div class="card-footer" style="width: 24.5rem;">
+
             </div>
           </div>
+          <!-- <div id="button-areaRight">
+            <button class="btn btn-primary" id="display-chat" hidden="true">Chat</button>
+            <button class="btn btn-primary" id="display-members">Members</button>
+          </div> -->
         </div>
       </div>
     </div>
   </div>
   <!--END room perspective-->
 
-  <!--Modal section-->
-  <!-- Modal create room -->
-  <div class="modal" id="createRoomModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Create a room</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <div class="mb-3">
-            <label for="name" class="form-label">Enter your name</label>
-            <input type="text" class="form-control" id="create-name-username" aria-describedby="username">
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" id="createRoomCloseButton" class="btn btn-secondary"
-            data-bs-dismiss="modal">Close</button>
-          <button type="button" id="create-room" class="btn btn-warning" data-bs-dismiss="modal">Create a
-            room</button>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- End Modal create room -->
-  <!-- Modal join room -->
-  <div class="modal" id="joinRoomModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Join a room</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-        </div>
-        <div class="modal-body">
-          <div class="mb-3">
-            <label for="name" class="form-label">Enter your name</label>
-            <input type="text" class="form-control" id="join-name-username" aria-describedby="username">
-          </div>
-          <div class="mb-3">
-            <label for="roomid" class="form-label">Enter your room ID</label>
-            <input type="text" class="form-control" id="join-name-roomid">
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" id="joinRoomCloseButton" class="btn btn-secondary"
-            data-bs-dismiss="modal">Close</button>
-          <button type="button" id="join-room" class="btn btn-warning" data-bs-dismiss="modal">Join a room</button>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- End Modal join room -->
-  <!--End Modal section-->
-
   <!--Footer section-->
-  <footer class="mt-auto">
+  <footer class="mt-auto" style="margin-top: 20rem;">
     <footer class="bg-dark text-center text-white">
       <!-- Grid container -->
       <div class="container p-4 pb-0">
@@ -331,8 +271,65 @@
   </footer>
   <!--End Footer section-->
 
+  <!--Modal section-->
+  <!-- Modal create room -->
+  <div class="modal fade" id="createRoomModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Create a room</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="name" class="form-label">Enter your name</label>
+            <input type="text" class="form-control" id="create-name-username" aria-describedby="username">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="createRoomCloseButton" class="btn btn-secondary"
+            data-bs-dismiss="modal">Close</button>
+          <button type="button" id="create-room" class="btn btn-warning" data-bs-dismiss="modal">Create a
+            room</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Modal create room -->
+  <!-- Modal join room -->
+  <div class="modal fade" id="joinRoomModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Join a room</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="name" class="form-label">Enter your name</label>
+            <input type="text" class="form-control" id="join-name-username" aria-describedby="username">
+          </div>
+          <div class="mb-3">
+            <label for="roomid" class="form-label">Enter your room ID</label>
+            <input type="text" class="form-control" id="join-name-roomid">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="joinRoomCloseButton" class="btn btn-secondary"
+            data-bs-dismiss="modal">Close</button>
+          <button type="button" id="join-room" class="btn btn-warning" data-bs-dismiss="modal">Join a room</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Modal join room -->
+  <!--End Modal section-->
+
 </body>
 <script>
+  const roomIdInput = document.querySelector("#roomIdInput")
+  const roomIdCopy = document.querySelector("#copy-room-id")
+  
   //Feature
   function openFeature(evt, featureName) {
     var i, tabcontent, tablinks;

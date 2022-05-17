@@ -15,13 +15,19 @@ const createRoomContainer = document.getElementById("create-room-container")
 const createRoomBackButton = document.getElementById("create-room-back")
 const createRoomEnableButton = document.getElementById("create-room-form-button")
 
-
+const navbarContent = document.getElementById("navbar-content")
 const homePagePerspective = document.getElementById("home-page-perspective");
 const roomPagePerspective = document.getElementById("room-page-perspective")
 const createRoomButton = document.getElementById("create-room")
 const joinRoomButton = document.getElementById("join-room")
-// const joinRoomModal = document.getElementById("joinRoomModal")
-// const createRoomModal = document.getElementById("createRoomModal")
+
+var displayChat = document.querySelector("#display-chat")
+var displayMembers = document.querySelector("#display-members")
+var memberInformations = document.querySelector("#members-information")
+var chat = document.querySelector("#chat");
+const roomIdInput = document.querySelector("#roomIdInput")
+const roomIdCopy = document.querySelector("#copy-room-id")
+
 //Modal section
 const createRoomModal = document.getElementById("createRoomModal");
 const modalCreateRoom = new bootstrap.Modal(createRoomModal);
@@ -80,6 +86,7 @@ export function init_listener_button() {
         let username = document.querySelector('#create-name-username').value;
         console.log("Người dùng chọn username là: ", username)
         //createRoomModal.hide();
+        navbarContent.hidden = true;
         modalCreateRoom.hide();
         homePagePerspective.hidden = true;
         roomPagePerspective.hidden = false;
@@ -95,6 +102,7 @@ export function init_listener_button() {
         console.log("Người dùng chọn room id là: ", roomid)
         //joinRoomModal.hide();
         //TODO: IF USER JOINS A ROOM SUCCESSFULLY, RENDER THIS 
+        navbarContent.hidden = true;
         modalJoinRoom.hide();
         homePagePerspective.hidden = true;
         roomPagePerspective.hidden = false;
@@ -121,6 +129,30 @@ export function init_listener_button() {
     // getRoomInfoButton.addEventListener("click", () => {
     //     socket.emit("get-room-info")
     // })
+
+    displayMembers.addEventListener("click", function () {
+        // displayMembers.hidden = false;
+        // displayChat.hidden = true;
+        // var memberInformations = document.querySelector("#members-information")
+        // var chat = document.querySelector("#chat");
+        memberInformations.hidden = false;
+        chat.hidden = true;
+    })
+
+    displayChat.addEventListener("click", function () {
+        memberInformations.hidden = true;
+        chat.hidden = false;
+    })
+
+    roomIdCopy.addEventListener("click", function () {
+        roomIdInput.select();
+        console.log("Copied: " + roomIdInput.value)
+        /* Copy the text inside the text field */
+        navigator.clipboard.writeText(roomIdInput.value);
+
+        /* Alert the copied text */
+        alert("room id copied: " + roomIdInput.value);
+    })
 
     streamStopButton.addEventListener("click", () => {
         // Sử dụng để xóa file đang stream hiện tại, phục vụ chọn file mới.

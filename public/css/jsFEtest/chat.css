@@ -125,7 +125,7 @@ span.other{
 Find member container
 */
 
-#member-information {
+#members-information {
 	position: relative;
 	min-width: 30%;
 	height: 100%;
@@ -163,7 +163,7 @@ Find member container
 
 #button-areaRight {
 	float: right;
-	margin: 1rem 1rem 0rem 0rem;
+	margin-bottom: 10rem;
 }
 
 #leave-room { 
