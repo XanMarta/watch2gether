@@ -52,13 +52,8 @@ jobs:
           chmod 600 "${{ github.workspace }}/keys"
 
       - name: Deploy
-        run: >
-          chmod +x ./deploy/script.sh &&
-          ./deploy/script.sh
-            ${{ secrets.SSH_HOST }}
-            ${{ secrets.SSH_USER }}
-            ${{ secrets.DOCKERHUB_USERNAME }}
-            ${{ secrets.DOCKERHUB_TOKEN }}
-            ${{ env.RELEASE_TAG }}
-            ${{ github.workspace }}/keys
+        run: |
+          ssh -o StrictHostKeychecking=no -i "${{ github.workspace }}/keys" ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} rm -rf /home/${{ secrets.SSH_USER }}/w2g
+          scp -o StrictHostKeychecking=no -i "${{ github.workspace }}/keys" -r "${{ github.workspace }}/deploy/script" ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/${{ secrets.SSH_USER }}/w2g
+          ssh -o StrictHostKeychecking=no -i "${{ github.workspace }}/keys" ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} bash /home/${{ secrets.SSH_USER }}/w2g/start.sh ${{ secrets.DOCKERHUB_USERNAME }} ${{ secrets.DOCKERHUB_TOKEN }} ${{ env.RELEASE_TAG }}
         shell: bash
