@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # $1: DOCKERHUB_USERNAME
-# $2: DOCKERHUB_PASSWORD
+# $2: DOCKERHUB_TOKEN
 # $3: TAG
 
 
