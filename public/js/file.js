@@ -9,8 +9,6 @@ const inputFileUpload = document.querySelector("#video-stream-get-file-from-loca
 const video = document.querySelector('#video-player-local').getElementsByTagName('video')[0]
 const videoArea = document.querySelector('#video-area')
 const hostView = document.querySelector('#host-view');
-//const clientView = document.querySelector('#client-view')
-//const video = document.querySelector('video')
 
 export async function sendStream() {
     console.log("!! SEND STREAM !!")
@@ -39,7 +37,7 @@ export function init_listener_file() {
 
         hostView.hidden = true;
         //clientView.hidden = true;
-        //videoArea.hidden = false;
+        videoArea.hidden = false;
 
         console.log("Thao tác trên DOM element video sau:")
         console.log(video)

@@ -1,7 +1,7 @@
 const outButton = document.getElementById("out-room")
 const sendMessageButton = document.getElementById("send-message")
 const getRoomInfoButton = document.getElementById("get-room-info")
-//const streamStopButton = document.getElementById("stream-stop-button")
+const streamStopButton = document.getElementById("stream-stop-button")
 
 const messageInput = document.getElementById("message-input")
 
@@ -35,7 +35,8 @@ const modalCreateRoom = new bootstrap.Modal(createRoomModal);
 const joinRoomModal = document.getElementById("joinRoomModal")
 const modalJoinRoom = new bootstrap.Modal(joinRoomModal);
 
-// const localStreamVideo = document.getElementById("local-stream")
+const videoArea = document.querySelector('#video-area')
+const hostView = document.querySelector('#host-view');
 
 import { getSocket } from "../singleton/init_socket.js"
 import * as peerManager from "../singleton/init_peer.js";
@@ -100,6 +101,10 @@ export function init_listener_button() {
         let roomid = document.querySelector('#join-name-roomid').value
         console.log("Người dùng chọn username là: ", username)
         console.log("Người dùng chọn room id là: ", roomid)
+        socket.emit("join-room", {
+            username: username,
+            roomid: roomid
+        }, roomJoined)
         //joinRoomModal.hide();
         //TODO: IF USER JOINS A ROOM SUCCESSFULLY, RENDER THIS 
         navbarContent.hidden = true;
@@ -107,10 +112,6 @@ export function init_listener_button() {
         homePagePerspective.hidden = true;
         roomPagePerspective.hidden = false;
         //ELSE RENDER ERROR MSG
-        socket.emit("join-room", {
-            username: username,
-            roomid: roomid
-        }, roomJoined)
     })
 
 
@@ -154,19 +155,21 @@ export function init_listener_button() {
         alert("room id copied: " + roomIdInput.value);
     })
 
-    // streamStopButton.addEventListener("click", () => {
-    //     // Sử dụng để xóa file đang stream hiện tại, phục vụ chọn file mới.
-    //     // TODO: Hiện tại procedure đang sai, cần phải chỉnh cả view.
-    //     // is Streaming, is host -> stop streaming
-    //     if (localStreamManager.getLocalStream() != null && localStreamManager.getLocalStream() != undefined) {
-    //         peerManager.removeStreamAll(localStreamManager.getLocalStream(), (peerId) => {
-    //             socket.emit("stream-disconnected", {
-    //                 peerId: peerId
-    //             })
-    //         })
+    streamStopButton.addEventListener("click", () => {
+        // Sử dụng để xóa file đang stream hiện tại, phục vụ chọn file mới.
+        // TODO: Hiện tại procedure đang sai, cần phải chỉnh cả view.
+        // is Streaming, is host -> stop streaming
+        if (localStreamManager.getLocalStream() != null && localStreamManager.getLocalStream() != undefined) {
+            peerManager.removeStreamAll(localStreamManager.getLocalStream(), (peerId) => {
+                socket.emit("stream-disconnected", {
+                    peerId: peerId
+                })
+            })
 
-    //         localStreamManager.setLocalStream(null)
-    //         removeLocalStream()
-    //     }
-    // })
+            localStreamManager.setLocalStream(null)
+            removeLocalStream()
+            videoArea.hidden = true;
+            hostView.hidden = false;
+        }
+    })
 }

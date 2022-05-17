@@ -12,6 +12,7 @@ function clease() {
 export async function renderOwnerView() {
     clease()
     document.querySelector('#host-view').hidden = false
+    document.querySelector("#video-area").hidden = true;
     console.log("Show host view")
 
     //document.querySelector("#room-id-renderer-host").innerHTML = getRoomIdOffline()

@@ -140,14 +140,13 @@
             <!-- <button class="btn btn-close-white" style="margin: 0rem 2rem 0rem 5rem;">Browse Video</button> -->
             <input id="video-stream-get-file-from-local" type="file">
           </div>
-          <!-- <div id="client-view">
-          </div> -->
-          <div id="video-area">
+          <div id="video-area" style="margin-bottom: 5rem;">
             <video id="video-player-local" class="video-js" height="500" width="950" data-setup='{}' controls>
               <source src="//vjs.zencdn.net/v/oceans.mp4" type="video/mp4">
               <source src="//vjs.zencdn.net/v/oceans.webm" type="video/webm">
             </video>
-            <h2 id="current-play-video-name">...</h2>
+            <h3 id="current-play-video-name">...</h3>
+            <button id="stream-stop-button">Stop streaming</button>
           </div>
         </div>
         <div id="right">
