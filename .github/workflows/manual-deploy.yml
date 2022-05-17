@@ -53,10 +53,12 @@ jobs:
 
       - name: Deploy
         run: >
-          bash ./deploy/script.sh
+          chmod +x ./deploy/script.sh &&
+          ./deploy/script.sh
             ${{ secrets.SSH_HOST }}
             ${{ secrets.SSH_USER }}
             ${{ secrets.DOCKERHUB_USERNAME }}
             ${{ secrets.DOCKERHUB_TOKEN }}
             ${{ env.RELEASE_TAG }}
-            "${{ github.workspace }}/keys"
+            ${{ github.workspace }}/keys
+        shell: bash
