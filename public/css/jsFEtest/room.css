@@ -16,8 +16,10 @@
 
 .fill-available {
   width: -webkit-fill-available;
+  height: 700px;
   display: flex;
-}
+overflow: hidden;
+    position: relative;}
 
 .copyIcon-container {
   position: relative;
@@ -89,13 +91,14 @@
 }
 
 #left {
-  height: 35rem;
+  height: 95%;
   width: max-content;
   flex: 4
-}
+;padding: 1em 1em 1em 1em;}
 
 #right {
   flex: 1;
-  height: 35rem;
+  height: 95%;
   width: max-content;
+  position: relative;
 }
