@@ -15,7 +15,6 @@
 }
 
 .fill-available {
-  width: -webkit-fill-available;
   height: 700px;
   display: flex;
 overflow: hidden;
@@ -33,7 +32,7 @@ overflow: hidden;
   position: absolute;
   top: 0;
   bottom: 0;
-  left: 0;
+  left: 2;
   right: 0;
   opacity: 0;
   transition: .5s ease;
@@ -60,8 +59,8 @@ overflow: hidden;
   /* Position the tooltip */
   position: absolute;
   z-index: 1;
-  top: 100%;
-  left: 50%;
+  top: 120%;
+  left: -50%;
   justify-content: center;
 }
 

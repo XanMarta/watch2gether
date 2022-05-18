@@ -76,27 +76,27 @@
         <div class="card flex-row" style="box-shadow: 1px 2px 3px 4px rgba(20,20,20,0.4);">
           <!--Feature section-->
           <div class="tab">
-            <button class="tablinks" onclick="openFeature(event, 'feature1')" id="defaultOpen">Feature
-              1</button>
-            <button class="tablinks" onclick="openFeature(event, 'feature2')">Feature 2</button>
-            <button class="tablinks" onclick="openFeature(event, 'feature3')">Feature 3</button>
+            <button class="tablinks" onclick="openFeature(event, 'feature1')" id="defaultOpen">Create a room</button>
+            <button class="tablinks" onclick="openFeature(event, 'feature2')">Chat with your friends</button>
+            <button class="tablinks" onclick="openFeature(event, 'feature3')">Synchronize video and sound
+            </button>
             <button class="tablinks" onclick="openFeature(event, 'feature4')">Feature 4</button>
           </div>
 
           <div id="feature1" class="tabcontent">
-            <h1>Feature 1</h1>
-            <p>fashdfhksadjhfjksdahfjksadhfjksdhfkasdhssfkfasdhfkas
-              jdfhkajsrqweretwertwefaskdhfkjasdhfkasdfhkasdhfkasdhfdkshfsdhhfasfasda</p>
+            <h1>Create and join a room</h1>
+            <p>Create a room and inviting your friends to watch videos.</p>
+            <p>You can join a room from a given room code.</p>
           </div>
 
           <div id="feature2" class="tabcontent">
-            <h1>Feature 2</h1>
-            <p>Feature 2 blahblahblahblahblahblahblahblahblah</p>
+            <h1>Chat with your friends</h1>
+            <p>Chatting with your friends, having a good time!</p>
           </div>
 
           <div id="feature3" class="tabcontent">
-            <h1>Feature 3</h1>
-            <p>Feature 3 blahblahblahblahblahblahblahblahblah</p>
+            <h1>Synchronize video and sound</h1>
+            <p>Video and sound are synchronized accross people.</p>
           </div>
 
           <div id="feature4" class="tabcontent">
@@ -186,7 +186,7 @@
   <div id="room-page-perspective" hidden>
     <div id="container">
       <div class="fill-available">
-        <div id="left">
+        <div id="left" style="margin-top: 1.5rem;">
           <div id="host-view">
 
             <!-- <header>Drag & Drop to Upload Video</header>
@@ -195,177 +195,179 @@
             <!-- <button class="btn btn-close-white" style="margin: 0rem 2rem 0rem 5rem;">Browse Video</button> -->
             <!-- <input id="video-stream-get-file-from-local" type="file"> -->
 
-              <!-- Upload Area -->
-              <div id="uploadArea" class="upload-area">
-                <!-- Header -->
-                <div class="upload-area__header">
-                  <h1 class="upload-area__title">Upload your file</h1>
-                  <p class="upload-area__paragraph">
-                    File should be a video
-                    <strong class="upload-area__tooltip">
-                      <span class="upload-area__tooltip-data"></span> <!-- Data Will be Comes From Js -->
-                    </strong>
-                  </p>
-                </div>
-                <!-- End Header -->
+            <!-- Upload Area -->
+            <div id="uploadArea" class="upload-area">
+              <!-- Header -->
+              <div class="upload-area__header">
+                <h1 class="upload-area__title">Upload your file</h1>
+                <p class="upload-area__paragraph">
+                  File should be a video
+                  <strong class="upload-area__tooltip">
+                    <span class="upload-area__tooltip-data"></span> <!-- Data Will be Comes From Js -->
+                  </strong>
+                </p>
+              </div>
+              <!-- End Header -->
 
-                <!-- Drop Zoon -->
-                <div id="dropZoon" class="upload-area__drop-zoon drop-zoon">
-                  <span class="drop-zoon__icon">
-                    <i class='bx bxs-file-image'></i>
-                  </span>
-                  <p class="drop-zoon__paragraph">Drop your file here or Click to browse</p>
-                  <span id="loadingText" class="drop-zoon__loading-text">Please Wait</span>
-                  <img src="../img/video-file.png" alt="Preview Image" id="previewImage" class="drop-zoon__preview-image" draggable="false">
-                  <input type="file" id="video-stream-get-file-from-local" class="drop-zoon__file-input" accept="video/*">
-                </div>
-                <!-- End Drop Zoon -->
+              <!-- Drop Zoon -->
+              <div id="dropZoon" class="upload-area__drop-zoon drop-zoon">
+                <span class="drop-zoon__icon">
+                  <i class='bx bxs-file-image'></i>
+                </span>
+                <p class="drop-zoon__paragraph">Drop your file here or Click to browse</p>
+                <span id="loadingText" class="drop-zoon__loading-text">Please Wait</span>
+                <img src="../img/video-file.png" alt="Preview Image" id="previewImage" class="drop-zoon__preview-image"
+                  draggable="false">
+                <input type="file" id="video-stream-get-file-from-local" class="drop-zoon__file-input" accept="video/*">
+              </div>
+              <!-- End Drop Zoon -->
 
-                <!-- File Details -->
-                <div id="fileDetails" class="upload-area__file-details file-details">
-                  <h3 class="file-details__title">Uploaded File</h3>
+              <!-- File Details -->
+              <div id="fileDetails" class="upload-area__file-details file-details">
+                <h3 class="file-details__title">Uploaded File</h3>
 
-                  <div id="uploadedFile" class="uploaded-file">
-                    <div class="uploaded-file__icon-container">
-                      <i class='bx bxs-file-blank uploaded-file__icon'></i>
-                      <span class="uploaded-file__icon-text"></span> <!-- Data Will be Comes From Js -->
-                    </div>
+                <div id="uploadedFile" class="uploaded-file">
+                  <div class="uploaded-file__icon-container">
+                    <i class='bx bxs-file-blank uploaded-file__icon'></i>
+                    <span class="uploaded-file__icon-text"></span> <!-- Data Will be Comes From Js -->
+                  </div>
 
-                    <div id="uploadedFileInfo" class="uploaded-file__info">
-                      <span class="uploaded-file__name">Proejct 1</span>
-                      <span class="uploaded-file__counter">0%</span>
-                    </div>
+                  <div id="uploadedFileInfo" class="uploaded-file__info">
+                    <span class="uploaded-file__name">Proejct 1</span>
+                    <span class="uploaded-file__counter">0%</span>
                   </div>
                 </div>
-                <!-- End File Details -->
               </div>
-              <!-- End Upload Area -->
+              <!-- End File Details -->
+            </div>
+            <!-- End Upload Area -->
 
-              <script>
-                // Design By
-                // - https://dribbble.com/shots/13992184-File-Uploader-Drag-Drop
+            <script>
+              // Design By
+              // - https://dribbble.com/shots/13992184-File-Uploader-Drag-Drop
 
-                // Select Upload-Area
-                const uploadArea = document.querySelector('#uploadArea')
+              // Select Upload-Area
+              const uploadArea = document.querySelector('#uploadArea')
 
-                // Select Drop-Zoon Area
-                const dropZoon = document.querySelector('#dropZoon');
+              // Select Drop-Zoon Area
+              const dropZoon = document.querySelector('#dropZoon');
 
-                // Loading Text
-                const loadingText = document.querySelector('#loadingText');
+              // Loading Text
+              const loadingText = document.querySelector('#loadingText');
 
-                // Slect File Input 
-                const fileInput = document.querySelector('#video-stream-get-file-from-local');
+              // Slect File Input 
+              const fileInput = document.querySelector('#video-stream-get-file-from-local');
 
-                // Select Preview Image
-                const previewImage = document.querySelector('#previewImage');
+              // Select Preview Image
+              const previewImage = document.querySelector('#previewImage');
 
-                // File-Details Area
-                const fileDetails = document.querySelector('#fileDetails');
+              // File-Details Area
+              const fileDetails = document.querySelector('#fileDetails');
 
-                // Uploaded File
-                const uploadedFile = document.querySelector('#uploadedFile');
+              // Uploaded File
+              const uploadedFile = document.querySelector('#uploadedFile');
 
-                // Uploaded File Info
-                const uploadedFileInfo = document.querySelector('#uploadedFileInfo');
+              // Uploaded File Info
+              const uploadedFileInfo = document.querySelector('#uploadedFileInfo');
 
-                // Uploaded File  Name
-                const uploadedFileName = document.querySelector('.uploaded-file__name');
+              // Uploaded File  Name
+              const uploadedFileName = document.querySelector('.uploaded-file__name');
 
-                // Uploaded File Icon
-                const uploadedFileIconText = document.querySelector('.uploaded-file__icon-text');
+              // Uploaded File Icon
+              const uploadedFileIconText = document.querySelector('.uploaded-file__icon-text');
 
-                // Uploaded File Counter
-                const uploadedFileCounter = document.querySelector('.uploaded-file__counter');
+              // Uploaded File Counter
+              const uploadedFileCounter = document.querySelector('.uploaded-file__counter');
 
-                // ToolTip Data
-                const toolTipData = document.querySelector('.upload-area__tooltip-data');
+              // ToolTip Data
+              const toolTipData = document.querySelector('.upload-area__tooltip-data');
 
-                // Images Types
-                const videosType = [
-                  "mp4",
-                  "mkv"
-                ];
+              // Images Types
+              const videosType = [
+                "mp4",
+                "mkv"
+              ];
 
-                // Append Images Types Array Inisde Tooltip Data
-                toolTipData.innerHTML = [...videosType].join(', .');
+              // Append Images Types Array Inisde Tooltip Data
+              toolTipData.innerHTML = [...videosType].join(', .');
 
-                // When (drop-zoon) has (dragover) Event 
-                dropZoon.addEventListener('dragover', function (event) {
-                  // Prevent Default Behavior 
-                  event.preventDefault();
+              // When (drop-zoon) has (dragover) Event 
+              dropZoon.addEventListener('dragover', function (event) {
+                // Prevent Default Behavior 
+                event.preventDefault();
 
-                  // Add Class (drop-zoon--over) On (drop-zoon)
-                  dropZoon.classList.add('drop-zoon--over');
-                });
+                // Add Class (drop-zoon--over) On (drop-zoon)
+                dropZoon.classList.add('drop-zoon--over');
+              });
 
-                // When (drop-zoon) has (dragleave) Event 
-                dropZoon.addEventListener('dragleave', function (event) {
-                  // Remove Class (drop-zoon--over) from (drop-zoon)
-                  dropZoon.classList.remove('drop-zoon--over');
-                });
+              // When (drop-zoon) has (dragleave) Event 
+              dropZoon.addEventListener('dragleave', function (event) {
+                // Remove Class (drop-zoon--over) from (drop-zoon)
+                dropZoon.classList.remove('drop-zoon--over');
+              });
 
-                // When (drop-zoon) has (drop) Event 
-                dropZoon.addEventListener('drop', function (event) {
-                  // Prevent Default Behavior 
-                  event.preventDefault();
+              // When (drop-zoon) has (drop) Event 
+              dropZoon.addEventListener('drop', function (event) {
+                // Prevent Default Behavior 
+                event.preventDefault();
 
-                  // Remove Class (drop-zoon--over) from (drop-zoon)
-                  dropZoon.classList.remove('drop-zoon--over');
+                // Remove Class (drop-zoon--over) from (drop-zoon)
+                dropZoon.classList.remove('drop-zoon--over');
 
-                  // Select The Dropped File
-                  const file = event.dataTransfer.files[0];
+                // Select The Dropped File
+                const file = event.dataTransfer.files[0];
 
-                  // Call Function uploadFile(), And Send To Her The Dropped File :)
-                  uploadFile(file);
-                });
+                // Call Function uploadFile(), And Send To Her The Dropped File :)
+                uploadFile(file);
+              });
 
-                // When (drop-zoon) has (click) Event 
-                dropZoon.addEventListener('click', function (event) {
-                  // Click The (fileInput)
-                  fileInput.click();
-                });
+              // When (drop-zoon) has (click) Event 
+              dropZoon.addEventListener('click', function (event) {
+                // Click The (fileInput)
+                fileInput.click();
+              });
 
-                // When (fileInput) has (change) Event 
-                fileInput.addEventListener('change', function (event) {
-                  // Select The Chosen File
-                  const file = event.target.files[0];
+              // When (fileInput) has (change) Event 
+              fileInput.addEventListener('change', function (event) {
+                // Select The Chosen File
+                const file = event.target.files[0];
 
-                  // Call Function uploadFile(), And Send To Her The Chosen File :)
-                  uploadFile(file);
-                });
+                // Call Function uploadFile(), And Send To Her The Chosen File :)
+                uploadFile(file);
+              });
 
-                // Upload File Function
-                function uploadFile(file) {
-                  
-                  progressMove();
-                };
+              // Upload File Function
+              function uploadFile(file) {
 
-                // Progress Counter Increase Function
-                function progressMove() {
-                };
+                progressMove();
+              };
+
+              // Progress Counter Increase Function
+              function progressMove() {
+              };
 
 
-                // Simple File Validate Function
-                function fileValidate(fileType, fileSize) {
-                  return true;
-                };
+              // Simple File Validate Function
+              function fileValidate(fileType, fileSize) {
+                return true;
+              };
 
-                // :)
-              </script>
+              // :)
+            </script>
+
 
           </div>
-          <div id="video-area" style="height: 100%;padding: 1em 1em 1em 1em;">
-            <video id="video-player-local" class="video-js" height="500" width="950" data-setup='{}' controls style="width: 100%;
+          <div id="video-area" style="height: 100%;padding: 1em 1em 6em 1em;">
+            <video id="video-player-local" class="video-js" height="550" width="950" data-setup='{}' controls style="width: 100%;
             height: 95%;">
               <source src="//vjs.zencdn.net/v/oceans.mp4" type="video/mp4">
               <source src="//vjs.zencdn.net/v/oceans.webm" type="video/webm">
             </video>
             <h3 id="current-play-video-name">...</h3>
-            <button id="stream-stop-button">Stop streaming</button>
+            <button type="button" class="btn btn-dark" id="stream-stop-button" hidden>Stop streaming</button>
           </div>
         </div>
-        <div id="right">
+        <div id="right" style="margin-top: 1.5rem;">
           <div class="card" id="chat">
             <div class="card-header" style="height: 8%;padding: 0.5rem 0.25rem;
             margin-bottom: 0;
@@ -383,19 +385,19 @@
                   padding: 0.375rem 0.15rem;" readonly>
                   <!-- <button class="btn btn-outline-success my-2 my-sm-0" type="submit" style="width:25%;">Copy</button> -->
                   <!-- <div class="leaveIcon-container"> -->
-                  <div class="copyIcon-container" style="margin-left: 10px;">
+                  <div class="copyIcon-container" id="copy-room-id" style="margin-left: 10px;">
                     <img src="../img/copyIcon.png" width="27" height="27" id="copy-room-id" data-toggle="tooltip"
                       title="Copy room id" style="padding-top: 3px;margin-left: 1px;">
                     <div class="overlay">
                     </div>
                     <span class="tooltiptext">Copy</span>
                   </div>
-                  <div class="leaveIcon-container" style="margin-top: 2px;margin-left: 5px;">
+                  <div class="leaveIcon-container" id="out-room" style="margin-top: 2px;margin-left: 3px;">
                     <img src="../img/leaveroom.png" width="30" height="24" id="leave-room" data-toggle="tooltip"
                       title="Leave room">
                     <div class="overlay">
                     </div>
-                    <span class="tooltiptext">Leave Room</span>
+                    <span class="tooltiptext">Leave</span>
                   </div>
                   <!-- <img src="../img/leaveroom.png" width="40" height="30" id="leave-room" data-toggle="tooltip"
                     title="Leave room"> -->
@@ -420,7 +422,10 @@
           </div>
           <!--Find member-->
           <div class="card" id="members-information" hidden="true">
-            <div class="card-header">
+            <div class="card-header" style="height: 8%;padding: 0.5rem 0.25rem;
+            margin-bottom: 0;
+            background-color: rgba(0,0,0,.03);
+            border-bottom: 1px solid rgba(0,0,0,.125);">
               <div style="display: flex;
                 justify-content: center; width: 70%">
                 <img src="./img/backIcon.png" id="display-chat" width="30" height="30">
@@ -441,7 +446,9 @@
                 </li> -->
               </ul>
             </div>
-            <div class="card-footer" style="width: 24.5rem;">
+            <div class="card-footer" style="padding: 0.5rem 10px;
+            background-color: rgba(0,0,0,.03);
+            border-top: 1px solid rgba(0,0,0,.125);">
 
             </div>
           </div>

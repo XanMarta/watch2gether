@@ -39,11 +39,18 @@ const modalJoinRoom = new bootstrap.Modal(joinRoomModal);
 const videoArea = document.querySelector('#video-area')
 const hostView = document.querySelector('#host-view');
 
+const MAX_USERNAME_LENGTH = 20;
+
 import { getSocket } from "../singleton/init_socket.js"
 import * as peerManager from "../singleton/init_peer.js";
 import * as localStreamManager from "../singleton/init_localstream.js";
 import { removeLocalStream, renderLocalStream } from "../render/mainStream.js"
 import { roomCreated, roomJoined, roomLeave } from "../room.js"
+
+//check if text is empty?
+function trimfield(str) {
+    return str.replace(/^\s+|\s+$/g, '');
+}
 
 export function init_listener_button() {
     const socket = getSocket();
@@ -88,6 +95,10 @@ export function init_listener_button() {
         let username = document.querySelector('#create-name-username').value;
         console.log("Người dùng chọn username là: ", username)
         //createRoomModal.hide();
+        if (username.length > MAX_USERNAME_LENGTH || username.length === 0) {
+            alert("Username is either empty or longer than 20 characters.")
+            return;
+        }
         socket.emit("create-room", {
             username: username
         }, roomCreated)
@@ -103,6 +114,10 @@ export function init_listener_button() {
     joinRoomButton.addEventListener('click', () => {
         let username = document.querySelector('#join-name-username').value
         let roomid = document.querySelector('#join-name-roomid').value
+        if (username.length > MAX_USERNAME_LENGTH || username.length === 0) {
+            alert("Username is either empty or longer than 20 characters.")
+            return;
+        }
         console.log("Người dùng chọn username là: ", username)
         console.log("Người dùng chọn room id là: ", roomid)
         socket.emit("join-room", {
@@ -132,19 +147,28 @@ export function init_listener_button() {
 
     sendMessageButton.addEventListener("click", () => {
         let message = messageInput.value;
-        console.log("Client want to send message: ", message)
-        socket.emit("broadcast_message_room", (message))
+        if (trimfield(message) != '') {
+            console.log("Client want to send message: ", message)
+            socket.emit("broadcast_message_room", (message))
+        }
     })
+
+    window.addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') {
+            // code for enter
+            let message = messageInput.value;
+            if (trimfield(message) != '') {
+                console.log("Client want to send message: ", message)
+                socket.emit("broadcast_message_room", (message))
+            }
+        }
+    });
 
     // getRoomInfoButton.addEventListener("click", () => {
     //     socket.emit("get-room-info")
     // })
 
     displayMembers.addEventListener("click", function () {
-        // displayMembers.hidden = false;
-        // displayChat.hidden = true;
-        // var memberInformations = document.querySelector("#members-information")
-        // var chat = document.querySelector("#chat");
         memberInformations.hidden = false;
         chat.hidden = true;
     })

@@ -2,17 +2,12 @@
   font-family: 'Avenir';
 }
 
-#right {
-  margin: 2rem 2rem 0rem 0rem;
-}
-
-
 #chat {
 	position: relative;
 	/* min-width: 25vw;
 	height: 38rem; */
-	min-width: 30%;
-	height: 100%;
+	min-width: 30% !important;
+	height: 90% !important;
 	/* float: right;
 	margin: 5rem 0.5rem; */
 	box-shadow: 1px 2px 3px 4px rgba(20,20,20,0.4);
@@ -76,13 +71,13 @@
   object-fit: contain; */
 	align-self: flex-end;
 	padding-right: 8px;
-	color: black
+	color: rgb(109, 106, 106);
 }
 
 .username-other {
 	align-self: flex-start;
-	padding-left: 8px;
-	color: black
+	padding-right: 8px;
+	color: rgb(109, 106, 106);
 }
 
 .notification {
@@ -127,8 +122,12 @@ Find member container
 
 #members-information {
 	position: relative;
-	min-width: 30%;
-	height: 100%;
+	/* min-width: 25vw;
+	height: 38rem; */
+	min-width: 30% !important;
+	height: 90% !important;
+	/* float: right;
+	margin: 5rem 0.5rem; */
 	box-shadow: 1px 2px 3px 4px rgba(20,20,20,0.4);
 }
 

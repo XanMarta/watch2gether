@@ -5,6 +5,7 @@ import { getRoomIdOffline } from "../singleton/ownership.js"
 function clease() {
     // Hàm này sẽ hide tất cả các view.
     document.querySelector('#host-view').hidden = true
+    document.querySelector("#stream-stop-button").hidden = true;
     //document.querySelector('#client-view').hidden = true
 }
 
