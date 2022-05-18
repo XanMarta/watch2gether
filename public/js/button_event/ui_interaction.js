@@ -93,7 +93,7 @@ export function init_listener_button() {
         }, roomCreated)
         modalCreateRoom.hide();
         // if (sessionStorage.getItem("failed") !== null) {
-            
+
         // } else {
         //     //TODO: IF USER JOINS A ROOM SUCCESSFULLY, RENDER THIS 
         //     modalCreateRoom.hide();
@@ -168,17 +168,20 @@ export function init_listener_button() {
         // Sử dụng để xóa file đang stream hiện tại, phục vụ chọn file mới.
         // TODO: Hiện tại procedure đang sai, cần phải chỉnh cả view.
         // is Streaming, is host -> stop streaming
-        if (localStreamManager.getLocalStream() != null && localStreamManager.getLocalStream() != undefined) {
-            peerManager.removeStreamAll(localStreamManager.getLocalStream(), (peerId) => {
-                socket.emit("stream-disconnected", {
-                    peerId: peerId
+        const textAlert = "Do you want to stop streaming?";
+        if (confirm(textAlert) === true) {
+            if (localStreamManager.getLocalStream() != null && localStreamManager.getLocalStream() != undefined) {
+                peerManager.removeStreamAll(localStreamManager.getLocalStream(), (peerId) => {
+                    socket.emit("stream-disconnected", {
+                        peerId: peerId
+                    })
                 })
-            })
 
-            localStreamManager.setLocalStream(null)
-            removeLocalStream()
-            videoArea.hidden = true;
-            hostView.hidden = false;
+                localStreamManager.setLocalStream(null)
+                removeLocalStream()
+                videoArea.hidden = true;
+                hostView.hidden = false;
+            }
         }
     })
 }
