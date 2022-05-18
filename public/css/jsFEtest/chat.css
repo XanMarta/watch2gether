@@ -113,13 +113,13 @@ span.other{
 }
 
 #send-message {
-	align-self: flex-end;
-	height: 50px;
-	width: 50px;
-	padding-top: 0rem;
-	flex: auto;
+    align-self: flex-end;
+    height: 50px;
+    width: 50px;
+    padding-top: 0rem;
+    padding: 7px 2px 7px 10px;
+    flex: auto;
 }
-
 
 /* 
 Find member container
