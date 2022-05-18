@@ -9,12 +9,6 @@ export function getPeerConfig() {
             {
                 url: "stun:stun1.l.google.com:19302",
                 urls: "stun:stun1.l.google.com:19302"
-            },
-            {
-                url: 'turn:turn.anyfirewall.com:443?transport=tcp',
-                urls: 'turn:turn.anyfirewall.com:443?transport=tcp',
-                credential: 'webrtc',
-                username: 'webrtc'
             }
         ]
     }

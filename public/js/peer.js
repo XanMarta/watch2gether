@@ -27,7 +27,6 @@ export function init_listener_peer() {
             stream: getLocalStream(),
             trickle: false,
             reconnectTimer: 3000,
-            iceTransportPolicy: 'relay',
             config: getPeerConfig()
         })
         let remotePeerId = data.peerId;
