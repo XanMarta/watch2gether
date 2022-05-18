@@ -125,6 +125,60 @@
         </div>
         <!--End Review section-->
       </div>
+      <!--Modal section-->
+      <!-- Modal create room -->
+      <div class="modal fade" id="createRoomModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Create a room</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="mb-3">
+                <label for="name" class="form-label">Enter your name</label>
+                <input type="text" class="form-control" id="create-name-username" aria-describedby="username">
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" id="createRoomCloseButton" class="btn btn-secondary"
+                data-bs-dismiss="modal">Close</button>
+              <button type="button" id="create-room" class="btn btn-warning" data-bs-dismiss="modal">Create a
+                room</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- End Modal create room -->
+      <!-- Modal join room -->
+      <div class="modal fade" id="joinRoomModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Join a room</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+              <div class="mb-3">
+                <label for="name" class="form-label">Enter your name</label>
+                <input type="text" class="form-control" id="join-name-username" aria-describedby="username">
+              </div>
+              <div class="mb-3">
+                <label for="roomid" class="form-label">Enter your room ID</label>
+                <input type="text" class="form-control" id="join-name-roomid">
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" id="joinRoomCloseButton" class="btn btn-secondary"
+                data-bs-dismiss="modal">Close</button>
+              <button type="button" id="join-room" class="btn btn-warning" data-bs-dismiss="modal">Join a
+                room</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- End Modal join room -->
+      <!--End Modal section-->
     </div>
   </div>
 
@@ -164,14 +218,13 @@
                   <input class="form-control mr-sm-1" id="roomIdInput" aria-label="Copy" style="height:30%;" readonly>
                   <!-- <button class="btn btn-outline-success my-2 my-sm-0" type="submit" style="width:25%;">Copy</button> -->
                   <!-- <div class="leaveIcon-container"> -->
-                  <div class="copyIcon-container">
-                    <img src="../img/copyIcon.png" width="40" height="30" id="copy-room-id" data-toggle="tooltip"
-                      title="Copy room id">
+                  <div class="copyIcon-container" id="copy-room-id">
+                    <img src="../img/copyIcon.png" width="40" height="30" data-toggle="tooltip" title="Copy room id">
                     <div class="overlay">
                     </div>
                     <span class="tooltiptext">Copy</span>
                   </div>
-                  <div class="leaveIcon-container">
+                  <div class="leaveIcon-container" id="out-room">
                     <img src="../img/leaveroom.png" width="40" height="30" id="leave-room" data-toggle="tooltip"
                       title="Leave room">
                     <div class="overlay">
@@ -263,64 +316,8 @@
   </footer>
   <!--End Footer section-->
 
-  <!--Modal section-->
-  <!-- Modal create room -->
-  <div class="modal fade" id="createRoomModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Create a room</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <div class="mb-3">
-            <label for="name" class="form-label">Enter your name</label>
-            <input type="text" class="form-control" id="create-name-username" aria-describedby="username">
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" id="createRoomCloseButton" class="btn btn-secondary"
-            data-bs-dismiss="modal">Close</button>
-          <button type="button" id="create-room" class="btn btn-warning" data-bs-dismiss="modal">Create a
-            room</button>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- End Modal create room -->
-  <!-- Modal join room -->
-  <div class="modal fade" id="joinRoomModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Join a room</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-        </div>
-        <div class="modal-body">
-          <div class="mb-3">
-            <label for="name" class="form-label">Enter your name</label>
-            <input type="text" class="form-control" id="join-name-username" aria-describedby="username">
-          </div>
-          <div class="mb-3">
-            <label for="roomid" class="form-label">Enter your room ID</label>
-            <input type="text" class="form-control" id="join-name-roomid">
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" id="joinRoomCloseButton" class="btn btn-secondary"
-            data-bs-dismiss="modal">Close</button>
-          <button type="button" id="join-room" class="btn btn-warning" data-bs-dismiss="modal">Join a room</button>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- End Modal join room -->
-  <!--End Modal section-->
-
 </body>
 <script>
-  const roomIdInput = document.querySelector("#roomIdInput")
-  const roomIdCopy = document.querySelector("#copy-room-id")
 
   //Feature
   function openFeature(evt, featureName) {

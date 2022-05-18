@@ -18,8 +18,6 @@ const createRoomEnableButton = document.getElementById("create-room-form-button"
 const navbarContent = document.getElementById("navbar-content")
 const homePagePerspective = document.getElementById("home-page-perspective");
 const roomPagePerspective = document.getElementById("room-page-perspective")
-const createRoomButton = document.getElementById("create-room")
-const joinRoomButton = document.getElementById("join-room")
 
 var displayChat = document.querySelector("#display-chat")
 var displayMembers = document.querySelector("#display-members")
@@ -29,6 +27,9 @@ const roomIdInput = document.querySelector("#roomIdInput")
 const roomIdCopy = document.querySelector("#copy-room-id")
 
 //Modal section
+const createRoomButton = document.getElementById("create-room")
+const joinRoomButton = document.getElementById("join-room")
+
 const createRoomModal = document.getElementById("createRoomModal");
 const modalCreateRoom = new bootstrap.Modal(createRoomModal);
 
@@ -87,13 +88,16 @@ export function init_listener_button() {
         let username = document.querySelector('#create-name-username').value;
         console.log("Người dùng chọn username là: ", username)
         //createRoomModal.hide();
-        navbarContent.hidden = true;
-        modalCreateRoom.hide();
-        homePagePerspective.hidden = true;
-        roomPagePerspective.hidden = false;
         socket.emit("create-room", {
             username: username
         }, roomCreated)
+        modalCreateRoom.hide();
+        // if (sessionStorage.getItem("failed") !== null) {
+            
+        // } else {
+        //     //TODO: IF USER JOINS A ROOM SUCCESSFULLY, RENDER THIS 
+        //     modalCreateRoom.hide();
+        // }
     })
 
     joinRoomButton.addEventListener('click', () => {
@@ -104,21 +108,26 @@ export function init_listener_button() {
         socket.emit("join-room", {
             username: username,
             roomid: roomid
-        }, roomJoined)
-        //joinRoomModal.hide();
-        //TODO: IF USER JOINS A ROOM SUCCESSFULLY, RENDER THIS 
-        navbarContent.hidden = true;
+        }, roomJoined);
         modalJoinRoom.hide();
-        homePagePerspective.hidden = true;
-        roomPagePerspective.hidden = false;
-        //ELSE RENDER ERROR MSG
+        // if (sessionStorage.getItem("failed") !== null) {
+        //     //alert("Room does not exist");
+        // } else {
+        //     //TODO: IF USER JOINS A ROOM SUCCESSFULLY, RENDER THIS 
+        //     modalJoinRoom.hide();
+        // }
     })
 
-
-    // outButton.addEventListener("click", () => {
-    //     console.log(`Client leave room - Button clicked`)
-    //     socket.emit("leave-room", roomLeave)
-    // })
+    outButton.addEventListener("click", () => {
+        console.log(`Client leave room - Button clicked`)
+        let text = "Do you want to leave?";
+        if (confirm(text) === true) {
+            socket.emit("leave-room", roomLeave)
+            navbarContent.hidden = false;
+            homePagePerspective.hidden = false;
+            roomPagePerspective.hidden = true;
+        }
+    })
 
 
     sendMessageButton.addEventListener("click", () => {
