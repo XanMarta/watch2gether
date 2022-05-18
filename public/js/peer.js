@@ -20,9 +20,14 @@ export function init_listener_peer() {
         console.log(data)
 
         console.log(`Init a peer connection to ${data.peerId}`)
+        console.log("PEER CONFIG")
+        console.log(getPeerConfig())
         let peer = new SimplePeer({
             initiator: data.initiator, 
             stream: getLocalStream(),
+            trickle: false,
+            reconnectTimer: 3000,
+            iceTransportPolicy: 'relay',
             config: getPeerConfig()
         })
         let remotePeerId = data.peerId;
