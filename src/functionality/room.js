@@ -179,7 +179,10 @@ function init_listener_room (socket) {
             roomid: roomId,
             hostUsername: data.username,
             hostSocketId: socket.id,
-            member: [socket.id]
+            member: [{
+                socketid: socket.id,
+                username: data.username
+            }]
         }
         /**
          * Member chỉ là mảng 1 phần tử: do đây là tạo phòng mới.
@@ -262,12 +265,29 @@ function init_listener_room (socket) {
          * Thêm client mới socket.id vào roomId
          */
 
+        let members = []
+
+        for await (const socketid of room.users) {
+            let currentUsername = await getUsernameFromSocketId(socketid)
+            members.push({
+                socketid: socketid,
+                username: currentUsername
+            })
+        }
+        members.push({
+            socketid: socket.id,
+            username: data.username
+        })
+
+        console.log("Giá trị của member: ")
+        console.log(members)
+
         let response = {
             isSuccess: true,
             roomid: roomId,
             hostUsername: await getUsernameFromSocketId(room.host),
             hostSocketId: room.host,
-            member: room.users
+            member: members
         }
         // tạo phòng bên client trước, để set host các thứ
         callback(response)
@@ -290,7 +310,7 @@ function init_listener_room (socket) {
         })
 
         socket.to(roomId).emit('join-room', {
-            socketid: socket.id + 'testing', 
+            socketid: socket.id, 
             username: data.username
         });
 
