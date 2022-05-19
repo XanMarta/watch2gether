@@ -7,6 +7,13 @@ function clease() {
     document.querySelector('#host-view').hidden = true
     document.querySelector("#stream-stop-button").hidden = true;
     //document.querySelector('#client-view').hidden = true
+
+    document.querySelectorAll(".list-group-item").forEach(DOM => {
+        DOM.remove();
+    })
+    document.querySelectorAll(".notification").forEach(DOM => {
+        DOM.remove();
+    })
 }
 
 // Render related to Owner View

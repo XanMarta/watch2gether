@@ -26,8 +26,8 @@ function renderMember(username, socketid) {
 }
 
 function eraseMember(socketid) {
-    let targetDOM = document.querySelector("#" + socketid + "-list-name")
-    console.log(targetDOM)
+    let targetDOM = document.getElementById(socketid + "-list-name")
+    console.log("target DOM to erase: ", targetDOM)
 
     if (targetDOM == undefined || targetDOM == null) 
     {
@@ -40,6 +40,32 @@ function eraseMember(socketid) {
 function renderNumberRoomMember() {
     numberMemberDOM = document.querySelector("#member-number");
     numberMemberDOM.innerHTML = roomMember.length;
+}
+
+
+export function isMemberExist(socketid) {
+    getMemberContainer()
+
+    console.log("v4 check exist: ")
+    console.log(socketid)
+
+    if (roomMember == null || roomMember == undefined) 
+    {
+        return false;
+    }
+
+    for (let i = 0;i<roomMember.length;i++) 
+    {
+        console.log(i)
+        console.log(roomMember[i]['socketid'])
+        console.log(roomMember[i])
+
+        if (socketid == roomMember[i]['socketid']) {
+            // tìm kiếm vị trí và kiểm tra xem có thuộc phòng hay không.
+            return true 
+        }
+    }
+    return false
 }
 
 
@@ -73,7 +99,12 @@ export function removeRoomMember(socketid) {
 
     for (let i = 0;i<roomMember.length;i++) 
     {
+        console.log(i)
+        console.log(roomMember[i]['socketid'])
+        console.log(roomMember[i])
+
         if (socketid == roomMember[i]['socketid']) {
+            // tìm kiếm vị trí và kiểm tra xem có thuộc phòng hay không.
             eraseMember(socketid)
             roomMember = roomMember.splice(i, 1)
 
