@@ -58,7 +58,7 @@ function trimfield(str) {
 
 // >= 6 and <= 20
 function isValidUserName(username) {
-    return (username.length >= MIN_USERNAME_LENGTH && username.length <= MAX_USERNAME_LENGTH) || trimfield(username) != '';
+    return (username.length >= MIN_USERNAME_LENGTH && username.length <= MAX_USERNAME_LENGTH) && trimfield(username) != '';
 }
 
 export function init_listener_button() {
@@ -116,10 +116,11 @@ export function init_listener_button() {
         if (!isValidUserName(username)) {
             alert("Invalid username")
             return;
+        } else {
+            socket.emit("create-room", {
+                username: username
+            }, roomCreated)
         }
-        socket.emit("create-room", {
-            username: username
-        }, roomCreated)
         modalCreateRoom.hide();
         // if (sessionStorage.getItem("failed") !== null) {
 
@@ -135,13 +136,14 @@ export function init_listener_button() {
         if (!isValidUserName(username)) {
             alert("Invalid username")
             return;
+        } else {
+            console.log("Người dùng chọn username là: ", username)
+            console.log("Người dùng chọn room id là: ", roomid)
+            socket.emit("join-room", {
+                username: username,
+                roomid: roomid
+            }, roomJoined);
         }
-        console.log("Người dùng chọn username là: ", username)
-        console.log("Người dùng chọn room id là: ", roomid)
-        socket.emit("join-room", {
-            username: username,
-            roomid: roomid
-        }, roomJoined);
         modalJoinRoom.hide();
         // if (sessionStorage.getItem("failed") !== null) {
         //     //alert("Room does not exist");
