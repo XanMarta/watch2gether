@@ -1,14 +1,51 @@
+import * as Ownership from "../singleton/ownership.js"
+
 var roomMember = [];
 var numberMemberDOM = null;
+var memberContainerDOM = null;
 
 
-function renderRoomMember() {
-    numberMemberDOM = document.querySelector("#member-number") ;
+function getMemberContainer() {
+    memberContainerDOM = document.querySelector("#members-list")
+}
+
+function renderMember(username, socketid) {
+    let name = username;
+    let isHost = Ownership.isRemoteHost(socketid)
+    
+    if (isHost) 
+    {
+        name = name + " (Chủ phòng)"
+    }
+
+    let memberElement = document.createElement("li")
+    memberElement.innerHTML = username + '<button style="float: right;">Ban</button>'
+    memberElement.className = "list-group-item"
+    memberElement.id = socketid + "-list-name"
+    memberContainerDOM.appendChild(memberElement) 
+}
+
+function eraseMember(socketid) {
+    let targetDOM = document.querySelector("#" + socketid + "-list-name")
+    console.log(targetDOM)
+
+    if (targetDOM == undefined || targetDOM == null) 
+    {
+        return;
+    }
+
+    targetDOM.remove()
+}
+
+function renderNumberRoomMember() {
+    numberMemberDOM = document.querySelector("#member-number");
     numberMemberDOM.innerHTML = roomMember.length;
 }
 
 
 export function addRoomMember(member) {
+    getMemberContainer()
+
     console.log("v4 add member: ")
     console.log(member)
     if (roomMember == null || roomMember == undefined) 
@@ -18,11 +55,14 @@ export function addRoomMember(member) {
 
     roomMember.push(member)
 
-    renderRoomMember()
+    renderNumberRoomMember()
+    renderMember(member.username, member.socketid)
 }
 
 
 export function removeRoomMember(socketid) {
+    getMemberContainer()
+
     console.log("v4 remove socket id: ")
     console.log(socketid)
 
@@ -34,20 +74,23 @@ export function removeRoomMember(socketid) {
     for (let i = 0;i<roomMember.length;i++) 
     {
         if (socketid == roomMember[i]['socketid']) {
-            roomMember.splice(i, 1)
+            eraseMember(socketid)
+            roomMember = roomMember.splice(i, 1)
 
-            renderRoomMember() 
+            renderNumberRoomMember() 
             return 
         }
     }
 }
 
 export function resetRoomMember() {
+    getMemberContainer()
+
     console.log("v4 reset member: ")
     
     roomMember = [];
 
-    renderRoomMember()
+    renderNumberRoomMember()
 }
 
 export function getNumberOfMember() {
@@ -61,6 +104,8 @@ export function getNumberOfMember() {
 
 
 export function initRoomMember(member) {
+    getMemberContainer()
+
     console.log("v4 init room member: ")
     console.log(member)
 
@@ -68,7 +113,11 @@ export function initRoomMember(member) {
     console.log("v4 init room length")
     console.log(roomMember)
     console.log(roomMember.length)
-    renderRoomMember() 
+    renderNumberRoomMember() 
+
+    member.forEach(memberInformation => {
+        renderMember(memberInformation.username, memberInformation.socketid)
+    })
 
     // type: Array
     // e.g: {
