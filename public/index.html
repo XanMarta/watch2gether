@@ -368,7 +368,7 @@
           </div>
         </div>
         <div id="right" style="margin-top: 1.5rem;">
-          <div class="card" id="chat">
+          <div class="card" id="chat" hidden="true">
             <div class="card-header" style="height: 8%;padding: 0.5rem 0.25rem;
             margin-bottom: 0;
             background-color: rgba(0,0,0,.03);
@@ -421,29 +421,31 @@
             </div>
           </div>
           <!--Find member-->
-          <div class="card" id="members-information" hidden="true">
+          <div class="card" id="members-information">
             <div class="card-header" style="height: 8%;padding: 0.5rem 0.25rem;
             margin-bottom: 0;
             background-color: rgba(0,0,0,.03);
             border-bottom: 1px solid rgba(0,0,0,.125);">
               <div style="display: flex;
-                justify-content: center; width: 70%">
+              justify-content: left;
+              margin-left: 0.5em;
+              width: 70%;">
                 <img src="./img/backIcon.png" id="display-chat" width="30" height="30">
-                <input class="form-control mr-sm-1" type="search" placeholder="Generate room id" aria-label="Search">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                <input hidden="true" class="form-control mr-sm-1" type="search" placeholder="Generate room id" aria-label="Search">
+                <button hidden="true" class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
               </div>
             </div>
             <div class="card-body" style="overflow: auto;">
               <ul class="list-group list-group-flush" id="members-list">
-                <!-- <li class="list-group-item">fsdafsa
-                  <button style="float: right;">Ban</button>
-                </li>
                 <li class="list-group-item">fsdafsa
                   <button style="float: right;">Ban</button>
                 </li>
                 <li class="list-group-item">fsdafsa
                   <button style="float: right;">Ban</button>
-                </li> -->
+                </li>
+                <li class="list-group-item">fsdafsa
+                  <button style="float: right;">Ban</button>
+                </li>
               </ul>
             </div>
             <div class="card-footer" style="padding: 0.5rem 10px;
