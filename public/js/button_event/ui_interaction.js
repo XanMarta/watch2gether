@@ -1,4 +1,4 @@
-const outButton = document.getElementById("out-room")
+const outButton = document.getElementById("leave-room")
 const sendMessageButton = document.getElementById("send-message")
 const getRoomInfoButton = document.getElementById("get-room-info")
 const streamStopButton = document.getElementById("stream-stop-button")

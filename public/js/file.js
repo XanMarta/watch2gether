@@ -11,9 +11,14 @@ const videoArea = document.querySelector('#video-area')
 const hostView = document.querySelector('#host-view');
 const streamStopButton = document.querySelector("#stream-stop-button")
 
+const userAgent = navigator.userAgent;
+
 export async function sendStream() {
     console.log("!! SEND STREAM !!")
-    var stream = await video.captureStream();
+    console.log(video)
+
+    let stream = video.mozCaptureStream ? video.mozCaptureStream() : video.captureStream();
+
     setLocalStream(stream)
     renderLocalStream(stream)
     PeerManager.addStreamAll(getLocalStream())
@@ -47,7 +52,7 @@ export function init_listener_file() {
         await video.play()
 
         // Capture stream and send stream.
-        var stream = await video.captureStream();
+        let stream = video.mozCaptureStream ? video.mozCaptureStream() : video.captureStream();
 
         setLocalStream(stream)
         renderLocalStream(stream)

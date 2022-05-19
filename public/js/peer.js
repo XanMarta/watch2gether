@@ -19,7 +19,24 @@ export function init_listener_peer() {
         console.log(data)
 
         console.log(`Init a peer connection to ${data.peerId}`)
-        let peer = new SimplePeer({initiator: data.initiator, stream: getLocalStream()})
+        // let peer = new SimplePeer({
+        //     initiator: data.initiator, stream: getLocalStream()
+        // })
+        let peer = new SimplePeer({
+            initiator: data.initiator,
+            config: { 
+                iceServers: [{ 
+                    urls: 'stun:relay.backups.cz' 
+                }, 
+                {
+                    url: 'turn:192.158.29.39:3478?transport=udp',
+                    credential: 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
+                    username: '28224511:1379330808'
+                }] 
+            },
+            stream: getLocalStream()
+        })
+        
         let remotePeerId = data.peerId;
 
         const signalListener = data => {
