@@ -8,6 +8,7 @@ import {
 import { addJoinNotification } from './render/chat.js'
 import { setHost, isHost } from './singleton/ownership.js';
 import { renderOwnerView } from './render/perspective.js'
+import { removeRoomMember } from './render/member.js';
 
 var listener = {} 
 
@@ -29,11 +30,10 @@ export function init_listener_peer() {
                     urls: 'stun:relay.backups.cz' 
                 }, 
                 {
-                    url: 'turn:192.158.29.39:3478?transport=udp',
-                    credential: 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
-                    username: '28224511:1379330808'
-                }] 
-            },
+                    url: 'turn:13.250.13.83:3478?transport=udp',
+                    credential: 'YzYNCouZM1mhqhmseWk6',
+                    username: 'YzYNCouZM1mhqhmseWk6'
+                }]},
             stream: getLocalStream()
         })
         
@@ -68,6 +68,7 @@ export function init_listener_peer() {
             console.log("Erase peer ID: ", data.peerId)
 
             removeRemoteStream(data.peerId)
+            removeRoomMember(data.peerId)
             setHost(data.roomOwnerId)
 
             if (isHost()) {
@@ -78,7 +79,8 @@ export function init_listener_peer() {
         socket.on("user-disconnected", message => {
             socket.off('signal', listener[message.socketid])
             delete listener[message.socketid]
-    
+
+            removeRoomMember(message.socketid)
             peerManager.deletePeer(message.socketid)
             console.log("Erase peer ID: ", message.socketid)
         })
@@ -116,6 +118,7 @@ export function init_listener_peer() {
             
             console.log("Erase peer ID: ", remotePeerId)
 
+            removeRoomMember(socket.id)
             removeRemoteStream(remotePeerId)
         })
 
@@ -130,6 +133,7 @@ export function init_listener_peer() {
             
             console.log("Get error: ", err)
             
+            removeRoomMember(socket.id)
             removeRemoteStream(remotePeerId)
         })
 
