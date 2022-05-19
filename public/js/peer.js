@@ -8,6 +8,7 @@ import {
 import { addJoinNotification } from './render/chat.js'
 import { setHost, isHost } from './singleton/ownership.js';
 import { renderOwnerView } from './render/perspective.js'
+import { getPeerConfig } from './config/peer.config.js';
 
 var listener = {} 
 
@@ -19,7 +20,16 @@ export function init_listener_peer() {
         console.log(data)
 
         console.log(`Init a peer connection to ${data.peerId}`)
-        let peer = new SimplePeer({initiator: data.initiator, stream: getLocalStream()})
+        console.log("PEER CONFIG")
+        console.log(getPeerConfig())
+        let peer = new SimplePeer({
+            initiator: data.initiator, 
+            stream: getLocalStream(),
+            trickle: false,
+            reconnectTimer: 3000,
+            iceTransportPolicy: 'relay',
+            config: getPeerConfig()
+        })
         let remotePeerId = data.peerId;
 
         const signalListener = data => {
