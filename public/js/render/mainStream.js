@@ -20,7 +20,6 @@ export function renderLocalStream(stream) {
 
 export function removeLocalStream() {
     // TODO testing 
-    return
     if (Ownership.isHost()) {
         mainStreamVideo.srcObject = null
     }
