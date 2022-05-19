@@ -8,20 +8,20 @@ var mainStreamVideo = undefined;
 export function renderLocalStream(stream) {
     // TODO testing 
     return
-    if (Ownership.isHost()) {
-        console.log("Render local stream: ")
-        console.log(stream)
-        mainStreamVideo.srcObject = stream
-    }
-    else {
-        console.log(`User is not host. Cannot render own stream`)
-    }
+    // if (Ownership.isHost()) {
+    //     console.log("Render local stream: ")
+    //     console.log(stream)
+    //     mainStreamVideo.srcObject = stream
+    // }
+    // else {
+    //     console.log(`User is not host. Cannot render own stream`)
+    // }
 }
 
 export function removeLocalStream() {
     // TODO testing 
-    return
     if (Ownership.isHost()) {
+        mainStreamVideo = document.querySelector('#video-player-local').getElementsByTagName('video')[0]
         mainStreamVideo.srcObject = null
     }
     else {
@@ -55,7 +55,7 @@ export function removeRemoteStream(socketid) {
     // socketid, peer id from remote
     if (Ownership.isRemoteHost(socketid)) {
         console.log(mainStreamVideo)
-        
+
         mainStreamVideo = document.querySelector('#video-player-local').getElementsByTagName('video')[0]
         mainStreamVideo.srcObject = null
     }
