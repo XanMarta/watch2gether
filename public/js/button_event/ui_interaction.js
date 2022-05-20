@@ -131,6 +131,8 @@ export function init_listener_button() {
         //     //TODO: IF USER JOINS A ROOM SUCCESSFULLY, RENDER THIS 
         //     modalJoinRoom.hide();
         // }
+
+        document.querySelector('#join-name-roomid').value = ''
     }) 
 
     outButton.addEventListener("click", () => {

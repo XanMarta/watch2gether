@@ -126,7 +126,7 @@ export function init_listener_peer() {
             
             console.log("Erase peer ID: ", remotePeerId)
 
-            removeRoomMember(socket.id)
+            removeRoomMember(remotePeerId)
             removeRemoteStream(remotePeerId)
         })
 
@@ -141,7 +141,7 @@ export function init_listener_peer() {
             
             console.log("Get error: ", err)
             
-            removeRoomMember(socket.id)
+            removeRoomMember(remotePeerId)
             removeRemoteStream(remotePeerId)
         })
 
