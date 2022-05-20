@@ -70,6 +70,7 @@
 
 /* Style the tab content */
 .tabcontent {
+  font-family: 'Lora', serif;
   float: left;
   padding: 0px 12px;
   width: 80%;
@@ -79,13 +80,19 @@
 }
 
 .tabcontent h1 {
+  font-family: 'Lora', serif;
   font-size: 50px;
   padding: 10px 0px 0px 20px;
 }
 
 .tabcontent p {
+  font-family: 'Lora', serif;
   font-size: 20px;
   padding: 10px 0px 0px 20px;
+}
+
+.blockquote {
+  font-family: 'Lora', serif;
 }
 
 /**
