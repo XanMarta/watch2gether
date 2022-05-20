@@ -1,11 +1,12 @@
 import { getSocket } from './singleton/init_socket.js'
 import { addMessage, addJoinNotification } from './render/chat.js'
-import { renderRoomMember } from './render/member.js'
+import { initRoomMember, removeRoomMember, resetRoomMember } from './render/member.js'
 import { renderOwnerView, renderClientView, renderMainMenu } from './render/perspective.js'
 import { removeLocalStream, removeRemoteStream } from './render/mainStream.js'
-import { setHost, isHost, setRoomIdOffline } from './singleton/ownership.js'
+import { setHost, isHost, setRoomIdOffline, isRemoteHost } from './singleton/ownership.js'
 import * as peerManager from "./singleton/init_peer.js";
 import * as localStreamManager from "./singleton/init_localstream.js";
+import { addRoomMember } from './render/member.js'
 
 const navbarContent = document.getElementById("navbar-content")
 const homePagePerspective = document.getElementById("home-page-perspective");
@@ -30,7 +31,11 @@ export async function roomCreated(data) {
         setHost(data.hostSocketId)
 
         await renderOwnerView()
-        renderRoomMember(data.member)
+
+        console.log("Ví dụ về một data.member: ")
+        console.log(data.member)
+
+        initRoomMember(data.member)
 
     } else {
         sessionStorage.setItem("failed", true);
@@ -59,8 +64,11 @@ export function roomJoined(data) {
         setHost(data.hostSocketId)
 
         // Since a client who join cannot be owner
+        console.log("Ví dụ về một data.member: ")
+        console.log(data.member)
+
         renderClientView()
-        renderRoomMember(data.member)
+        initRoomMember(data.member)
 
     } else {
         sessionStorage.setItem("failed", true);
@@ -79,12 +87,20 @@ export function roomLeave(data) {
         peerManager.deletePeerAll((id) => { })
         setHost(null)
         // BUG
-        removeRemoteStream()
-        removeLocalStream()
+        if (isHost()) {
+            // là host thì được xóa stream đi.
+            removeLocalStream()
+        }
+        else {
+            // không là host thì chỉ xóa khi stream là remote.
+            removeRemoteStream()
+        }
+        
         localStreamManager.setLocalStream(null)
 
         // Since a client who join cannot be owner
         renderMainMenu()
+        resetRoomMember()
 
     } else {
         console.log("Rời khỏi phòng thất bại !!")
@@ -130,6 +146,7 @@ export function init_listener_room() {
 
         // TODO: Add new member to room
         addJoinNotification(information['username'], 'join')
+        addRoomMember(information)
 
         // TODO: từ cái information này, trích thông tin của ng dùng mới vào và render
     })
@@ -148,12 +165,18 @@ export function init_listener_room() {
         addJoinNotification(message['username'], 'disconnect')
 
         removeRemoteStream(message.socketid)
+        removeRoomMember(message.socketid)
+
+        let condition = isRemoteHost(message.socketid)
+        // Người rời phòng là host.
+
         setHost(message.roomOwnerId)
 
-        if (isHost()) {
+        condition = condition && isHost()
+        // Người hiện tại trở thành host mới.
+        if (condition) {
             await renderOwnerView()
         }
-
         // TODO: xóa thông tin liên quan đến người này trong phần member
     })
 

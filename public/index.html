@@ -13,6 +13,10 @@
   <link rel="stylesheet" href="./css/jsFEtest/uploadFile.css">
   <link rel="stylesheet" href="./css/jsFEtest/room.css">
   <link rel="stylesheet" href="./css/video-js.min.css">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora&display=swap" rel="stylesheet">
   <title>Streaming app</title>
 </head>
 
@@ -372,7 +376,7 @@
           </div>
         </div>
         <div id="right" style="margin-top: 1.5rem;">
-          <div class="card" id="chat">
+          <div class="card" id="chat" hidden="true">
             <div class="card-header" style="height: 8%;padding: 0.5rem 0.25rem;
             margin-bottom: 0;
             background-color: rgba(0,0,0,.03);
@@ -381,7 +385,7 @@
                 <div style="float: left; width: 30%" style="margin-top: 2rem;">
                   <img src="../img/userIcon.png" id="display-members" width="33" height="27"
                     style="display: inline-block;padding: 1px 1px;margin-left: 7px;">
-                  <h5 style="display: inline-block;margin-top: 0;align-content: center;padding-top: 3px;">1/20</h5>
+                  <h5 id="member-number" style="display: inline-block;margin-top: 0;align-content: center;padding-top: 3px;">0</h5>
                 </div>
                 <div style="display: flex;
                 justify-content: center; width: 70%;">
@@ -418,23 +422,22 @@
             border-top: 1px solid rgba(0,0,0,.125);">
               <div class="message-sent">
                 <!-- <textarea type="text" id="message-input"></textarea> -->
-                <textarea type="text" class="form-control" id="message-input"></textarea>
+                <textarea type="text" class="form-control" id="message-input" placeholder="Nhập tin nhắn ..." style="padding: 0.75rem 0.75rem;"></textarea>
                 <img src="../img/sendIcon.png" id="send-message" type="button">
                 <!-- <img src="https://www.seekpng.com/png/detail/95-955357_open-send-icon-png.png" id="send-message"> -->
               </div>
             </div>
           </div>
           <!--Find member-->
-          <div class="card" id="members-information" hidden="true">
-            <div class="card-header" style="height: 8%;padding: 0.5rem 0.25rem;
+          <div class="card" id="members-information" style="width: 372px;">
+            <div class="card-header" style="height: 8%;padding: 0.5rem 0.75rem;
             margin-bottom: 0;
             background-color: rgba(0,0,0,.03);
             border-bottom: 1px solid rgba(0,0,0,.125);">
-              <div style="display: flex;
-                justify-content: center; width: 70%">
+              <div style="float: left; width: 30%" style="margin-top: 2rem;">
                 <img src="./img/backIcon.png" id="display-chat" width="30" height="30">
-                <input class="form-control mr-sm-1" type="search" placeholder="Generate room id" aria-label="Search">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                <input hidden="true" class="form-control mr-sm-1" type="search" placeholder="Generate room id" aria-label="Search">
+                <button hidden="true" class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
               </div>
             </div>
             <div class="card-body" style="overflow: auto;">
