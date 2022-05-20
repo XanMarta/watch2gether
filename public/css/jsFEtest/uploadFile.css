@@ -1,28 +1,27 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
 
-/* body{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
+body{
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.125rem;
   background: #5256ad;
-} */
+}
+
 #left {
-  margin: 2rem 0rem 0rem 1rem;
+  margin: 0rem 0rem 0rem 1rem;
 }
 #right {
-  margin: 1rem 0rem 0rem 1rem;
+  margin: 0.5rem 0.5rem 0.5rem 0.5rem;
 }
 #host-view {
   border: 2px dashed black;
   /* background-color: green; */
   position: relative;
-  width: 95% !important;
-  height: 95% !important;
+  width: 100% !important;
+  height: 90% !important;
   position: relative;
   display: flex;
   align-items: center;
-  justify-content: center;  
+  justify-content: center;
   flex-direction: column;
 }
 

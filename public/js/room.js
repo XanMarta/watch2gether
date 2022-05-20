@@ -1,14 +1,23 @@
 import { getSocket } from './singleton/init_socket.js'
 import { addMessage, addJoinNotification } from './render/chat.js'
-import { renderRoomMember } from './render/member.js'
+import { initRoomMember, removeRoomMember, resetRoomMember } from './render/member.js'
 import { renderOwnerView, renderClientView, renderMainMenu } from './render/perspective.js'
 import { removeLocalStream, removeRemoteStream } from './render/mainStream.js'
-import { setHost, isHost, setRoomIdOffline } from './singleton/ownership.js'
+import { setHost, isHost, setRoomIdOffline, isRemoteHost } from './singleton/ownership.js'
 import * as peerManager from "./singleton/init_peer.js";
 import * as localStreamManager from "./singleton/init_localstream.js";
+import { addRoomMember } from './render/member.js'
+
+const navbarContent = document.getElementById("navbar-content")
+const homePagePerspective = document.getElementById("home-page-perspective");
+const roomPagePerspective = document.getElementById("room-page-perspective")
 
 export async function roomCreated(data) {
     if (data.isSuccess) {
+        sessionStorage.setItem("failed", null);
+        navbarContent.hidden = true;
+        homePagePerspective.hidden = true;
+        roomPagePerspective.hidden = false;
         console.log("Tạo phòng thành công!!")
         console.log("Id của phòng: ", data.roomid)
         console.log("Username của chủ phòng: ", data.hostUsername)
@@ -22,9 +31,14 @@ export async function roomCreated(data) {
         setHost(data.hostSocketId)
 
         await renderOwnerView()
-        renderRoomMember(data.member)
-        
+
+        console.log("Ví dụ về một data.member: ")
+        console.log(data.member)
+
+        initRoomMember(data.member)
+
     } else {
+        sessionStorage.setItem("failed", true);
         console.log("Tạo phòng mới thất bại !!")
         console.log("Lý do: ", data.message)
         alert(data.message)
@@ -33,6 +47,10 @@ export async function roomCreated(data) {
 
 export function roomJoined(data) {
     if (data.isSuccess) {
+        sessionStorage.setItem("failed", null);
+        navbarContent.hidden = true;
+        homePagePerspective.hidden = true;
+        roomPagePerspective.hidden = false;
         console.log("Gia nhập phòng mới thành công!!")
         console.log("Id của phòng: ", data.roomid)
         console.log("Username của chủ phòng: ", data.hostUsername)
@@ -46,10 +64,14 @@ export function roomJoined(data) {
         setHost(data.hostSocketId)
 
         // Since a client who join cannot be owner
+        console.log("Ví dụ về một data.member: ")
+        console.log(data.member)
+
         renderClientView()
-        renderRoomMember(data.member)
+        initRoomMember(data.member)
 
     } else {
+        sessionStorage.setItem("failed", true);
         console.log("Gia nhập phòng mới thất bại!!")
         console.log("Lý do: ", data.message)
         alert(data.message)
@@ -62,15 +84,23 @@ export function roomLeave(data) {
         console.log("Id của phòng: ", data.roomid)
 
         // TODO: Render các thông tin cần thiết cho người dùng
-        peerManager.deletePeerAll((id) => {})
+        peerManager.deletePeerAll((id) => { })
         setHost(null)
         // BUG
-        removeRemoteStream()
-        removeLocalStream()
+        if (isHost()) {
+            // là host thì được xóa stream đi.
+            removeLocalStream()
+        }
+        else {
+            // không là host thì chỉ xóa khi stream là remote.
+            removeRemoteStream()
+        }
+        
         localStreamManager.setLocalStream(null)
 
         // Since a client who join cannot be owner
         renderMainMenu()
+        resetRoomMember()
 
     } else {
         console.log("Rời khỏi phòng thất bại !!")
@@ -112,10 +142,11 @@ export function init_listener_room() {
     socket.on("join-room", (information) => {
         console.log("** got join-room")
         console.log(`Get join-room information: `)
-        console.log(information) 
+        console.log(information)
 
         // TODO: Add new member to room
         addJoinNotification(information['username'], 'join')
+        addRoomMember(information)
 
         // TODO: từ cái information này, trích thông tin của ng dùng mới vào và render
     })
@@ -134,12 +165,18 @@ export function init_listener_room() {
         addJoinNotification(message['username'], 'disconnect')
 
         removeRemoteStream(message.socketid)
+        removeRoomMember(message.socketid)
+
+        let condition = isRemoteHost(message.socketid)
+        // Người rời phòng là host.
+
         setHost(message.roomOwnerId)
 
-        if (isHost()) {
+        condition = condition && isHost()
+        // Người hiện tại trở thành host mới.
+        if (condition) {
             await renderOwnerView()
         }
-
         // TODO: xóa thông tin liên quan đến người này trong phần member
     })
 
@@ -148,13 +185,13 @@ export function init_listener_room() {
         console.log(`User ${message.peerId} stream disconnected`)
         removeRemoteStream(message.peerId)
     })
-    
+
     socket.on("leave-room-reject", message => {
         console.log("** get leave-room-reject")
         alert(message)
     })
-    
-    socket.on("leave-room", message => { 
+
+    socket.on("leave-room", message => {
         console.log("** got leave-room")
         console.log(message)
 
@@ -165,15 +202,15 @@ export function init_listener_room() {
     socket.on("room-info", (room) => {
         console.log("** got room-info")
         console.log('All client id from same room: ')
-        console.log(typeof(room))
+        console.log(typeof (room))
         console.log(room)
     })
-    
+
     socket.on("not-in-room", () => {
         console.log("** got not-in-room")
         alert("Client havent joined a room yet.")
     })
-    
+
     socket.on("already-in-room", () => {
         console.log("** got already-in-room")
         alert("Client already in a room.")
