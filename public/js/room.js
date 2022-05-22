@@ -3,7 +3,7 @@ import { addMessage, addJoinNotification } from './render/chat.js'
 import { initRoomMember, removeRoomMember, resetRoomMember } from './render/member.js'
 import { renderOwnerView, renderClientView, renderMainMenu } from './render/perspective.js'
 import { removeLocalStream, removeRemoteStream } from './render/mainStream.js'
-import { setHost, isHost, setRoomIdOffline } from './singleton/ownership.js'
+import { setHost, isHost, setRoomIdOffline, isRemoteHost } from './singleton/ownership.js'
 import * as peerManager from "./singleton/init_peer.js";
 import * as localStreamManager from "./singleton/init_localstream.js";
 import { addRoomMember } from './render/member.js'
@@ -87,8 +87,15 @@ export function roomLeave(data) {
         peerManager.deletePeerAll((id) => { })
         setHost(null)
         // BUG
-        removeRemoteStream()
-        removeLocalStream()
+        if (isHost()) {
+            // là host thì được xóa stream đi.
+            removeLocalStream()
+        }
+        else {
+            // không là host thì chỉ xóa khi stream là remote.
+            removeRemoteStream()
+        }
+        
         localStreamManager.setLocalStream(null)
 
         // Since a client who join cannot be owner
@@ -158,13 +165,18 @@ export function init_listener_room() {
         addJoinNotification(message['username'], 'disconnect')
 
         removeRemoteStream(message.socketid)
-        setHost(message.roomOwnerId)
         removeRoomMember(message.socketid)
 
-        if (isHost()) {
+        let condition = isRemoteHost(message.socketid)
+        // Người rời phòng là host.
+
+        setHost(message.roomOwnerId)
+
+        condition = condition && isHost()
+        // Người hiện tại trở thành host mới.
+        if (condition) {
             await renderOwnerView()
         }
-
         // TODO: xóa thông tin liên quan đến người này trong phần member
     })
 

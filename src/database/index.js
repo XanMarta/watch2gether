@@ -43,6 +43,10 @@ db.connect_db = async () => {   // Must be called first
     console.log("Database init successfully ...")
 }
 
+db.close_db = async () => {
+    await db.client.close()
+}
+
 // Set collection
 
 db.Chat = _init(require("./chat.model"))

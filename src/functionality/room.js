@@ -1,4 +1,4 @@
-let { isUsernameExist } = require('./username')
+let { isUsernameExist, deleteUsername } = require('./username')
 let {
     getRoomInfomation,
     removeUserFromRoom,
@@ -9,7 +9,7 @@ let {
 } = require('../adapter/roomManager')
 const { v4: uuidv4 } = require("uuid");
 const { getIo } = require('../singleton/io');
-const { getUsernameFromSocketId } = require('../adapter/usernameManager');
+const { getUsernameFromSocketId, deleteUser } = require('../adapter/usernameManager');
 
 async function initConnectionInRoom(roomId) {
     /**
@@ -386,6 +386,8 @@ function init_listener_room (socket) {
                 await initConnectionInRoom(roomId);
             }
         }
+
+        await deleteUser(socket.id);
 
         let response = {
             isSuccess: true

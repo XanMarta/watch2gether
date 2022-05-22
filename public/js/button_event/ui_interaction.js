@@ -151,7 +151,9 @@ export function init_listener_button() {
         //     //TODO: IF USER JOINS A ROOM SUCCESSFULLY, RENDER THIS 
         //     modalJoinRoom.hide();
         // }
-    })
+
+        document.querySelector('#join-name-roomid').value = ''
+    }) 
 
     outButton.addEventListener("click", () => {
         console.log(`Client leave room - Button clicked`)
@@ -225,6 +227,8 @@ export function init_listener_button() {
                 removeLocalStream()
                 videoArea.hidden = true;
                 hostView.hidden = false;
+
+                document.querySelector("#video-stream-get-file-from-local").value = ''
             }
         }
     })

@@ -6,9 +6,10 @@ import {
     removeRemoteStream
 } from './render/mainStream.js' 
 import { addJoinNotification } from './render/chat.js'
-import { setHost, isHost } from './singleton/ownership.js';
+import { setHost, isHost, isRemoteHost } from './singleton/ownership.js';
 import { renderOwnerView } from './render/perspective.js'
-import { removeRoomMember } from './render/member.js';
+import { isMemberExist, removeRoomMember } from './render/member.js';
+import { getPeerConfig } from './config/peer.config.js';
 
 var listener = {} 
 
@@ -20,23 +21,14 @@ export function init_listener_peer() {
         console.log(data)
 
         console.log(`Init a peer connection to ${data.peerId}`)
-        // let peer = new SimplePeer({
-        //     initiator: data.initiator, stream: getLocalStream()
-        // })
         let peer = new SimplePeer({
-            initiator: data.initiator,
-            config: { 
-                iceServers: [{ 
-                    urls: 'stun:relay.backups.cz' 
-                }, 
-                {
-                    url: 'turn:13.250.13.83:3478?transport=udp',
-                    credential: 'YzYNCouZM1mhqhmseWk6',
-                    username: 'YzYNCouZM1mhqhmseWk6'
-                }]},
-            stream: getLocalStream()
+            initiator: data.initiator, 
+            stream: getLocalStream(),
+            trickle: false,
+            reconnectTimer: 3000,
+            iceTransportPolicy: 'relay',
+            config: getPeerConfig()
         })
-        
         let remotePeerId = data.peerId;
 
         const signalListener = data => {
@@ -59,7 +51,10 @@ export function init_listener_peer() {
             console.log("** got leave-room-notify")
             console.log(`User ${data.username} has left the room.`)
 
-            addJoinNotification(data.username, 'leave')
+            if (isMemberExist(data.peerId)) {
+                addJoinNotification(data.username, 'leave')
+                removeRoomMember(data.peerId)
+            }
     
             socket.off('signal', listener[data.peerId])
             delete listener[data.peerId]
@@ -68,10 +63,15 @@ export function init_listener_peer() {
             console.log("Erase peer ID: ", data.peerId)
 
             removeRemoteStream(data.peerId)
-            removeRoomMember(data.peerId)
+
+            let condition = isRemoteHost(data.peerId)
+            // Người rời phòng là host .
+
             setHost(data.roomOwnerId)
 
-            if (isHost()) {
+            condition = condition && isHost()
+            // Người hiện tại trở thành host mới.
+            if (condition) {
                 await renderOwnerView()
             }
         })
@@ -118,7 +118,7 @@ export function init_listener_peer() {
             
             console.log("Erase peer ID: ", remotePeerId)
 
-            removeRoomMember(socket.id)
+            removeRoomMember(remotePeerId)
             removeRemoteStream(remotePeerId)
         })
 
@@ -133,7 +133,7 @@ export function init_listener_peer() {
             
             console.log("Get error: ", err)
             
-            removeRoomMember(socket.id)
+            removeRoomMember(remotePeerId)
             removeRemoteStream(remotePeerId)
         })
 

@@ -152,3 +152,5 @@ public/js/dev
 *.mp4
 
 src/database/_test.js
+
+deploy/test/
