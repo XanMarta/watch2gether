@@ -55,7 +55,7 @@ export function removeRemoteStream(socketid) {
     // socketid, peer id from remote
     if (Ownership.isRemoteHost(socketid)) {
         console.log(mainStreamVideo)
-        
+
         mainStreamVideo = document.querySelector('#video-player-local').getElementsByTagName('video')[0]
         mainStreamVideo.srcObject = null
     }

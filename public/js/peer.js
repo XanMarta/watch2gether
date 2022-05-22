@@ -9,6 +9,7 @@ import { addJoinNotification } from './render/chat.js'
 import { setHost, isHost, isRemoteHost } from './singleton/ownership.js';
 import { renderOwnerView } from './render/perspective.js'
 import { isMemberExist, removeRoomMember } from './render/member.js';
+import { getPeerConfig } from './config/peer.config.js';
 
 var listener = {} 
 
@@ -20,23 +21,14 @@ export function init_listener_peer() {
         console.log(data)
 
         console.log(`Init a peer connection to ${data.peerId}`)
-        // let peer = new SimplePeer({
-        //     initiator: data.initiator, stream: getLocalStream()
-        // })
         let peer = new SimplePeer({
-            initiator: data.initiator,
-            config: { 
-                iceServers: [{ 
-                    urls: 'stun:relay.backups.cz' 
-                }, 
-                {
-                    url: 'turn:13.250.13.83:3478?transport=udp',
-                    credential: 'YzYNCouZM1mhqhmseWk6',
-                    username: 'YzYNCouZM1mhqhmseWk6'
-                }]},
-            stream: getLocalStream()
+            initiator: data.initiator, 
+            stream: getLocalStream(),
+            trickle: false,
+            reconnectTimer: 3000,
+            iceTransportPolicy: 'relay',
+            config: getPeerConfig()
         })
-        
         let remotePeerId = data.peerId;
 
         const signalListener = data => {

@@ -36,10 +36,14 @@ const modalCreateRoom = new bootstrap.Modal(createRoomModal);
 const joinRoomModal = document.getElementById("joinRoomModal")
 const modalJoinRoom = new bootstrap.Modal(joinRoomModal);
 
+// const closeModalCreateRoom = document.querySelector("#createRoom-closeButton");
+// const closeModalJoinRoom = document.querySelector("#joinRoom-closeButton");
+
 const videoArea = document.querySelector('#video-area')
 const hostView = document.querySelector('#host-view');
 
 const MAX_USERNAME_LENGTH = 20;
+const MIN_USERNAME_LENGTH = 6;
 
 import { getSocket } from "../singleton/init_socket.js"
 import * as peerManager from "../singleton/init_peer.js";
@@ -50,6 +54,11 @@ import { roomCreated, roomJoined, roomLeave } from "../room.js"
 //check if text is empty?
 function trimfield(str) {
     return str.replace(/^\s+|\s+$/g, '');
+}
+
+// >= 6 and <= 20
+function isValidUserName(username) {
+    return (username.length >= MIN_USERNAME_LENGTH && username.length <= MAX_USERNAME_LENGTH) || trimfield(username) != '';
 }
 
 export function init_listener_button() {
@@ -75,6 +84,8 @@ export function init_listener_button() {
     //     roomManagementContainer.hidden = false  
     // })
 
+
+
     //joining room modal
     document.getElementById("joinRoomButton").addEventListener("click", function () {
         modalJoinRoom.show();
@@ -91,12 +102,19 @@ export function init_listener_button() {
         modalCreateRoom.hide();
     });
 
+    document.getElementById("createRoom-closeButton").addEventListener("click", function () {
+        modalCreateRoom.hide();
+    })
+    document.getElementById("joinRoom-closeButton").addEventListener("click", function () {
+        modalJoinRoom.hide();
+    })
+
     createRoomButton.addEventListener('click', async () => {
         let username = document.querySelector('#create-name-username').value;
         console.log("Người dùng chọn username là: ", username)
         //createRoomModal.hide();
-        if (username.length > MAX_USERNAME_LENGTH || username.length === 0) {
-            alert("Username is either empty or longer than 20 characters.")
+        if (!isValidUserName(username)) {
+            alert("Invalid username")
             return;
         }
         socket.emit("create-room", {
@@ -114,8 +132,8 @@ export function init_listener_button() {
     joinRoomButton.addEventListener('click', () => {
         let username = document.querySelector('#join-name-username').value
         let roomid = document.querySelector('#join-name-roomid').value
-        if (username.length > MAX_USERNAME_LENGTH || username.length === 0) {
-            alert("Username is either empty or longer than 20 characters.")
+        if (!isValidUserName(username)) {
+            alert("Invalid username")
             return;
         }
         console.log("Người dùng chọn username là: ", username)

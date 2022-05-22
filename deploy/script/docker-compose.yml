@@ -1,0 +1,10 @@
+version: '3.8'
+services:
+  w2g:
+    image: xanmarta/watch2gether:${TAG}
+    ports:
+      - 3000:3000
+networks:
+  default:
+    external:
+      name: nginx

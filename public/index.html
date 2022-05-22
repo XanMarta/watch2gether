@@ -33,8 +33,7 @@
       <div class="collapse navbar-collapse" style="justify-content: center">
         <div class="row" id="navbar-content" style="padding-right: 4rem;">
           <div class="col-sm-3">
-            <a class="nav-link active" aria-current="page" href="./index.html"
-              style="padding-right: 2rem; color: white">Home</a>
+            <a class="nav-link active" aria-current="page" href="/" style="padding-right: 2rem; color: white">Home</a>
           </div>
           <div class="col-sm-3">
             <a class="nav-link active" aria-current="page" href="#feature-section"
@@ -136,7 +135,7 @@
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title">Create a room</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              <button type="button" id="createRoom-closeButton" class="btn-close" id="close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
               <div class="mb-3">
@@ -160,7 +159,7 @@
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title">Join a room</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+              <button type="button" id="joinRoom-closeButton" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
               <div class="mb-3">
@@ -439,13 +438,10 @@
             <div class="card-body" style="overflow: auto;">
               <ul class="list-group list-group-flush" id="members-list">
                 <!-- <li class="list-group-item">fsdafsa
-                  <button style="float: right;">Ban</button>
                 </li>
                 <li class="list-group-item">fsdafsa
-                  <button style="float: right;">Ban</button>
                 </li>
                 <li class="list-group-item">fsdafsa
-                  <button style="float: right;">Ban</button>
                 </li> -->
               </ul>
             </div>
@@ -496,7 +492,7 @@
 
 </body>
 <script>
-
+  console.log(location.hash);
   //Feature
   function openFeature(evt, featureName) {
     var i, tabcontent, tablinks;
