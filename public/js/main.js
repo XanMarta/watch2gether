@@ -7,8 +7,7 @@ import { renderMainMenu } from "./render/perspective.js"
 import { init_listener_file } from "./file.js"
 import { init_video_manager } from "./singleton/video_manager.js"
 
-const WS_ENDPOINT = "ws://127.0.0.1:3000"
-const socket = io(WS_ENDPOINT)
+const socket = io()
 
 console.log("Connect to server")
 

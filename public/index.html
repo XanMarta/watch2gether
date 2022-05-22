@@ -1,90 +1,519 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>WebRTC Test</title>
+<html lang="en">
 
-        <link rel="stylesheet" href="css/video-js.min.css">
-    </head>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- <link rel="stylesheet" href="./css/video-js.min.css"> -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha3/dist/css/bootstrap.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+  <link rel="stylesheet" href="./css/jsFEtest/index.css">
+  <link rel="stylesheet" href="./css/jsFEtest/chat.css">
+  <link rel="stylesheet" href="./css/jsFEtest/uploadFile.css">
+  <link rel="stylesheet" href="./css/jsFEtest/room.css">
+  <link rel="stylesheet" href="./css/video-js.min.css">
 
-    <body>
-        <div id="room-management-container">
-            <h2>For host to create room</h2>
-            <button id="create-room-form-button">Create room</button>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora&display=swap" rel="stylesheet">
+  <title>Streaming app</title>
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+  <!--Navbar-->
+  <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-xl">
+      <a class="navbar-brand" href="/">Watch2gether</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample07XL"
+        aria-controls="navbarsExample07XL" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" style="justify-content: center">
+        <div class="row" id="navbar-content" style="padding-right: 4rem;">
+          <div class="col-sm-3">
+            <a class="nav-link active" aria-current="page" href="/" style="padding-right: 2rem; color: white">Home</a>
+          </div>
+          <div class="col-sm-3">
+            <a class="nav-link active" aria-current="page" href="#feature-section"
+              style="padding-right: 2rem; color: white">Feature</a>
+          </div>
+          <div class="col-sm-3">
+            <a class="nav-link active" aria-current="page" href="#review-section"
+              style="padding-right: 2rem; color: white">Review</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <!--End Navbar-->
+  <div id="home-page-perspective">
+    <div class="background-image">
+      <div class="container-xxl themed-container" id="upper-top"
+        style="color: rgb(255, 255, 255); opacity: 0.85; width: fit-content; height: fit-content;">
+        <!--Join/create room section-->
+        <div class="card text-center" style="background-color: rgb(32, 33, 34); 
+        box-shadow: 1px 2px 3px 4px rgba(34, 33, 33, 0.4); height:18rem;">
+          <div class="card-body" style="padding: 2rem 1rem 1rem 1.3rem;">
+            <h4 class="card-title" style="font-size: 35px;">Watch video with your friends</h4>
             <br>
-            <h1>OR</h1>
-            <h2>For client to join room</h2>
-            <button id="join-room-form-button">Join room</button>
+            <h5 class="card-text" style="font-size: 35px;">Create or join a room</h5>
+            <!-- <a href="#" class="btn btn-primary">Create a room</a>
+        <a href="#" class="btn btn-primary">Join a room</a> -->
+            <div style="margin-top: 2.5rem;">
+              <button class="btn btn-warning btn-lg" id="createRoomButton" data-bs-target="#createRoomModal"
+                data-bs-toggle="modal" style="font-weight:bold;">Create a
+                room</button>
+              <button class="btn btn-warning btn-lg" id="joinRoomButton" data-bs-target="#joinRoomModal"
+                data-bs-toggle="modal" style="font-weight:bold;">Join
+                a
+                room</button>
+            </div>
+          </div>
         </div>
+        <!--End Join/create room section-->
+      </div>
+      <div class="container-xxl themed-container" id="feature-section" style="color: black; opacity: 0.85;">
+        <!-- <h1>Features</h1> -->
+        <div class="card flex-row" style="box-shadow: 1px 2px 3px 4px rgba(20,20,20,0.4);">
+          <!--Feature section-->
+          <div class="tab">
+            <button class="tablinks" onclick="openFeature(event, 'feature1')" id="defaultOpen">Create a room</button>
+            <button class="tablinks" onclick="openFeature(event, 'feature2')">Chat with your friends</button>
+            <button class="tablinks" onclick="openFeature(event, 'feature3')">Synchronize video and sound
+            </button>
+            <button class="tablinks" onclick="openFeature(event, 'feature4')">Feature 4</button>
+          </div>
 
-        <!-- đặt một pop up ở đây -->
-        <div id="create-room-container" hidden>
-            <input id="create-name-username" placeholder="Enter your username">
-            <button id="create-room">Create room</button>
-            <button id="create-room-back">Back</button>
+          <div id="feature1" class="tabcontent">
+            <h1>Create and join a room</h1>
+            <p>Create a room and inviting your friends to watch videos.</p>
+            <p>You can join a room from a given room code.</p>
+          </div>
+
+          <div id="feature2" class="tabcontent">
+            <h1>Chat with your friends</h1>
+            <p>Chatting with your friends, having a good time!</p>
+          </div>
+
+          <div id="feature3" class="tabcontent">
+            <h1>Synchronize video and sound</h1>
+            <p>Video and sound are synchronized accross people.</p>
+          </div>
+
+          <div id="feature4" class="tabcontent">
+            <h1>Feature 4</h1>
+            <p>Feature 4 blahblahblahblahblahblahblahblahblah</p>
+          </div>
+          <!--End Feature section-->
         </div>
-
-        <!-- đặt một pop up ở đây -->
-        <div id="join-room-container" hidden>
-            <input id="join-name-username" placeholder="Enter your username">
-            <input id="join-name-roomid" placeholder="Enter your room id">
-            <button id="join-room">Join room</button>
-            <button id="join-room-back">Back</button>
+      </div>
+      <div class="container-xxl themed-container" id="review-section" style="color: black; opacity: 0.85;">
+        <!-- <h1>Review</h1> -->
+        <!--Review section-->
+        <div class=" card flex-row" style="box-shadow: 1px 2px 3px 4px rgba(20,20,20,0.4);">
+          <img class="card-img-left example-card-img-responsive"
+            src="https://images.unsplash.com/photo-1611915387288-fd8d2f5f928b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8Mnx8fGVufDB8fHx8&w=1000&q=80"
+            width="30%" height="30%"
+            style="padding-left: 2rem;padding-top: 5rem;padding-bottom: 10rem;padding-right: 2rem;" />
+          <div class="card-body" style="padding-left: 5rem; padding-top:5rem;">
+            <blockquote class="blockquote mb-5">
+              <p style="font-size:200%">This website is awnsome!</p>
+              <footer class="blockquote-footer" style="padding-left: 5rem; padding-top:5rem; font-size: 200%">
+                Someone famous in <cite title="Source Title">Source Title</cite>
+              </footer>
+            </blockquote>
+          </div>
         </div>
-
-        <div id="host-view" hidden>
-            <h3>Host view</h3>
-            <h2>ROOM ID: </h2>
-            <h2 id="room-id-renderer-host"></h2>
-
-            <button id="out-room">Out Room</button>
-            <button id="kick-user">Kick user</button>
-            <button id="mute-user">Mute user</button>
-            <button id="get-room-info">Get Room Info</button>
+        <!--End Review section-->
+      </div>
+      <!--Modal section-->
+      <!-- Modal create room -->
+      <div class="modal fade" id="createRoomModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Create a room</h5>
+              <button type="button" id="createRoom-closeButton" class="btn-close" id="close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="mb-3">
+                <label for="name" class="form-label">Enter your name</label>
+                <input type="text" class="form-control" id="create-name-username" aria-describedby="username" placeholder="Enter your name...">
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" id="createRoomCloseButton" class="btn btn-secondary"
+                data-bs-dismiss="modal">Close</button>
+              <button type="button" id="create-room" class="btn btn-warning" data-bs-dismiss="modal">Create a
+                room</button>
+            </div>
+          </div>
         </div>
-
-        <div id="client-view" hidden>
-            <h3>Client view</h3>
-            <h2>ROOM ID: </h2>
-            <h2 id="room-id-renderer-client"></h2>
-            <button id="out-room">Out Room</button>
-            <button id="get-room-info">Get Room Info</button>
+      </div>
+      <!-- End Modal create room -->
+      <!-- Modal join room -->
+      <div class="modal fade" id="joinRoomModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Join a room</h5>
+              <button type="button" id="joinRoom-closeButton" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+              <div class="mb-3">
+                <label for="name" class="form-label">Enter your name</label>
+                <input type="text" class="form-control" id="join-name-username" aria-describedby="username" placeholder="Enter your name...">
+              </div>
+              <div class="mb-3">
+                <label for="roomid" class="form-label">Enter your room ID</label>
+                <input type="text" class="form-control" id="join-name-roomid" placeholder="Enter your room ID...">
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" id="joinRoomCloseButton" class="btn btn-secondary"
+                data-bs-dismiss="modal">Close</button>
+              <button type="button" id="join-room" class="btn btn-warning" data-bs-dismiss="modal">Join a
+                room</button>
+            </div>
+          </div>
         </div>
+      </div>
+      <!-- End Modal join room -->
+      <!--End Modal section-->
+    </div>
+  </div>
 
-        <div>
-            <h1>Extra: Chatbox</h1>
-            <div id="chat-container">  
+  <!--room perspective-->
+  <div id="room-page-perspective" hidden>
+    <div id="container">
+      <div class="fill-available">
+        <div id="left" style="margin-top: 1.5rem;">
+          <div id="host-view">
+
+            <!-- <header>Drag & Drop to Upload Video</header>
+            <span style="margin: 0rem 2rem 0rem 9rem;">OR</span>
+            <br>-->
+            <!-- <button class="btn btn-close-white" style="margin: 0rem 2rem 0rem 5rem;">Browse Video</button> -->
+            <!-- <input id="video-stream-get-file-from-local" type="file"> -->
+
+            <!-- Upload Area -->
+            <div id="uploadArea" class="upload-area">
+              <!-- Header -->
+              <div class="upload-area__header">
+                <h1 class="upload-area__title">Upload your file</h1>
+                <p class="upload-area__paragraph">
+                  File should be a video
+                  <strong class="upload-area__tooltip">
+                    <span class="upload-area__tooltip-data"></span> <!-- Data Will be Comes From Js -->
+                  </strong>
+                </p>
+              </div>
+              <!-- End Header -->
+
+              <!-- Drop Zoon -->
+              <div id="dropZoon" class="upload-area__drop-zoon drop-zoon">
+                <span class="drop-zoon__icon">
+                  <i class='bx bxs-file-image'></i>
+                </span>
+                <p class="drop-zoon__paragraph">Drop your file here or Click to browse</p>
+                <span id="loadingText" class="drop-zoon__loading-text">Please Wait</span>
+                <img src="../img/video-file.png" alt="Preview Image" id="previewImage" class="drop-zoon__preview-image"
+                  draggable="false">
+                <input type="file" id="video-stream-get-file-from-local" class="drop-zoon__file-input" accept="video/*">
+              </div>
+              <!-- End Drop Zoon -->
+
+              <!-- File Details -->
+              <div id="fileDetails" class="upload-area__file-details file-details">
+                <h3 class="file-details__title">Uploaded File</h3>
+
+                <div id="uploadedFile" class="uploaded-file">
+                  <div class="uploaded-file__icon-container">
+                    <i class='bx bxs-file-blank uploaded-file__icon'></i>
+                    <span class="uploaded-file__icon-text"></span> <!-- Data Will be Comes From Js -->
+                  </div>
+
+                  <div id="uploadedFileInfo" class="uploaded-file__info">
+                    <span class="uploaded-file__name">Proejct 1</span>
+                    <span class="uploaded-file__counter">0%</span>
+                  </div>
+                </div>
+              </div>
+              <!-- End File Details -->
+            </div>
+            <!-- End Upload Area -->
+
+            <script>
+              // Design By
+              // - https://dribbble.com/shots/13992184-File-Uploader-Drag-Drop
+
+              // Select Upload-Area
+              const uploadArea = document.querySelector('#uploadArea')
+
+              // Select Drop-Zoon Area
+              const dropZoon = document.querySelector('#dropZoon');
+
+              // Loading Text
+              const loadingText = document.querySelector('#loadingText');
+
+              // Slect File Input 
+              const fileInput = document.querySelector('#video-stream-get-file-from-local');
+
+              // Select Preview Image
+              const previewImage = document.querySelector('#previewImage');
+
+              // File-Details Area
+              const fileDetails = document.querySelector('#fileDetails');
+
+              // Uploaded File
+              const uploadedFile = document.querySelector('#uploadedFile');
+
+              // Uploaded File Info
+              const uploadedFileInfo = document.querySelector('#uploadedFileInfo');
+
+              // Uploaded File  Name
+              const uploadedFileName = document.querySelector('.uploaded-file__name');
+
+              // Uploaded File Icon
+              const uploadedFileIconText = document.querySelector('.uploaded-file__icon-text');
+
+              // Uploaded File Counter
+              const uploadedFileCounter = document.querySelector('.uploaded-file__counter');
+
+              // ToolTip Data
+              const toolTipData = document.querySelector('.upload-area__tooltip-data');
+
+              // Images Types
+              const videosType = [
+                "mp4",
+                "mkv"
+              ];
+
+              // Append Images Types Array Inisde Tooltip Data
+              toolTipData.innerHTML = [...videosType].join(', .');
+
+              // When (drop-zoon) has (dragover) Event 
+              dropZoon.addEventListener('dragover', function (event) {
+                // Prevent Default Behavior 
+                event.preventDefault();
+
+                // Add Class (drop-zoon--over) On (drop-zoon)
+                dropZoon.classList.add('drop-zoon--over');
+              });
+
+              // When (drop-zoon) has (dragleave) Event 
+              dropZoon.addEventListener('dragleave', function (event) {
+                // Remove Class (drop-zoon--over) from (drop-zoon)
+                dropZoon.classList.remove('drop-zoon--over');
+              });
+
+              // When (drop-zoon) has (drop) Event 
+              dropZoon.addEventListener('drop', function (event) {
+                // Prevent Default Behavior 
+                event.preventDefault();
+
+                // Remove Class (drop-zoon--over) from (drop-zoon)
+                dropZoon.classList.remove('drop-zoon--over');
+
+                // Select The Dropped File
+                const file = event.dataTransfer.files[0];
+
+                // Call Function uploadFile(), And Send To Her The Dropped File :)
+                uploadFile(file);
+              });
+
+              // When (drop-zoon) has (click) Event 
+              dropZoon.addEventListener('click', function (event) {
+                // Click The (fileInput)
+                fileInput.click();
+              });
+
+              // When (fileInput) has (change) Event 
+              fileInput.addEventListener('change', function (event) {
+                // Select The Chosen File
+                const file = event.target.files[0];
+
+                // Call Function uploadFile(), And Send To Her The Chosen File :)
+                uploadFile(file);
+              });
+
+              // Upload File Function
+              function uploadFile(file) {
+
+                progressMove();
+              };
+
+              // Progress Counter Increase Function
+              function progressMove() {
+              };
+
+
+              // Simple File Validate Function
+              function fileValidate(fileType, fileSize) {
+                return true;
+              };
+
+              // :)
+            </script>
+
+
+          </div>
+          <div id="video-area" style="height: 100%;padding: 1em 1em 6em 1em;">
+            <video id="video-player-local" class="video-js" height="550" width="950" data-setup='{}' controls style="width: 100%;
+            height: 95%;">
+              <source src="//vjs.zencdn.net/v/oceans.mp4" type="video/mp4">
+              <source src="//vjs.zencdn.net/v/oceans.webm" type="video/webm">
+            </video>
+            <h3 id="current-play-video-name">...</h3>
+            <button type="button" class="btn btn-dark" id="stream-stop-button" hidden>Stop streaming</button>
+          </div>
+        </div>
+        <div id="right" style="margin-top: 1.5rem;">
+          <div class="card" id="chat" >
+            <div class="card-header" style="height: 8%;padding: 0.5rem 0.25rem;
+            margin-bottom: 0;
+            background-color: rgba(0,0,0,.03);
+            border-bottom: 1px solid rgba(0,0,0,.125);">
+              <div>
+                <div style="float: left; width: 30%" style="margin-top: 2rem;">
+                  <img src="../img/userIcon.png" id="display-members" width="33" height="27"
+                    style="display: inline-block;padding: 1px 1px;margin-left: 7px;">
+                  <h5 id="member-number" style="display: inline-block;margin-top: 0;align-content: center;padding-top: 3px;">0</h5>
+                </div>
+                <div style="display: flex;
+                justify-content: center; width: 70%;">
+                  <input class="form-control mr-sm-1" id="roomIdInput" aria-label="Copy" style="height:30%;height: 30%;
+                  padding: 0.375rem 0.15rem;" readonly>
+                  <!-- <button class="btn btn-outline-success my-2 my-sm-0" type="submit" style="width:25%;">Copy</button> -->
+                  <!-- <div class="leaveIcon-container"> -->
+                  <div class="copyIcon-container" id="copy-room-id" style="margin-left: 10px;">
+                    <img src="../img/copyIcon.png" width="27" height="27" id="copy-room-id" data-toggle="tooltip"
+                      title="Copy room id" style="padding-top: 3px;margin-left: 1px;">
+                    <div class="overlay">
+                    </div>
+                    <span class="tooltiptext">Copy</span>
+                  </div>
+                  <div class="leaveIcon-container" id="out-room" style="margin-top: 2px;margin-left: 3px;">
+                    <img src="../img/leaveroom.png" width="30" height="24" id="leave-room" data-toggle="tooltip"
+                      title="Leave room">
+                    <div class="overlay">
+                    </div>
+                    <span class="tooltiptext">Leave</span>
+                  </div>
+                  <!-- <img src="../img/leaveroom.png" width="40" height="30" id="leave-room" data-toggle="tooltip"
+                    title="Leave room"> -->
+                  <!-- <div class="overlay">
+                    </div> -->
+                  <!-- </div> -->
+                </div>
+              </div>
+            </div>
+            <div class="card-body" style="overflow: auto;" id="chat-container">
+            </div>
+            <div class="card-footer" style="padding: 0.5rem 10px;
+            background-color: rgba(0,0,0,.03);
+            border-top: 1px solid rgba(0,0,0,.125);">
+              <div class="message-sent">
+                <!-- <textarea type="text" id="message-input"></textarea> -->
+                <textarea type="text" class="form-control" id="message-input" placeholder="Enter your message..." style="padding: 0.75rem 0.75rem;"></textarea>
+                <img src="../img/sendIcon.png" id="send-message" type="button">
+                <!-- <img src="https://www.seekpng.com/png/detail/95-955357_open-send-icon-png.png" id="send-message"> -->
+              </div>
+            </div>
+          </div>
+          <!--Find member-->
+          <div class="card" id="members-information" hidden="true" style="width: 372px;">
+            <div class="card-header" style="height: 8%;padding: 0.5rem 0.75rem;
+            margin-bottom: 0;
+            background-color: rgba(0,0,0,.03);
+            border-bottom: 1px solid rgba(0,0,0,.125);">
+              <div style="float: left; width: 30%" style="margin-top: 2rem;">
+                <img src="./img/backIcon.png" id="display-chat" width="30" height="30">
+                <input hidden="true" class="form-control mr-sm-1" type="search" placeholder="Generate room id" aria-label="Search">
+                <button hidden="true" class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+              </div>
+            </div>
+            <div class="card-body" style="overflow: auto;">
+              <ul class="list-group list-group-flush" id="members-list">
+                <!-- <li class="list-group-item">fsdafsa
+                </li>
+                <li class="list-group-item">fsdafsa
+                </li>
+                <li class="list-group-item">fsdafsa
+                </li> -->
+              </ul>
+            </div>
+            <div class="card-footer" style="padding: 0.5rem 10px;
+            background-color: rgba(0,0,0,.03);
+            border-top: 1px solid rgba(0,0,0,.125);">
 
             </div>
-            <input id="message-input" placeholder="Enter message">
-            <button id="send-message">Send</button>
+          </div>
+          <!-- <div id="button-areaRight">
+            <button class="btn btn-primary" id="display-chat" hidden="true">Chat</button>
+            <button class="btn btn-primary" id="display-members">Members</button>
+          </div> -->
         </div>
+      </div>
+    </div>
+  </div>
+  <!--END room perspective-->
 
-        <div>
-            <h1>Video Rendering</h1>
-            <div>
-                <h2>Video from local</h2>
-                
-                <input id="video-stream-get-file-from-local" type="file">
-                <h2>Current Video Rendering: </h2>
-                <h2 id="current-play-video-name">...</h2>
-                <button id="video-stream-send-stream">SEND STREAM</button>
-                <br>
-                <!-- do tương tác là làm hết trên element video rồi, nên sẽ không cần các button. -->
-                <video id="video-player-local" class="video-js" height="360" width="640" data-setup='{}' controls>
-                    <source src="//vjs.zencdn.net/v/oceans.mp4" type="video/mp4">
-                    <source src="//vjs.zencdn.net/v/oceans.webm" type="video/webm">
-                </video>
-                <button id="stream-stop-button">Stop stream</button>
+  <!--Footer section-->
+  <footer class="mt-auto" style="margin-top: 20rem;">
+    <footer class="bg-dark text-center text-white">
+      <!-- Grid container -->
+      <div class="container p-4 pb-0">
+        <!-- Section: Social media -->
+        <section class="mb-4">
+          <!-- Facebook -->
+          <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"><img src="./img/facebook-icon.webp"
+              height=20 width="20" style="border-radius: 50%;"></a>
 
-                <video id="main-stream" height="360" width="640" autoplay></video>
-                <button id="stream-face-button">Start Stream Face</button>
-            </div>
+          <!-- Github -->
+          <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"><img src="./img/github-512.webp"
+              height=20 width="20" style="border-radius: 50%;"></a>
+        </section>
+        <!-- Section: Social media -->
+      </div>
+      <!-- Grid container -->
 
-        </div>
+      <!-- Copyright -->
+      <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+        © 2022 Copyright:
+        <a class="text-white" href="#">Watch2gether</a>
+      </div>
+      <!-- Copyright -->
+    </footer>
+  </footer>
+  <!--End Footer section-->
 
-        <script src="/socket.io/socket.io.js"></script>
-        <script src="script/simplepeer.min.js"></script>
-        <script src="script/video.min.js"></script>
-        <script type="module" src="js/main.js"></script>
-    </body>
+</body>
+<script>
+  console.log(location.hash);
+  //Feature
+  function openFeature(evt, featureName) {
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+      tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+      tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    document.getElementById(featureName).style.display = "block";
+    evt.currentTarget.className += " active";
+  }
+
+  // Get the element with id="defaultOpen" and click on it
+  document.getElementById("defaultOpen").click();
+</script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="script/simplepeer.min.js"></script>
+<script src="script/video.min.js"></script>
+<script type="module" src="js/main.js"></script>
+
 </html>

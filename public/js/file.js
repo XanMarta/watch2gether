@@ -4,13 +4,20 @@ import { getLocalStream, setLocalStream } from "./singleton/init_localstream.js"
 import { renderLocalStream } from "./render/mainStream.js"
 
 const inputFileUpload = document.querySelector("#video-stream-get-file-from-local")
-const sendStreamButton = document.querySelector("#video-stream-send-stream")
+//const sendStreamButton = document.querySelector("#video-stream-send-stream")
 
 const video = document.querySelector('#video-player-local').getElementsByTagName('video')[0]
+const videoArea = document.querySelector('#video-area')
+const hostView = document.querySelector('#host-view');
+const streamStopButton = document.querySelector("#stream-stop-button")
+
+const userAgent = navigator.userAgent;
 
 export async function sendStream() {
     console.log("!! SEND STREAM !!")
-    var stream = await video.captureStream();
+    console.log(video)
+
+    let stream = video.mozCaptureStream ? video.mozCaptureStream() : video.captureStream();
 
     setLocalStream(stream)
     renderLocalStream(stream)
@@ -30,17 +37,22 @@ export function init_listener_file() {
         console.log("File change: ")
         document.querySelector("#current-play-video-name").innerHTML = inputFileUpload.files.item(0).name
 
-        var file = inputFileUpload.files[0] 
+        var file = inputFileUpload.files[0]
         var url = URL.createObjectURL(file)
         console.log(url)
 
+        hostView.hidden = true;
+        //clientView.hidden = true;
+        videoArea.hidden = false;
+        streamStopButton.hidden = false;
+
         console.log("Thao tác trên DOM element video sau:")
         console.log(video)
-        video.src = url 
+        video.src = url
         await video.play()
 
         // Capture stream and send stream.
-        var stream = await video.captureStream();
+        let stream = video.mozCaptureStream ? video.mozCaptureStream() : video.captureStream();
 
         setLocalStream(stream)
         renderLocalStream(stream)
@@ -50,6 +62,6 @@ export function init_listener_file() {
         console.log(stream)
     })
 
-    sendStreamButton.addEventListener('click', sendStream)
+    //sendStreamButton.addEventListener('click', sendStream)
 }
-/* <source src="//vjs.zencdn.net/v/oceans.mp4" type="video/mp4"></source> */     
+/* <source src="//vjs.zencdn.net/v/oceans.mp4" type="video/mp4"></source> */

@@ -14,7 +14,7 @@ module.exports = (io) => {
         })
 
         socket.on("signal", data => {
-            io.to(data.peerId).emit('signal', {
+            io.to(data.peerId).emit('signal', { 
                 signal: data.signal,
                 peerId: socket.id
               });
