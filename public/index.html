@@ -14,8 +14,8 @@
   <link rel="stylesheet" href="./css/jsFEtest/room.css">
   <link rel="stylesheet" href="./css/video-js.min.css">
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> -->
   <link href="https://fonts.googleapis.com/css2?family=Lora&display=swap" rel="stylesheet">
   <title>Streaming app</title>
 </head>
@@ -74,38 +74,52 @@
         </div>
         <!--End Join/create room section-->
       </div>
-      <div class="container-xxl themed-container" id="feature-section" style="color: black; opacity: 0.85;">
+      <div class="container-xxl themed-container" id="feature-section" style="color: black;">
         <!-- <h1>Features</h1> -->
         <div class="card flex-row" style="box-shadow: 1px 2px 3px 4px rgba(20,20,20,0.4);">
           <!--Feature section-->
           <div class="tab">
             <button class="tablinks" onclick="openFeature(event, 'feature1')" id="defaultOpen">Create a room</button>
             <button class="tablinks" onclick="openFeature(event, 'feature2')">Chat with your friends</button>
-            <button class="tablinks" onclick="openFeature(event, 'feature3')">Synchronize video and sound
+            <button class="tablinks" onclick="openFeature(event, 'feature3')">Video and sound synchronization
             </button>
-            <button class="tablinks" onclick="openFeature(event, 'feature4')">Feature 4</button>
           </div>
 
           <div id="feature1" class="tabcontent">
             <h1>Create and join a room</h1>
-            <p>Create a room and inviting your friends to watch videos.</p>
-            <p>You can join a room from a given room code.</p>
+            <p>Create a room and invite your friends to watch videos. You can join a room with a given room code.</p>
+            <div style="display: relative; padding: 0rem 0rem 5rem 10rem;">
+              <span class="picture"><img src="./img/createroom.PNG" style="max-width: 37%; max-height: 35%;"></span>
+              <span class="picture"><img src="./img/joinroom.PNG" style="max-width: 37%; max-height: 35%"></span>
+            </div>
           </div>
 
           <div id="feature2" class="tabcontent">
             <h1>Chat with your friends</h1>
             <p>Chatting with your friends, having a good time!</p>
+            <br>
+            <!-- <div style="display: relative; padding-left: 21rem;">
+              <img src="./img/chatImg.PNG" style="max-width: 45%; max-height: 15%;">
+            </div> -->
+            <div style="display: relative; padding: 0rem 0rem 2rem 20rem;">
+              <span class="picture"><img src="./img/chatImg.PNG" style="max-width: 37%; max-height: 37%"></span>
+            </div>
           </div>
 
           <div id="feature3" class="tabcontent">
-            <h1>Synchronize video and sound</h1>
-            <p>Video and sound are synchronized accross people.</p>
+            <h1>Synchronize videos and sounds</h1>
+            <p>Videos and sounds are synchronized between people.</p>
+            <div style="display: relative; padding: 0rem 0rem 5rem 2rem;">
+              <span class="picture"><img src="./img/livestream-host.PNG" style="max-width: 47%; max-height: 47%"></span>
+              <span class="picture"><img src="./img/livestream-client.PNG"
+                  style="max-width: 47%; max-height: 47%"></span>
+            </div>
           </div>
 
-          <div id="feature4" class="tabcontent">
+          <!-- <div id="feature4" class="tabcontent">
             <h1>Feature 4</h1>
             <p>Feature 4 blahblahblahblahblahblahblahblahblah</p>
-          </div>
+          </div> -->
           <!--End Feature section-->
         </div>
       </div>
@@ -113,15 +127,14 @@
         <!-- <h1>Review</h1> -->
         <!--Review section-->
         <div class=" card flex-row" style="box-shadow: 1px 2px 3px 4px rgba(20,20,20,0.4);">
-          <img class="card-img-left example-card-img-responsive"
-            src="https://images.unsplash.com/photo-1611915387288-fd8d2f5f928b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8Mnx8fGVufDB8fHx8&w=1000&q=80"
-            width="30%" height="30%"
-            style="padding-left: 2rem;padding-top: 5rem;padding-bottom: 10rem;padding-right: 2rem;" />
+          <img class="card-img-left example-card-img-responsive" src="./img/man-photo.webp" width="30%" height="30%"
+            style="padding-left: 5rem;padding-top: 5rem;padding-bottom: 10rem;padding-right: 2rem;" />
           <div class="card-body" style="padding-left: 5rem; padding-top:5rem;">
             <blockquote class="blockquote mb-5">
-              <p style="font-size:200%">This website is awnsome!</p>
+              <p style="font-size:200%">This website is awnsome! I can watch videos online with my friends remotely.
+                Thanks Watch2gether!</p>
               <footer class="blockquote-footer" style="padding-left: 5rem; padding-top:5rem; font-size: 200%">
-                Someone famous in <cite title="Source Title">Source Title</cite>
+                Mr. John
               </footer>
             </blockquote>
           </div>
@@ -134,8 +147,11 @@
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title">Create a room</h5>
-              <button type="button" id="createRoom-closeButton" class="btn-close" id="close" data-bs-dismiss="modal" aria-label="Close"></button>
+              <h5 class="modal-title">
+                <bold>Create a room</bold>
+              </h5>
+              <button type="button" id="createRoom-closeButton" class="btn-close" id="close" data-bs-dismiss="modal"
+                aria-label="Close"></button>
             </div>
             <div class="modal-body">
               <div class="mb-3">
@@ -161,7 +177,9 @@
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title">Join a room</h5>
+              <h5 class="modal-title">
+                <bold>Join a room</bold>
+              </h5>
               <button type="button" id="joinRoom-closeButton" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
@@ -173,7 +191,7 @@
               </div>
               <div class="mb-3">
                 <label for="roomid" class="form-label">Enter your room ID</label>
-                <input type="text" class="form-control" id="join-name-roomid">
+                <input type="text" class="form-control" id="join-name-roomid" placeholder="Please enter your room ID">
               </div>
             </div>
             <div class="modal-footer">
@@ -385,7 +403,8 @@
                 <div style="float: left; width: 30%" style="margin-top: 2rem;">
                   <img src="../img/userIcon.png" id="display-members" width="33" height="27"
                     style="display: inline-block;padding: 1px 1px;margin-left: 7px;">
-                  <h5 id="member-number" style="display: inline-block;margin-top: 0;align-content: center;padding-top: 3px;">0</h5>
+                  <h5 id="member-number"
+                    style="display: inline-block;margin-top: 0;align-content: center;padding-top: 3px;">0</h5>
                 </div>
                 <div style="display: flex;
                 justify-content: center; width: 70%;">
@@ -422,7 +441,8 @@
             border-top: 1px solid rgba(0,0,0,.125);">
               <div class="message-sent">
                 <!-- <textarea type="text" id="message-input"></textarea> -->
-                <textarea type="text" class="form-control" id="message-input" placeholder="Nhập tin nhắn ..." style="padding: 0.75rem 0.75rem;"></textarea>
+                <textarea type="text" class="form-control" id="message-input" placeholder="Enter your message here..."
+                  style="padding: 0.75rem 0.75rem;"></textarea>
                 <img src="../img/sendIcon.png" id="send-message" type="button">
                 <!-- <img src="https://www.seekpng.com/png/detail/95-955357_open-send-icon-png.png" id="send-message"> -->
               </div>
@@ -436,7 +456,8 @@
             border-bottom: 1px solid rgba(0,0,0,.125);">
               <div style="float: left; width: 30%" style="margin-top: 2rem;">
                 <img src="./img/backIcon.png" id="display-chat" width="30" height="30">
-                <input hidden="true" class="form-control mr-sm-1" type="search" placeholder="Generate room id" aria-label="Search">
+                <input hidden="true" class="form-control mr-sm-1" type="search" placeholder="Generate room id"
+                  aria-label="Search">
                 <button hidden="true" class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
               </div>
             </div>
@@ -478,8 +499,8 @@
               height=20 width="20" style="border-radius: 50%;"></a>
 
           <!-- Github -->
-          <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"><img src="./img/github-512.webp"
-              height=20 width="20" style="border-radius: 50%;"></a>
+          <a class="btn btn-outline-light btn-floating m-1" href="https://github.com/XanMarta/watch2gether"
+            role="button"><img src="./img/github-512.webp" height=20 width="20" style="border-radius: 50%;"></a>
         </section>
         <!-- Section: Social media -->
       </div>
@@ -488,7 +509,7 @@
       <!-- Copyright -->
       <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
         © 2022 Copyright:
-        <a class="text-white" href="#">Watch2gether</a>
+        <a class="text-white" href="#">Watch2gether</a> by Group 7
       </div>
       <!-- Copyright -->
     </footer>
