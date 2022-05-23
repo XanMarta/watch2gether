@@ -1,19 +1,8 @@
 const outButton = document.getElementById("leave-room")
 const sendMessageButton = document.getElementById("send-message")
-const getRoomInfoButton = document.getElementById("get-room-info")
 const streamStopButton = document.getElementById("stream-stop-button")
 
 const messageInput = document.getElementById("message-input")
-
-const roomManagementContainer = document.getElementById("room-management-container")
-
-const joinRoomContainer = document.getElementById("join-room-container")
-const joinRoomBackButton = document.getElementById("join-room-back")
-const joinRoomEnableButton = document.getElementById("join-room-form-button")
-
-const createRoomContainer = document.getElementById("create-room-container")
-const createRoomBackButton = document.getElementById("create-room-back")
-const createRoomEnableButton = document.getElementById("create-room-form-button")
 
 const navbarContent = document.getElementById("navbar-content")
 const homePagePerspective = document.getElementById("home-page-perspective");
@@ -48,7 +37,7 @@ const MIN_USERNAME_LENGTH = 6;
 import { getSocket } from "../singleton/init_socket.js"
 import * as peerManager from "../singleton/init_peer.js";
 import * as localStreamManager from "../singleton/init_localstream.js";
-import { removeLocalStream, renderLocalStream } from "../render/mainStream.js"
+import { removeLocalStream } from "../render/mainStream.js"
 import { roomCreated, roomJoined, roomLeave } from "../room.js"
 
 //check if text is empty?
@@ -58,7 +47,7 @@ function trimfield(str) {
 
 // >= 6 and <= 20
 function isValidUserName(username) {
-    return (username.length >= MIN_USERNAME_LENGTH && username.length <= MAX_USERNAME_LENGTH) || trimfield(username) != '';
+    return (username.length >= MIN_USERNAME_LENGTH && username.length <= MAX_USERNAME_LENGTH) && trimfield(username) != '';
 }
 
 export function init_listener_button() {
@@ -116,10 +105,14 @@ export function init_listener_button() {
         if (!isValidUserName(username)) {
             alert("Invalid username")
             return;
+        } else {
+            if (window.location.hash) {
+                window.location.hash = "#";
+            }
+            socket.emit("create-room", {
+                username: username
+            }, roomCreated)
         }
-        socket.emit("create-room", {
-            username: username
-        }, roomCreated)
         modalCreateRoom.hide();
         // if (sessionStorage.getItem("failed") !== null) {
 
@@ -135,13 +128,17 @@ export function init_listener_button() {
         if (!isValidUserName(username)) {
             alert("Invalid username")
             return;
+        } else {
+            console.log("Người dùng chọn username là: ", username)
+            console.log("Người dùng chọn room id là: ", roomid)
+            if (window.location.hash) {
+                window.location.hash = "#";
+            }
+            socket.emit("join-room", {
+                username: username,
+                roomid: roomid
+            }, roomJoined);
         }
-        console.log("Người dùng chọn username là: ", username)
-        console.log("Người dùng chọn room id là: ", roomid)
-        socket.emit("join-room", {
-            username: username,
-            roomid: roomid
-        }, roomJoined);
         modalJoinRoom.hide();
         // if (sessionStorage.getItem("failed") !== null) {
         //     //alert("Room does not exist");
@@ -151,7 +148,7 @@ export function init_listener_button() {
         // }
 
         document.querySelector('#join-name-roomid').value = ''
-    }) 
+    })
 
     outButton.addEventListener("click", () => {
         console.log(`Client leave room - Button clicked`)

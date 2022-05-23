@@ -16,22 +16,21 @@ function renderMember(username, socketid) {
 
     let name = username;
     let isHost = Ownership.isRemoteHost(socketid)
-    
-    if (getSocket().id == socketid) 
-    {
-        name = name + " (Bạn)"
+
+    if (getSocket().id == socketid) {
+        name = name + " (You)"
     }
 
-    if (isHost) 
-    {
-        name = name + " (Chủ phòng)"
+    if (isHost) {
+        name = name + " (Room Owner)"
     }
 
     let memberElement = document.createElement("li")
-    memberElement.innerHTML = name + '<button style="float: right;">Ban</button>'
+    memberElement.innerHTML = name;
     memberElement.className = "list-group-item"
     memberElement.id = socketid + "-list-name"
-    memberContainerDOM.appendChild(memberElement) 
+    memberContainerDOM.appendChild(memberElement)
+    memberContainerDOM.scrollTop = memberContainerDOM.scrollHeight;
 
     console.log("11103: Đã thêm element mới: ", memberElement)
 }
@@ -43,8 +42,7 @@ function eraseMember(socketid) {
     let targetDOM = document.getElementById(socketid + "-list-name")
     console.log("target DOM to erase: ", targetDOM)
 
-    if (targetDOM == undefined || targetDOM == null) 
-    {
+    if (targetDOM == undefined || targetDOM == null) {
         console.log("11104: DOM element không tồn tại")
         return;
     }
@@ -65,20 +63,18 @@ export function isMemberExist(socketid) {
     console.log("v4 check exist: ")
     console.log(socketid)
 
-    if (roomMember == null || roomMember == undefined) 
-    {
+    if (roomMember == null || roomMember == undefined) {
         return false;
     }
 
-    for (let i = 0;i<roomMember.length;i++) 
-    {
+    for (let i = 0; i < roomMember.length; i++) {
         console.log(i)
         console.log(roomMember[i]['socketid'])
         console.log(roomMember[i])
 
         if (socketid == roomMember[i]['socketid']) {
             // tìm kiếm vị trí và kiểm tra xem có thuộc phòng hay không.
-            return true 
+            return true
         }
     }
     return false
@@ -91,8 +87,7 @@ export function addRoomMember(member) {
 
     console.log("11223: thông tin về member mới: ", member)
 
-    if (roomMember == null || roomMember == undefined) 
-    {
+    if (roomMember == null || roomMember == undefined) {
         roomMember = []
     }
 
@@ -111,14 +106,12 @@ export function removeRoomMember(socketid) {
     console.log("1208: v4 remove socket id: ")
     console.log(socketid)
 
-    if (roomMember == null || roomMember == undefined) 
-    {
+    if (roomMember == null || roomMember == undefined) {
         console.log("1208: mảng lưu các thành viên không tồn tại")
         return;
     }
 
-    for (let i = 0;i<roomMember.length;i++) 
-    {
+    for (let i = 0; i < roomMember.length; i++) {
         console.log(i)
         console.log(roomMember[i]['socketid'])
         console.log(roomMember[i])
@@ -133,9 +126,9 @@ export function removeRoomMember(socketid) {
 
             console.log("1208: sau khi xóa thành viên", roomMember)
 
-            renderNumberRoomMember() 
+            renderNumberRoomMember()
 
-            return 
+            return
         }
     }
 }
@@ -144,7 +137,7 @@ export function resetRoomMember() {
     getMemberContainer()
 
     console.log("v4 reset member: ")
-    
+
     roomMember = [];
 
     renderNumberRoomMember()
@@ -152,8 +145,7 @@ export function resetRoomMember() {
 
 export function getNumberOfMember() {
     console.log("Get number of member: ")
-    if (roomMember == null || roomMember == undefined) 
-    {
+    if (roomMember == null || roomMember == undefined) {
         return 0;
     }
     return roomMember.length
@@ -181,7 +173,7 @@ export function initRoomMember(member) {
     console.log("v4 init room length")
     console.log(roomMember)
     console.log(roomMember.length)
-    renderNumberRoomMember() 
+    renderNumberRoomMember()
 
     member.forEach(memberInformation => {
         renderMember(memberInformation.username, memberInformation.socketid)

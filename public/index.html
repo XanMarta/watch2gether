@@ -8,14 +8,14 @@
   <!-- <link rel="stylesheet" href="./css/video-js.min.css"> -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha3/dist/css/bootstrap.min.css">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
-  <link rel="stylesheet" href="./css/jsFEtest/index.css">
-  <link rel="stylesheet" href="./css/jsFEtest/chat.css">
-  <link rel="stylesheet" href="./css/jsFEtest/uploadFile.css">
-  <link rel="stylesheet" href="./css/jsFEtest/room.css">
+  <link rel="stylesheet" href="./css/index.css">
+  <link rel="stylesheet" href="./css/chat.css">
+  <link rel="stylesheet" href="./css/uploadFile.css">
+  <link rel="stylesheet" href="./css/room.css">
   <link rel="stylesheet" href="./css/video-js.min.css">
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> -->
   <link href="https://fonts.googleapis.com/css2?family=Lora&display=swap" rel="stylesheet">
   <title>Streaming app</title>
 </head>
@@ -36,12 +36,12 @@
             <a class="nav-link active" aria-current="page" href="/" style="padding-right: 2rem; color: white">Home</a>
           </div>
           <div class="col-sm-3">
-            <a class="nav-link active" aria-current="page" href="#feature-section"
-              style="padding-right: 2rem; color: white">Feature</a>
+            <a class="nav-link active" aria-current="page" id="featureClick" style="padding-right: 2rem; color: white"
+              href="#feature-section">Feature</a>
           </div>
           <div class="col-sm-3">
-            <a class="nav-link active" aria-current="page" href="#review-section"
-              style="padding-right: 2rem; color: white">Review</a>
+            <a class="nav-link active" aria-current="page" id="reviewClick" style="padding-right: 2rem; color: white"
+              href="#review-section">Review</a>
           </div>
         </div>
       </div>
@@ -81,31 +81,35 @@
           <div class="tab">
             <button class="tablinks" onclick="openFeature(event, 'feature1')" id="defaultOpen">Create a room</button>
             <button class="tablinks" onclick="openFeature(event, 'feature2')">Chat with your friends</button>
-            <button class="tablinks" onclick="openFeature(event, 'feature3')">Synchronize video and sound
+            <button class="tablinks" onclick="openFeature(event, 'feature3')">Video and sound synchronization
             </button>
-            <button class="tablinks" onclick="openFeature(event, 'feature4')">Feature 4</button>
           </div>
 
           <div id="feature1" class="tabcontent">
             <h1>Create and join a room</h1>
-            <p>Create a room and inviting your friends to watch videos.</p>
-            <p>You can join a room from a given room code.</p>
+            <p>Create a room and invite your friends to watch videos.</p>
+            <p>You can join a room by asking your friend the room code.</p>
           </div>
 
           <div id="feature2" class="tabcontent">
             <h1>Chat with your friends</h1>
-            <p>Chatting with your friends, having a good time!</p>
+            <p>Chatting with your friends while watching videos, having a good time!</p>
+            <br>
+            <!-- <div style="display: relative; padding-left: 21rem;">
+              <img src="./img/chatImg.PNG" style="max-width: 45%; max-height: 15%;">
+            </div> -->
           </div>
 
           <div id="feature3" class="tabcontent">
-            <h1>Synchronize video and sound</h1>
-            <p>Video and sound are synchronized accross people.</p>
+            <h1>Videos and sounds synchronization</h1>
+            <p>Videos and sounds are synchronized between people.</p>
+            <p>Feeling like people watching TV.</p>
           </div>
 
-          <div id="feature4" class="tabcontent">
+          <!-- <div id="feature4" class="tabcontent">
             <h1>Feature 4</h1>
             <p>Feature 4 blahblahblahblahblahblahblahblahblah</p>
-          </div>
+          </div> -->
           <!--End Feature section-->
         </div>
       </div>
@@ -113,15 +117,14 @@
         <!-- <h1>Review</h1> -->
         <!--Review section-->
         <div class=" card flex-row" style="box-shadow: 1px 2px 3px 4px rgba(20,20,20,0.4);">
-          <img class="card-img-left example-card-img-responsive"
-            src="https://images.unsplash.com/photo-1611915387288-fd8d2f5f928b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8Mnx8fGVufDB8fHx8&w=1000&q=80"
-            width="30%" height="30%"
-            style="padding-left: 2rem;padding-top: 5rem;padding-bottom: 10rem;padding-right: 2rem;" />
+          <img class="card-img-left example-card-img-responsive" src="./img/man-photo.webp" width="30%" height="30%"
+            style="padding-left: 5rem;padding-top: 5rem;padding-bottom: 10rem;padding-right: 2rem;" />
           <div class="card-body" style="padding-left: 5rem; padding-top:5rem;">
             <blockquote class="blockquote mb-5">
-              <p style="font-size:200%">This website is awnsome!</p>
+              <p style="font-size:200%">This website is awnsome! I can watch videos online with my friends remotely.
+                Thanks Watch2gether!</p>
               <footer class="blockquote-footer" style="padding-left: 5rem; padding-top:5rem; font-size: 200%">
-                Someone famous in <cite title="Source Title">Source Title</cite>
+                Mr. John
               </footer>
             </blockquote>
           </div>
@@ -134,13 +137,17 @@
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title">Create a room</h5>
-              <button type="button" id="createRoom-closeButton" class="btn-close" id="close" data-bs-dismiss="modal" aria-label="Close"></button>
+              <h5 class="modal-title">
+                <bold>Create a room</bold>
+              </h5>
+              <button type="button" id="createRoom-closeButton" class="btn-close" id="close" data-bs-dismiss="modal"
+                aria-label="Close"></button>
             </div>
             <div class="modal-body">
               <div class="mb-3">
                 <label for="name" class="form-label">Enter your name</label>
-                <input type="text" class="form-control" id="create-name-username" aria-describedby="username" placeholder="Enter your name...">
+                <input type="text" class="form-control" id="create-name-username" aria-describedby="username"
+                  placeholder="Enter your name...">
               </div>
             </div>
             <div class="modal-footer">
@@ -158,17 +165,20 @@
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title">Join a room</h5>
+              <h5 class="modal-title">
+                <bold>Join a room</bold>
+              </h5>
               <button type="button" id="joinRoom-closeButton" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
               <div class="mb-3">
                 <label for="name" class="form-label">Enter your name</label>
-                <input type="text" class="form-control" id="join-name-username" aria-describedby="username" placeholder="Enter your name...">
+                <input type="text" class="form-control" id="join-name-username" aria-describedby="username"
+                  placeholder="Enter your name...">
               </div>
               <div class="mb-3">
                 <label for="roomid" class="form-label">Enter your room ID</label>
-                <input type="text" class="form-control" id="join-name-roomid" placeholder="Enter your room ID...">
+                <input type="text" class="form-control" id="join-name-roomid" placeholder="Please enter your room ID">
               </div>
             </div>
             <div class="modal-footer">
@@ -366,12 +376,13 @@
               <source src="//vjs.zencdn.net/v/oceans.mp4" type="video/mp4">
               <source src="//vjs.zencdn.net/v/oceans.webm" type="video/webm">
             </video>
-            <h3 id="current-play-video-name">...</h3>
-            <button type="button" class="btn btn-dark" id="stream-stop-button" hidden>Stop streaming</button>
+            <h3 id="current-play-video-name"></h3>
+            <button type="button" class="btn btn-dark" id="stream-stop-button" data-toggle="tooltip"
+              title="Stop streaming" hidden>Stop streaming</button>
           </div>
         </div>
         <div id="right" style="margin-top: 1.5rem;">
-          <div class="card" id="chat" >
+          <div class="card" id="chat">
             <div class="card-header" style="height: 8%;padding: 0.5rem 0.25rem;
             margin-bottom: 0;
             background-color: rgba(0,0,0,.03);
@@ -379,28 +390,28 @@
               <div>
                 <div style="float: left; width: 30%" style="margin-top: 2rem;">
                   <img src="../img/userIcon.png" id="display-members" width="33" height="27"
-                    style="display: inline-block;padding: 1px 1px;margin-left: 7px;">
-                  <h5 id="member-number" style="display: inline-block;margin-top: 0;align-content: center;padding-top: 3px;">0</h5>
+                    style="display: inline-block;padding: 1px 1px;margin-left: 7px;" data-toggle="tooltip"
+                    title="Show members">
+                  <h5 id="member-number"
+                    style="display: inline-block;margin-top: 0;align-content: center;padding-top: 3px;">0</h5>
                 </div>
                 <div style="display: flex;
                 justify-content: center; width: 70%;">
                   <input class="form-control mr-sm-1" id="roomIdInput" aria-label="Copy" style="height:30%;height: 30%;
-                  padding: 0.375rem 0.15rem;" readonly>
+                  padding: 0.375rem 0.15rem;" data-toggle="tooltip"
+                    title="This is the ID of the room, click copy in the right to get the room id." readonly>
                   <!-- <button class="btn btn-outline-success my-2 my-sm-0" type="submit" style="width:25%;">Copy</button> -->
                   <!-- <div class="leaveIcon-container"> -->
                   <div class="copyIcon-container" id="copy-room-id" style="margin-left: 10px;">
                     <img src="../img/copyIcon.png" width="27" height="27" id="copy-room-id" data-toggle="tooltip"
                       title="Copy room id" style="padding-top: 3px;margin-left: 1px;">
-                    <div class="overlay">
+                    <!-- <div class="overlay">
                     </div>
-                    <span class="tooltiptext">Copy</span>
+                    <span class="tooltiptext">Copy</span> -->
                   </div>
                   <div class="leaveIcon-container" id="out-room" style="margin-top: 2px;margin-left: 3px;">
                     <img src="../img/leaveroom.png" width="30" height="24" id="leave-room" data-toggle="tooltip"
                       title="Leave room">
-                    <div class="overlay">
-                    </div>
-                    <span class="tooltiptext">Leave</span>
                   </div>
                   <!-- <img src="../img/leaveroom.png" width="40" height="30" id="leave-room" data-toggle="tooltip"
                     title="Leave room"> -->
@@ -411,37 +422,41 @@
               </div>
             </div>
             <div class="card-body" style="overflow: auto;" id="chat-container">
+              <!--Message goes here-->
             </div>
             <div class="card-footer" style="padding: 0.5rem 10px;
             background-color: rgba(0,0,0,.03);
             border-top: 1px solid rgba(0,0,0,.125);">
               <div class="message-sent">
                 <!-- <textarea type="text" id="message-input"></textarea> -->
-                <textarea type="text" class="form-control" id="message-input" placeholder="Enter your message..." style="padding: 0.75rem 0.75rem;"></textarea>
-                <img src="../img/sendIcon.png" id="send-message" type="button">
+                <textarea type="text" class="form-control" id="message-input" placeholder="Enter your message here..."
+                  style="padding: 0.75rem 0.75rem;"></textarea>
+                <img src="../img/sendIcon.png" id="send-message" type="button" data-toggle="tooltip"
+                  title="Send Message">
                 <!-- <img src="https://www.seekpng.com/png/detail/95-955357_open-send-icon-png.png" id="send-message"> -->
               </div>
             </div>
           </div>
           <!--Find member-->
-          <div class="card" id="members-information" hidden="true" style="width: 372px;">
+          <div class="card" id="members-information" style="width: 372px;" hidden>
             <div class="card-header" style="height: 8%;padding: 0.5rem 0.75rem;
             margin-bottom: 0;
             background-color: rgba(0,0,0,.03);
             border-bottom: 1px solid rgba(0,0,0,.125);">
               <div style="float: left; width: 30%" style="margin-top: 2rem;">
-                <img src="./img/backIcon.png" id="display-chat" width="30" height="30">
-                <input hidden="true" class="form-control mr-sm-1" type="search" placeholder="Generate room id" aria-label="Search">
-                <button hidden="true" class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                <img src="./img/backIcon.png" id="display-chat" width="30" height="30" data-toggle="tooltip"
+                  title="Back to chat">
               </div>
             </div>
             <div class="card-body" style="overflow: auto;">
-              <ul class="list-group list-group-flush" id="members-list">
+              <ul class="list-group list-group-light" id="members-list">
                 <!-- <li class="list-group-item">fsdafsa
+                  <button style="float: right;">Ban</button>
                 </li>
                 <li class="list-group-item">fsdafsa
                 </li>
                 <li class="list-group-item">fsdafsa
+                  <button style="float: right;">Ban</button>
                 </li> -->
               </ul>
             </div>
@@ -469,12 +484,14 @@
         <!-- Section: Social media -->
         <section class="mb-4">
           <!-- Facebook -->
-          <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"><img src="./img/facebook-icon.webp"
-              height=20 width="20" style="border-radius: 50%;"></a>
+          <a class="btn btn-outline-light btn-floating m-1" href="https://uet.vnu.edu.vn/" role="button"
+            data-toggle="tooltip" title="Our organization"><img src="./img/school-icon.png" height=20 width="20"
+              style="border-radius: 50%;"></a>
 
           <!-- Github -->
-          <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"><img src="./img/github-512.webp"
-              height=20 width="20" style="border-radius: 50%;"></a>
+          <a class="btn btn-outline-light btn-floating m-1" href="https://github.com/XanMarta/watch2gether"
+            role="button" data-toggle="tooltip" title="Our project Github"><img src="./img/github-512.webp" height=20
+              width="20" style="border-radius: 50%;"></a>
         </section>
         <!-- Section: Social media -->
       </div>
@@ -483,7 +500,7 @@
       <!-- Copyright -->
       <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
         © 2022 Copyright:
-        <a class="text-white" href="#">Watch2gether</a>
+        <a class="text-white" href="#">Watch2gether</a> by Group 7
       </div>
       <!-- Copyright -->
     </footer>
@@ -492,7 +509,8 @@
 
 </body>
 <script>
-  console.log(location.hash);
+  //window.location.hash = "";
+  //console.log(location.hash);
   //Feature
   function openFeature(evt, featureName) {
     var i, tabcontent, tablinks;
