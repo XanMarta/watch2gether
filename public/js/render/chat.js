@@ -18,6 +18,7 @@ export function addMessage(content) {
     //     roomId: getRoomId(socket.id),
     //     content: message
     // }
+    console.log("Sender username is: " + content.senderUsername);
     //check the message is from remote user or current user?
     if (content.senderUsername === "Me") {
         console.log(`Add chat: ${content}`)
