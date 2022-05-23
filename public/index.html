@@ -74,7 +74,7 @@
         </div>
         <!--End Join/create room section-->
       </div>
-      <div class="container-xxl themed-container" id="feature-section" style="color: black;">
+      <div class="container-xxl themed-container" id="feature-section" style="color: black; opacity: 0.85;">
         <!-- <h1>Features</h1> -->
         <div class="card flex-row" style="box-shadow: 1px 2px 3px 4px rgba(20,20,20,0.4);">
           <!--Feature section-->
@@ -87,12 +87,13 @@
 
           <div id="feature1" class="tabcontent">
             <h1>Create and join a room</h1>
-            <p>Create a room and invite your friends to watch videos. You can join a room with a given room code.</p>
+            <p>Create a room and invite your friends to watch videos.</p>
+            <p>You can join a room by asking your friend the room code.</p>
           </div>
 
           <div id="feature2" class="tabcontent">
             <h1>Chat with your friends</h1>
-            <p>Chatting with your friends, having a good time!</p>
+            <p>Chatting with your friends while watching videos, having a good time!</p>
             <br>
             <!-- <div style="display: relative; padding-left: 21rem;">
               <img src="./img/chatImg.PNG" style="max-width: 45%; max-height: 15%;">
@@ -100,8 +101,9 @@
           </div>
 
           <div id="feature3" class="tabcontent">
-            <h1>Synchronize videos and sounds</h1>
+            <h1>Videos and sounds synchronization</h1>
             <p>Videos and sounds are synchronized between people.</p>
+            <p>Feeling like people watching TV.</p>
           </div>
 
           <!-- <div id="feature4" class="tabcontent">
@@ -396,7 +398,7 @@
                 <div style="display: flex;
                 justify-content: center; width: 70%;">
                   <input class="form-control mr-sm-1" id="roomIdInput" aria-label="Copy" style="height:30%;height: 30%;
-                  padding: 0.375rem 0.15rem;" readonly>
+                  padding: 0.375rem 0.15rem;" data-toggle="tooltip" title="This is the ID of the room, click copy in the right to get the room id." readonly>
                   <!-- <button class="btn btn-outline-success my-2 my-sm-0" type="submit" style="width:25%;">Copy</button> -->
                   <!-- <div class="leaveIcon-container"> -->
                   <div class="copyIcon-container" id="copy-room-id" style="margin-left: 10px;">
@@ -428,7 +430,8 @@
                 <!-- <textarea type="text" id="message-input"></textarea> -->
                 <textarea type="text" class="form-control" id="message-input" placeholder="Enter your message here..."
                   style="padding: 0.75rem 0.75rem;"></textarea>
-                <img src="../img/sendIcon.png" id="send-message" type="button">
+                <img src="../img/sendIcon.png" id="send-message" type="button" data-toggle="tooltip"
+                title="Send Message">
                 <!-- <img src="https://www.seekpng.com/png/detail/95-955357_open-send-icon-png.png" id="send-message"> -->
               </div>
             </div>
