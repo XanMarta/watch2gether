@@ -412,3 +412,8 @@ body {
   font-size: 1rem;
   color: var(--clr-light-gray);
 }
+
+.tablinks {
+  font-family: 'Lora', serif;
+  font-size: 40px;
+}
