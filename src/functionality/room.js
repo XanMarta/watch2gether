@@ -394,6 +394,36 @@ function init_listener_room (socket) {
         }
         callback(response)
     })
+
+    socket.on("peer-error", async data => {
+        console.log(`Server nhận được lỗi peer. giữa ${socket.id} và ${data.socketid}`)
+        let userInfo = await getUserInformation(socket.id)  
+
+        if (userInfo == null || userInfo == undefined) 
+        {
+            return
+        }
+        else 
+        {
+            if (userInfo.roomid == null || userInfo.roomid == undefined) 
+            {
+                return
+            }
+        }
+
+        let hostId = socket.id
+        let socketid = data.socketid
+
+        getIo().to(socketid).emit("peer-init", {
+            peerId: hostId,
+            initiator: false
+        })
+        getIo().to(hostId).emit('peer-init', {
+            peerId: socketid,
+            initiator: true
+        })
+        console.log(`Server tạo lại kết nối giữa ${socket.id} và ${data.socketid}`)
+    })
 }
 
 module.exports = {

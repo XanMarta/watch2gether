@@ -135,6 +135,13 @@ export function init_listener_peer() {
             
             removeRoomMember(remotePeerId)
             removeRemoteStream(remotePeerId)
+            
+            if (isHost()) {
+                // current is host, so remote is guest.
+                socket.emit("peer-error", {
+                    socketid: remotePeerId
+                })
+            }
         })
 
         // TODO: peer disconnect

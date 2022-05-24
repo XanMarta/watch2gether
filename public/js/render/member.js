@@ -84,6 +84,7 @@ export function isMemberExist(socketid) {
 export function addRoomMember(member) {
     console.log("11223: v4 thêm người dùng vào phòng")
     getMemberContainer()
+    removeRoomMember(member.socketid)
 
     console.log("11223: thông tin về member mới: ", member)
 
