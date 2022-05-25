@@ -117,9 +117,6 @@ export function init_listener_peer() {
             peerManager.deletePeer(remotePeerId)
             
             console.log("Erase peer ID: ", remotePeerId)
-
-            removeRoomMember(remotePeerId)
-            removeRemoteStream(remotePeerId)
         })
 
         peer.on("error", (err) => {
@@ -133,8 +130,12 @@ export function init_listener_peer() {
             
             console.log("Get error: ", err)
             
-            removeRoomMember(remotePeerId)
-            removeRemoteStream(remotePeerId)
+            if (isHost()) {
+                // current is host, so remote is guest.
+                socket.emit("peer-error", {
+                    socketid: remotePeerId
+                })
+            }
         })
 
         // TODO: peer disconnect

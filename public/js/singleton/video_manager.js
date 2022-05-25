@@ -1,6 +1,8 @@
 import { sendStream } from "../file.js"
 import * as Ownership from "./ownership.js"
 
+var isPlayed = false;
+
 export function init_video_manager() {
     const playerTracker = videojs('video-player-local')
 
@@ -9,12 +11,17 @@ export function init_video_manager() {
         console.log("Video playback started: " + playerTracker.currentTime());
 
         if (Ownership.isHost()) {
-            sendStream();
+            if (!isPlayed)
+            {
+                sendStream();
+                isPlayed = true;
+            }
         }
     })
 
     playerTracker.on("pause", function (e) {
         console.log("Video playback paused: " + playerTracker.currentTime());
+        isPlayed = false;
     });
 
     playerTracker.on("seeking", function (e) {
@@ -28,5 +35,6 @@ export function init_video_manager() {
 
     playerTracker.on("ended", function (e) {
         console.log("Video playback ended.");
+        isPlayed = false;
     });
 }
