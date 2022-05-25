@@ -15,6 +15,11 @@ function clease() {
     document.querySelectorAll(".notification").forEach(DOM => {
         DOM.remove();
     })
+    document.querySelectorAll(".bubbleWrapper").forEach(DOM => {
+        DOM.remove();
+    })
+
+    console.log("Remove sạch tin nhắn và thông báo liên quan.")
 }
 
 // Render related to Owner View
