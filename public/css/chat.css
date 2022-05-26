@@ -42,15 +42,15 @@
   object-fit: contain;
 } */
 .ownBubble {
-	min-width: 60px;
-	max-width: 700px;
-	padding: 10px 10px;
-  margin: 6px 8px;
-	background-color: rgb(45, 27, 211);
-	border-radius: 16px 16px 0 16px;
-	word-break: break-all;
- 
+    min-width: 60px;
+    max-width: 700px;
+    padding: 10px 10px;
+    margin: 6px 8px;
+    background-color: rgb(45, 27, 211);
+    border-radius: 16px 16px 16px 0px;
+    word-break: break-all;
 }
+
 .otherBubble {
 	min-width: 60px;
 	max-width: 700px;
