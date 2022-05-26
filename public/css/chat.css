@@ -33,8 +33,9 @@
 .inlineContainer {
   display: inline-flex;
 }
+
 .inlineContainer.own {
-  flex-direction: row-reverse;
+    flex-direction: row;
 }
 /* .inlineIcon {
   width:20px;
@@ -66,14 +67,12 @@
 /* .other {
 	margin-left: 3rem;
 } */
-.username-own {
-	/* width:20px;
-  object-fit: contain; */
-	align-self: flex-end;
-	padding-right: 8px;
-	color: rgb(109, 106, 106);
-}
 
+.username-own {
+    align-self: left;
+    padding-right: 8px;
+    color: rgb(109, 106, 106);
+}
 .username-other {
 	align-self: flex-start;
 	padding-right: 8px;
