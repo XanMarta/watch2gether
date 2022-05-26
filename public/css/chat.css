@@ -69,13 +69,13 @@
 } */
 
 .username-own {
-    align-self: left;
-    padding-right: 8px;
+    align-self: flex-end;
+    padding: 8px 8px 8px 8px;
     color: rgb(109, 106, 106);
 }
 .username-other {
-	align-self: flex-start;
-	padding-right: 8px;
+	align-self: flex-end;
+	padding: 8px 8px 8px 8px;
 	color: rgb(109, 106, 106);
 }
 
